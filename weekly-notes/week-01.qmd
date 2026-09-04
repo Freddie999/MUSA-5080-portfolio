@@ -62,7 +62,7 @@ A Quarto document usually looks like this:
 ```yaml
 ---
 title: "Week 1 Notes"
-date: 2026-08-28
+date: 2026-08-28+
 ---
 ```
 

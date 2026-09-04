@@ -1,0 +1,14 @@
+---
+title: "Week 2: dplyr and Census"
+description: "table functions and acs data"
+date: 2026-09-04
+---
+
+## What We Did
+
+I took my first quiz at Upenn! I was initially scared but I am not scared anymore. Then we learned about ...
+
+
+
+
+
