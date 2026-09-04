@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Home",
     "section": "",
-    "text": "Welcome to my portfolio for MUSA 5080: Public Policy Analytics at the University of Pennsylvania.\nThis site documents my work in the Master of Urban Spatial Analytics program — weekly notes, course assignments, and a final project applying data analysis to urban policy questions.\n\n\n\nI’m a student in the MUSA program at Penn. My background is in Geospatial Engineering, and I’m interested in geospatial software engineering, spatial data analytics, urban systems, transportation, and using GeoAI to help create a more equitable world.\n\n\n\n\nWeekly Notes — what I’m learning each week\nAssignments — analyses completed for the course\nAbout — more background and how to reach me\n\n\n\n\n\n\nEmail: fabalo@upenn.edu\nGitHub: @freddie999"
+    "text": "Welcome to my portfolio for MUSA 5080: Public Policy Analytics at the University of Pennsylvania.\nThis site documents my work in the Master of Urban Spatial Analytics program — weekly notes, course assignments, and a final project applying data analysis to urban policy questions.\n\n\n\nI’m a student in the MUSA program at Penn. My background is in Geospatial Engineering, and I’m interested in geospatial software engineering, spatial data analytics, urban systems, transportation, and using GeoAI to help create a more equitable world.\n\n\n\n\nWeekly Notes — what I’m learning each week\nAssignments — analyses completed for the course\nAbout — more background and how to reach me\n\n\n\n\n\n\nEmail: fabalo@upenn.edu / frederick.abalo@icloud.com\nGitHub: @freddie999\nLinkedIn: Frederick Abalo\nPhone: Call me (215) 397 8467\nWhatsApp: Ping me!"
   },
   {
     "objectID": "index.html#about-me",
@@ -25,21 +25,21 @@
     "href": "index.html#get-in-touch",
     "title": "Home",
     "section": "",
-    "text": "Email: fabalo@upenn.edu\nGitHub: @freddie999"
+    "text": "Email: fabalo@upenn.edu / frederick.abalo@icloud.com\nGitHub: @freddie999\nLinkedIn: Frederick Abalo\nPhone: Call me (215) 397 8467\nWhatsApp: Ping me!"
   },
   {
     "objectID": "weekly-notes/week-01.html",
     "href": "weekly-notes/week-01.html",
     "title": "Week 1: Getting Set Up",
     "section": "",
-    "text": "Set up the portfolio workflow: made a repository from a template, cloned it with GitHub Desktop, edited files in RStudio, rendered with Quarto, and published to GitHub Pages."
+    "text": "This week, I set up the workflow for my MUSA portfolio. I created a repository from a template, cloned it using GitHub Desktop, edited files in RStudio, rendered my Quarto files, and published the resulting website with GitHub Pages.\nThe basic workflow is:\nEdit → Save → Render → Commit → Push → Refresh"
   },
   {
     "objectID": "weekly-notes/week-01.html#what-we-did",
     "href": "weekly-notes/week-01.html#what-we-did",
     "title": "Week 1: Getting Set Up",
     "section": "",
-    "text": "Set up the portfolio workflow: made a repository from a template, cloned it with GitHub Desktop, edited files in RStudio, rendered with Quarto, and published to GitHub Pages."
+    "text": "This week, I set up the workflow for my MUSA portfolio. I created a repository from a template, cloned it using GitHub Desktop, edited files in RStudio, rendered my Quarto files, and published the resulting website with GitHub Pages.\nThe basic workflow is:\nEdit → Save → Render → Commit → Push → Refresh"
   },
   {
     "objectID": "weekly-notes/week-01.html#key-concepts",
@@ -60,56 +60,56 @@
     "href": "weekly-notes/week-01.html#reflection",
     "title": "Week 1: Getting Set Up",
     "section": "Reflection",
-    "text": "Reflection\n\nWhat I want out of this course:\nOne thing I’m nervous about:"
+    "text": "Reflection\nThis week helped me understand that my portfolio is not created directly in the browser. I write source files in Quarto, render them into HTML, and then use GitHub Pages to publish the result. The most important idea for me was separating the source files from the finished website. I am still building confidence with the workflow, but I now have a clearer understanding of how R, Quarto, Git, GitHub, and GitHub Pages work together."
   },
   {
     "objectID": "weekly-notes/week-01.html#questions-i-still-have",
     "href": "weekly-notes/week-01.html#questions-i-still-have",
     "title": "Week 1: Getting Set Up",
     "section": "Questions I Still Have",
-    "text": "Questions I Still Have"
+    "text": "Questions I Still Have\n\nHow can I customize the visual design of my Quarto website?\nHow can I add interactive maps and visualizations?\nHow can I organize larger projects with many data files and code chunks?"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About Me",
     "section": "",
-    "text": "Write a few paragraphs about yourself here: where you came from before MUSA, what drew you to urban spatial analytics, and what you’re hoping to do with it."
+    "text": "I am a Ghanaian geospatial scientist and GIS team lead with a background in Geospatial Engineering. Before joining Penn’s Master of Urban Spatial Analytics program, I worked at Zipline International in Kigali, where I helped develop geospatial systems for autonomous medical drone delivery. This work involved terrain modeling, aerial imagery, route planning, and spatial data management across complex environments. It showed me how geospatial technology can have a direct human impact, from helping patients receive medical supplies on time to improving access to essential services.\nMy interest in urban spatial analytics grew from seeing how invisible or incomplete spatial data can limit effective planning. Earlier in my career, I worked on mapping underserved communities and sanitation infrastructure, producing information that helped support improved sanitation for more than 3,000 communities. These experiences taught me that maps are not just technical products. They influence how resources are allocated, which communities receive attention, and how governments and organizations respond to urgent needs.\nAt MUSA, I am strengthening my skills in statistics, programming, spatial modeling, data visualization, and urban systems. I am particularly interested in routing, mapping, geospatial software, and the spatial intelligence that supports technologies such as delivery platforms, autonomous vehicles, and self-driving systems. I hope to work with technology companies developing products that depend on accurate maps, efficient routing, and a strong understanding of the built environment.\nAcross these interests, my central goal is to help create a more equitable society. Whether I am working on public infrastructure, medical delivery, transportation, or autonomous technology, I want to contribute to systems that are more accessible, reliable, and responsive to the needs of underserved communities."
   },
   {
     "objectID": "about.html#background",
     "href": "about.html#background",
-    "title": "About",
+    "title": "About Me",
     "section": "",
-    "text": "Write a few paragraphs about yourself here: where you came from before MUSA, what drew you to urban spatial analytics, and what you’re hoping to do with it."
+    "text": "I am a Ghanaian geospatial scientist and GIS team lead with a background in Geospatial Engineering. Before joining Penn’s Master of Urban Spatial Analytics program, I worked at Zipline International in Kigali, where I helped develop geospatial systems for autonomous medical drone delivery. This work involved terrain modeling, aerial imagery, route planning, and spatial data management across complex environments. It showed me how geospatial technology can have a direct human impact, from helping patients receive medical supplies on time to improving access to essential services.\nMy interest in urban spatial analytics grew from seeing how invisible or incomplete spatial data can limit effective planning. Earlier in my career, I worked on mapping underserved communities and sanitation infrastructure, producing information that helped support improved sanitation for more than 3,000 communities. These experiences taught me that maps are not just technical products. They influence how resources are allocated, which communities receive attention, and how governments and organizations respond to urgent needs.\nAt MUSA, I am strengthening my skills in statistics, programming, spatial modeling, data visualization, and urban systems. I am particularly interested in routing, mapping, geospatial software, and the spatial intelligence that supports technologies such as delivery platforms, autonomous vehicles, and self-driving systems. I hope to work with technology companies developing products that depend on accurate maps, efficient routing, and a strong understanding of the built environment.\nAcross these interests, my central goal is to help create a more equitable society. Whether I am working on public infrastructure, medical delivery, transportation, or autonomous technology, I want to contribute to systems that are more accessible, reliable, and responsive to the needs of underserved communities."
   },
   {
     "objectID": "about.html#skills",
     "href": "about.html#skills",
-    "title": "About",
+    "title": "About Me",
     "section": "Skills",
     "text": "Skills\n\n\nLanguages & Tools: R, Quarto, Git\nSpatial: (add as you learn)\nData: US Census / ACS via tidycensus"
   },
   {
     "objectID": "about.html#contact",
     "href": "about.html#contact",
-    "title": "About",
+    "title": "About Me",
     "section": "Contact",
-    "text": "Contact\n\n\nEmail: your-email@upenn.edu\nGitHub: @your-username"
+    "text": "Contact\n\n\nEmail: your-email@upenn.edu\nGitHub: @your-username\nLinkedIn: https://www.linkedin.com/in/frederick-abalo\nPhone: (215) 397 8467"
   },
   {
     "objectID": "assignments/index.html",
     "href": "assignments/index.html",
     "title": "Assignments",
     "section": "",
-    "text": "Completed assignments for MUSA 5080. New assignments appear here automatically once you add the .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Completed assignments for MUSA 5080. New assignments appear here automatically once you add the .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "weekly-notes/index.html",
     "href": "weekly-notes/index.html",
     "title": "Weekly Notes",
     "section": "",
-    "text": "Notes from each week of MUSA 5080. New entries appear here automatically — add a .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nWeek 1: Getting Set Up\n\n\nFirst impressions, and getting the workflow running.\n\n\n\n\n\nAug 28, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Notes from each week of MUSA 5080. New entries appear here automatically — add a .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nWeek 1: Getting Set Up\n\n\nUnderstanding websites, Quarto, R, and GitHub Pages.\n\n\n\n\n\nAug 28, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "data/readme.html",
@@ -117,5 +117,124 @@
     "title": "",
     "section": "",
     "text": "Code\n\n\n\n\nData files for MUSA 5080\nDownload assignment data from Canvas and save it here. Do not rename the files! Have a nice day :)"
+  },
+  {
+    "objectID": "about.html#reachable-at",
+    "href": "about.html#reachable-at",
+    "title": "About Me",
+    "section": "Reachable at",
+    "text": "Reachable at\n\n\nEmail: fabalo@upenn.edu / frederick.abalo@icloud.com\nGitHub: @freddie999\nLinkedIn: Frederick Abalo\nPhone: (215) 397 8467\nWhatsApp: +233 24 877 9393"
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#what-is-a-website",
+    "href": "weekly-notes/week-01.html#what-is-a-website",
+    "title": "Week 1: Getting Set Up",
+    "section": "What Is a Website?",
+    "text": "What Is a Website?\nA website is a collection of files that a browser can display. These files usually include:\n\nHTML, which provides the structure\nCSS, which controls the appearance\nJavaScript, which adds interactivity\nImages and other supporting files\n\nMy portfolio is made from written source files and then converted into HTML pages by Quarto. GitHub Pages hosts those HTML files so that other people can view them online.\nA simple mental model is:\n\nQuarto creates the website, and GitHub Pages publishes it."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#what-is-quarto",
+    "href": "weekly-notes/week-01.html#what-is-quarto",
+    "title": "Week 1: Getting Set Up",
+    "section": "What Is Quarto?",
+    "text": "What Is Quarto?\nQuarto is a publishing system that converts files written in .qmd format into HTML documents and other outputs such as PDFs, reports, presentations, books, and websites.\nA .qmd file combines three things:\n\nYAML, which contains document settings\nMarkdown, which contains my written content\nCode chunks, which run code and display the results\n\nQuarto is useful because it allows writing, coding, analysis, and presentation to exist in the same document."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#how-quarto-works",
+    "href": "weekly-notes/week-01.html#how-quarto-works",
+    "title": "Week 1: Getting Set Up",
+    "section": "How Quarto Works",
+    "text": "How Quarto Works\nWhen I click Render, Quarto processes the .qmd file from top to bottom.\nBehind the scenes, it:\n\nReads the document settings in the YAML section.\nInterprets the Markdown text.\nFinds the code chunks.\nSends R code to R for evaluation.\nReceives the results from R.\nCombines my writing, code, and results.\nProduces an HTML file.\n\nThe result is a finished webpage that can be viewed in a browser."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#anatomy-of-a-.qmd-file",
+    "href": "weekly-notes/week-01.html#anatomy-of-a-.qmd-file",
+    "title": "Week 1: Getting Set Up",
+    "section": "Anatomy of a .qmd File",
+    "text": "Anatomy of a .qmd File\nA Quarto document usually looks like this:\n---\ntitle: \"Week 1 Notes\"\ndate: 2026-08-28\n---\nThis first section is called YAML. It contains metadata and settings for the document.\nThe body of the document contains Markdown:\n## What I Learned\n\nQuarto lets me combine written explanations with executable R code.\n\n[Visit my portfolio](index.qmd)\nThe document can also contain an R code chunk:\n\n2 + 2\n\n[1] 4\n\n\nWhen the document is rendered, the result of the calculation appears underneath the code."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#files-and-folders",
+    "href": "weekly-notes/week-01.html#files-and-folders",
+    "title": "Week 1: Getting Set Up",
+    "section": "Files and Folders",
+    "text": "Files and Folders\nDifferent files in the project serve different purposes.\n\nFiles for the website\n\nindex.qmd is the homepage.\nabout.qmd is the About page.\nweekly-notes/ contains my weekly notes.\nassignments/ contains my assignments.\n\n\n\nFiles for the tools\n\n_quarto.yml contains settings for the entire Quarto website.\nfreeze/ stores rendered results so that some code does not need to run again.\n.Rproj identifies the project as an RStudio project.\n.gitignore tells Git which files it should ignore.\n.Renviron stores environment variables and private information such as API keys.\ndocs/ contains the HTML files generated by Quarto for publication.\n\nThe files I write are the source files. The files in docs/ are the rendered website."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#how-pages-become-website-urls",
+    "href": "weekly-notes/week-01.html#how-pages-become-website-urls",
+    "title": "Week 1: Getting Set Up",
+    "section": "How Pages Become Website URLs",
+    "text": "How Pages Become Website URLs\nThe homepage file is usually named index.qmd. When Quarto renders the website, it creates:\ndocs/index.html\nGitHub Pages then displays that file at the main website address.\nThe same pattern applies to folders:\nweekly-notes/index.qmd\n        ↓\ndocs/weekly-notes/index.html\n        ↓\nmyname.github.io/weekly-notes/\nThe index file acts as the default page for its folder."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#git-github-and-github-desktop",
+    "href": "weekly-notes/week-01.html#git-github-and-github-desktop",
+    "title": "Week 1: Getting Set Up",
+    "section": "Git, GitHub, and GitHub Desktop",
+    "text": "Git, GitHub, and GitHub Desktop\nThese three tools are related, but they are not the same thing.\n\nGit\nGit is a version-control system that runs on my computer. It records changes to files and allows me to save labelled snapshots of my work.\n\n\nGitHub.com\nGitHub.com is an online service that stores a copy of my project repository. It also makes the project accessible for collaboration and publishing.\n\n\nGitHub Desktop\nGitHub Desktop is a graphical interface for Git. It provides buttons for common Git actions.\nTwo important Git actions are:\n\nCommit: Save a labelled snapshot of changes on my computer.\nPush: Send those committed changes to GitHub.com.\n\nAfter I push changes, GitHub Pages can update the live version of my portfolio."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#r-scripts-and-quarto-documents",
+    "href": "weekly-notes/week-01.html#r-scripts-and-quarto-documents",
+    "title": "Week 1: Getting Set Up",
+    "section": "R Scripts and Quarto Documents",
+    "text": "R Scripts and Quarto Documents\nAn R script contains mainly R code:\nx &lt;- 10\nx + 5\nA Quarto document is more flexible. It can contain:\n\nWritten explanations\nHeadings\nLinks\nImages\nR code\nTables\nCharts\nCode results\n\nThis makes Quarto useful for documenting not only what I calculated, but also why I calculated it and what the results mean."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#my-mental-model",
+    "href": "weekly-notes/week-01.html#my-mental-model",
+    "title": "Week 1: Getting Set Up",
+    "section": "My Mental Model",
+    "text": "My Mental Model\nI now think of my portfolio as having three versions:\n\nMy computer: where I edit the source files\nGitHub.com: where Git stores and tracks the project\nMy live website: what visitors see in their browser\n\nThe complete process is:\nWrite or edit a .qmd file\n        ↓\nRender it with Quarto\n        ↓\nReview the generated HTML\n        ↓\nCommit the changes with Git\n        ↓\nPush the commit to GitHub\n        ↓\nGitHub Pages updates the website"
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#files-and-folders-1",
+    "href": "weekly-notes/week-01.html#files-and-folders-1",
+    "title": "Week 1: Getting Set Up",
+    "section": "Files and Folders",
+    "text": "Files and Folders\nDifferent files in the project serve different purposes.\n\nFiles for the website\n\nindex.qmd is the homepage.\nabout.qmd is the About page.\nweekly-notes/ contains my weekly notes.\nassignments/ contains my assignments.\n\n\n\nFiles for the tools\n\n_quarto.yml contains settings for the entire Quarto website.\nfreeze/ stores rendered results so that some code does not need to run again.\n.Rproj identifies the project as an RStudio project.\n.gitignore tells Git which files it should ignore.\n.Renviron stores environment variables and private information such as API keys.\ndocs/ contains the HTML files generated by Quarto for publication.\n\nThe files I write are the source files. The files in docs/ are the rendered website."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#how-pages-become-website-urls-1",
+    "href": "weekly-notes/week-01.html#how-pages-become-website-urls-1",
+    "title": "Week 1: Getting Set Up",
+    "section": "How Pages Become Website URLs",
+    "text": "How Pages Become Website URLs\nThe homepage file is usually named index.qmd. When Quarto renders the website, it creates:\ndocs/index.html\nGitHub Pages then displays that file at the main website address.\nThe same pattern applies to folders:\nweekly-notes/index.qmd\n        ↓\ndocs/weekly-notes/index.html\n        ↓\nmyname.github.io/weekly-notes/\nThe index file acts as the default page for its folder."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#git-github-and-github-desktop-1",
+    "href": "weekly-notes/week-01.html#git-github-and-github-desktop-1",
+    "title": "Week 1: Getting Set Up",
+    "section": "Git, GitHub, and GitHub Desktop",
+    "text": "Git, GitHub, and GitHub Desktop\nThese three tools are related, but they are not the same thing.\n\nGit\nGit is a version-control system that runs on my computer. It records changes to files and allows me to save labelled snapshots of my work.\n\n\nGitHub.com\nGitHub.com is an online service that stores a copy of my project repository. It also makes the project accessible for collaboration and publishing.\n\n\nGitHub Desktop\nGitHub Desktop is a graphical interface for Git. It provides buttons for common Git actions.\nTwo important Git actions are:\n\nCommit: Save a labelled snapshot of changes on my computer.\nPush: Send those committed changes to GitHub.com.\n\nAfter I push changes, GitHub Pages can update the live version of my portfolio."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#r-scripts-and-quarto-documents-1",
+    "href": "weekly-notes/week-01.html#r-scripts-and-quarto-documents-1",
+    "title": "Week 1: Getting Set Up",
+    "section": "R Scripts and Quarto Documents",
+    "text": "R Scripts and Quarto Documents\nAn R script contains mainly R code:\nx &lt;- 10\nx + 5\nA Quarto document is more flexible. It can contain:\n\nWritten explanations\nHeadings\nLinks\nImages\nR code\nTables\nCharts\nCode results\n\nThis makes Quarto useful for documenting not only what I calculated, but also why I calculated it and what the results mean."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#my-mental-model-1",
+    "href": "weekly-notes/week-01.html#my-mental-model-1",
+    "title": "Week 1: Getting Set Up",
+    "section": "My Mental Model",
+    "text": "My Mental Model\nI now think of my portfolio as having three versions:\n\nMy computer: where I edit the source files\nGitHub.com: where Git stores and tracks the project\nMy live website: what visitors see in their browser\n\nThe complete process is:\nWrite or edit a .qmd file\n        ↓\nRender it with Quarto\n        ↓\nReview the generated HTML\n        ↓\nCommit the changes with Git\n        ↓\nPush the commit to GitHub\n        ↓\nGitHub Pages updates the website"
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#reflection-1",
+    "href": "weekly-notes/week-01.html#reflection-1",
+    "title": "Week 1: Getting Set Up",
+    "section": "Reflection",
+    "text": "Reflection\nThis week helped me understand that my portfolio is not created directly in the browser. I write source files in Quarto, render them into HTML, and then use GitHub Pages to publish the result. The most important idea for me was separating the source files from the finished website. I am still building confidence with the workflow, but I now have a clearer understanding of how R, Quarto, Git, GitHub, and GitHub Pages work together."
+  },
+  {
+    "objectID": "weekly-notes/week-01.html#questions-i-still-have-1",
+    "href": "weekly-notes/week-01.html#questions-i-still-have-1",
+    "title": "Week 1: Getting Set Up",
+    "section": "Questions I Still Have",
+    "text": "Questions I Still Have\n\nHow can I customize the visual design of my Quarto website?\nHow can I add interactive maps and visualizations?\nHow can I organize larger projects with many data files and code chunks?\n\n\n\n:::"
   }
 ]

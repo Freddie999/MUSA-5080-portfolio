@@ -6,8 +6,14 @@ title: "About Me"
 
 <!-- CHANGE THIS -->
 
-Write a few paragraphs about yourself here: where you came from before MUSA,
-what drew you to urban spatial analytics, and what you're hoping to do with it.
+I am a Ghanaian geospatial scientist and GIS team lead with a background in Geospatial Engineering. Before joining Penn’s Master of Urban Spatial Analytics program, I worked at Zipline International in Kigali, where I helped develop geospatial systems for autonomous medical drone delivery. This work involved terrain modeling, aerial imagery, route planning, and spatial data management across complex environments. It showed me how geospatial technology can have a direct human impact, from helping patients receive medical supplies on time to improving access to essential services.
+
+My interest in urban spatial analytics grew from seeing how invisible or incomplete spatial data can limit effective planning. Earlier in my career, I worked on mapping underserved communities and sanitation infrastructure, producing information that helped support improved sanitation for more than 3,000 communities. These experiences taught me that maps are not just technical products. They influence how resources are allocated, which communities receive attention, and how governments and organizations respond to urgent needs.
+
+At MUSA, I am strengthening my skills in statistics, programming, spatial modeling, data visualization, and urban systems. I am particularly interested in routing, mapping, geospatial software, and the spatial intelligence that supports technologies such as delivery platforms, autonomous vehicles, and self-driving systems. I hope to work with technology companies developing products that depend on accurate maps, efficient routing, and a strong understanding of the built environment.
+
+Across these interests, my central goal is to help create a more equitable society. Whether I am working on public infrastructure, medical delivery, transportation, or autonomous technology, I want to contribute to systems that are more accessible, reliable, and responsive to the needs of underserved communities.
+
 
 ## Skills
 
@@ -17,9 +23,14 @@ what drew you to urban spatial analytics, and what you're hoping to do with it.
 - **Spatial:** (add as you learn)
 - **Data:** US Census / ACS via `tidycensus`
 
-## Contact
+## Reachable at
 
 <!-- CHANGE THIS -->
 
-- Email: your-email@upenn.edu
-- GitHub: [@your-username](https://github.com/your-username)
+- Email: [fabalo@upenn.edu](mailto:fabalo@upenn.edu) / [frederick.abalo@icloud.com](mailto:frederick.abalo@icloud.com)
+- GitHub: [@freddie999](https://github.com/freddie999)
+- LinkedIn: [Frederick Abalo](https://www.linkedin.com/in/frederick-abalo)
+- Phone: [Call me](+12153978467) (215) 397 8467
+- WhatsApp: [Ping me!](https://wa.me/233248779393)
+
+
