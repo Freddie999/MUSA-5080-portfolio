@@ -1,7 +1,7 @@
 ---
 title: "Week 3: Visualizing Uncertainty and Change"
 description: "Using ggplot2, margins of error, and ACS data to study uncertainty over time."
-date: 2026-09-04
+date: 2026-09-11
 ---
 
 ## What We Covered
