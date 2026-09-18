@@ -2,29 +2,27 @@
 title: "Week 3: Visualizing Uncertainty and Change"
 description: "Using ggplot2, margins of error, and ACS data to study uncertainty over time."
 date: 2026-09-11
----
 
-## What We Covered
+execute:
+  eval: true
+  echo: false
+  warning: false
+  message: false
+---
 
 This week connected data visualization with uncertainty in American Community Survey estimates. We practiced using `ggplot2`, calculating margins of error for derived values, comparing ACS estimates across time, and creating reusable R functions.
 
-The examples below use New York county data and the ACS 2023 5-year survey. Most code chunks are marked `eval: false` so this study document can render without repeatedly downloading Census data. Remove that line when you want to run a chunk yourself.
+The examples use New York county data and the 2023 ACS 5-year survey. The charts are included in the rendered page, while the code is hidden.
 
 ## Setup
 
-Install packages only once:
+Install these packages once in the R console, not inside this document:
 
-```{r}
-#| eval: false
-
+```r
 install.packages(c("tidyverse", "tidycensus", "gt"))
 ```
 
-Load packages whenever you use them:
-
 ```{r}
-#| eval: false
-
 library(tidyverse)
 library(tidycensus)
 library(gt)
@@ -32,7 +30,7 @@ library(gt)
 
 ## The Grammar of Graphics
 
-`ggplot2` is based on the idea that a plot is created by connecting variables in a data frame to visual properties.
+`ggplot2` creates plots by mapping variables in a data frame to visual properties.
 
 | Data variable | Plot feature |
 |---|---|
@@ -41,18 +39,13 @@ library(gt)
 | Reliability | Color |
 | Margin of error | Size or error bars |
 
-This idea is called the **Grammar of Graphics**. A plot is built from separate parts that work together.
+This approach is called the **Grammar of Graphics**. A plot is built from separate parts that work together.
 
 ## Creating ACS Data
 
-The first step is to load the packages and download the data. `B17001_002` represents the number of people below 100% of the poverty level.
+`B17001_002` represents the number of people below 100% of the poverty level.
 
 ```{r}
-#| eval: false
-
-library(tidyverse)
-library(tidycensus)
-
 my_variable <- "B17001_002"
 my_state <- "NY"
 
@@ -65,31 +58,27 @@ county_data <- get_acs(
 )
 ```
 
-The returned data is in tidy, or long, format. Important columns include:
+Important columns include:
 
 - `GEOID`: geographic identifier
 - `NAME`: county name
 - `estimate`: Census estimate
 - `moe`: margin of error
 
-## Calculating a Relative Margin of Error
+## Relative Margin of Error
 
 To compare uncertainty across counties, calculate the margin of error as a percentage of the estimate:
 
 ```{r}
-#| eval: false
-
 county_data <- county_data %>%
   mutate(moe_pct = moe / estimate * 100)
 ```
 
-A county with an MOE of 500 may seem more uncertain than one with an MOE of 100, but that depends on the size of the estimates. The relative margin of error makes the comparison more meaningful.
+A relative margin of error is useful because the same absolute MOE can have different meanings for different-sized estimates.
 
-## Creating Reliability Categories
+## Reliability Categories
 
 ```{r}
-#| eval: false
-
 county_data <- county_data %>%
   mutate(
     reliability = case_when(
@@ -100,57 +89,24 @@ county_data <- county_data %>%
   )
 ```
 
-`case_when()` checks each condition from top to bottom. The first condition that is `TRUE` determines the category. `TRUE ~ "Low confidence"` catches all remaining values.
+`case_when()` checks conditions from top to bottom. The first condition that is `TRUE` determines the category. The final `TRUE` catches all remaining values.
 
-## The Basic Parts of a ggplot
+## Basic Scatterplot
 
-A basic plot usually contains:
-
-1. The data
-2. Aesthetic mappings
-3. A geometric object
+A basic `ggplot2` plot contains the data, aesthetic mappings, and a geometric object.
 
 ```{r}
-#| eval: false
-
 ggplot(county_data, aes(x = estimate, y = moe_pct)) +
   geom_point()
 ```
 
-The data frame must be named correctly. This is only a placeholder and will cause an error if no object named `data` exists:
-
-```{r}
-#| eval: false
-
-ggplot(data, aes(x = population, y = moe_pct)) +
-  geom_point()
-```
-
-Use the actual data frame and column names instead:
-
-```{r}
-#| eval: false
-
-ggplot(county_data, aes(x = estimate, y = moe_pct)) +
-  geom_point()
-```
-
-In the earlier wide population data, the equivalent plot would use `county_wide` and `popE`:
-
-```{r}
-#| eval: false
-
-ggplot(county_wide, aes(x = popE, y = moe_pct)) +
-  geom_point()
-```
+The first argument must be the name of an actual data frame. For example, `ggplot(data, ...)` would be incorrect here because `data` is only a placeholder.
 
 ## Mapping Versus Decorating
 
-If a visual property depends on a variable, place it inside `aes()`:
+When a visual property depends on a variable, put it inside `aes()`:
 
 ```{r}
-#| eval: false
-
 ggplot(county_data, aes(
   x = estimate,
   y = moe_pct,
@@ -159,23 +115,17 @@ ggplot(county_data, aes(
   geom_point()
 ```
 
-If every point should have one fixed color, place the color outside `aes()`:
+When every point should have the same color, put the color outside `aes()`:
 
 ```{r}
-#| eval: false
-
 ggplot(county_data, aes(x = estimate, y = moe_pct)) +
   geom_point(color = "blue")
 ```
-
-These two forms mean different things:
 
 ```r
 aes(color = reliability)       # maps a variable
 geom_point(color = "blue")     # sets one fixed color
 ```
-
-Writing `aes(color = "blue")` maps the constant text value `"blue"` to color. It is not the normal way to set a fixed color.
 
 ## Common Geometries
 
@@ -189,11 +139,9 @@ Writing `aes(color = "blue")` maps the constant text value `"blue"` to color. It
 
 ## Error Bars
 
-An error bar can show an estimate together with its margin of error:
+An error bar shows the estimate together with its margin of error:
 
 ```{r}
-#| eval: false
-
 county_data %>%
   ggplot(aes(x = NAME, y = estimate)) +
   geom_col() +
@@ -205,48 +153,17 @@ county_data %>%
   )
 ```
 
-This first version may be difficult to read because it includes every county. We can keep the 15 counties with the largest relative margins of error:
+The first `aes()` supplies mappings shared by the layers. The second `aes()` supplies the `ymin` and `ymax` mappings needed specifically by `geom_errorbar()`.
+
+The full chart is difficult to read, so we can keep the 15 counties with the largest relative margins of error:
 
 ```{r}
-#| eval: false
-
-county_data %>%
+top_15 <- county_data %>%
   arrange(desc(moe_pct)) %>%
   slice_head(n = 15) %>%
-  ggplot(aes(x = NAME, y = estimate)) +
-  geom_col() +
-  geom_errorbar(
-    aes(ymin = estimate - moe, ymax = estimate + moe)
-  )
-```
+  mutate(NAME = str_remove(NAME, " County, New York"))
 
-County names are easier to read when the chart is flipped:
-
-```{r}
-#| eval: false
-
-county_data %>%
-  arrange(desc(moe_pct)) %>%
-  slice_head(n = 15) %>%
-  ggplot(aes(x = NAME, y = estimate)) +
-  geom_col() +
-  geom_errorbar(
-    aes(ymin = estimate - moe, ymax = estimate + moe),
-    width = 0.3
-  ) +
-  coord_flip()
-```
-
-To order the bars by estimate rather than alphabetically, use `reorder()`:
-
-```{r}
-#| eval: false
-
-county_data %>%
-  arrange(desc(moe_pct)) %>%
-  mutate(NAME = str_remove(NAME, " County, New York")) %>%
-  slice_head(n = 15) %>%
-  ggplot(aes(x = reorder(NAME, estimate), y = estimate)) +
+ggplot(top_15, aes(x = reorder(NAME, estimate), y = estimate)) +
   geom_col(fill = "steelblue") +
   geom_errorbar(
     aes(ymin = estimate - moe, ymax = estimate + moe),
@@ -256,51 +173,31 @@ county_data %>%
   theme_minimal() +
   scale_y_continuous(labels = scales::comma) +
   labs(
-    title = "Counties with the largest margins of error",
+    title = "Counties with the Largest Margins of Error",
     subtitle = "People below 100% of the poverty level, ACS 2023 5-year estimates",
     x = NULL,
     y = "Population below poverty level"
   )
 ```
 
-## Facets and Small Multiple Plots
+## Facets and Themes
 
-A facet creates a separate panel for each category of a variable:
-
-```{r}
-#| eval: false
-
-ggplot(county_data, aes(x = estimate, y = moe_pct)) +
-  geom_point() +
-  facet_wrap(~reliability)
-```
-
-## Themes and Labels
-
-A theme changes the appearance of a plot. It does not change the data.
+A facet creates a separate panel for each category:
 
 ```{r}
-#| eval: false
-
 ggplot(county_data, aes(x = estimate, y = moe_pct)) +
   geom_point() +
-  theme_minimal() +
-  labs(
-    title = "Estimate and Relative Margin of Error",
-    x = "Estimate",
-    y = "Margin of error percentage"
-  )
+  facet_wrap(~reliability) +
+  theme_minimal()
 ```
+
+Themes change the appearance of a plot without changing the data.
 
 ## Derived Uncertainty
 
-When we calculate a new value from Census estimates, the new value also has uncertainty.
-
-For example, if we add the number of people below poverty across several counties, we need the margin of error for the combined estimate. We should not simply add the individual MOEs.
+When we calculate a new value from Census estimates, the new value also has uncertainty. We should not simply add individual margins of error when adding estimates.
 
 ```{r}
-#| eval: false
-
 region <- county_data %>%
   filter(NAME %in% c(
     "Hamilton County, New York",
@@ -309,43 +206,23 @@ region <- county_data %>%
   ))
 
 region_total <- sum(region$estimate)
-region_total_moe <- moe_sum(
-  region$moe,
-  region$estimate
-)
+region_total_moe <- moe_sum(region$moe, region$estimate)
 
 region_total
 region_total_moe
 ```
 
-The function is used as follows:
+The `tidycensus` functions for derived uncertainty are:
 
-```r
-moe_sum(moe, estimate)
-```
-
-The margin of error for the total is not found by adding the individual MOEs together.
-
-We can also calculate a margin of error for each reliability group:
-
-```{r}
-#| eval: false
-
-county_data %>%
-  group_by(reliability) %>%
-  summarize(
-    total = sum(estimate),
-    total_moe = moe_sum(moe, estimate)
-  )
-```
+- `moe_sum()` for adding estimates
+- `moe_prop()` for one estimate as a share of another
+- `moe_ratio()` for a ratio where the numerator is not a subset of the denominator
 
 ## Proportions and `moe_prop()`
 
 Suppose we want the proportion of people below poverty out of a total population. Both the numerator and denominator have estimates and margins of error.
 
 ```{r}
-#| eval: false
-
 poverty_share <- get_acs(
   geography = "county",
   variables = c(
@@ -370,17 +247,11 @@ poverty_share <- get_acs(
   )
 ```
 
-`moe_prop()` calculates the uncertainty for the proportion. If the proportion is multiplied by 100, its margin of error must also be multiplied by 100.
-
-Other useful functions include:
-
-- `moe_sum()` for adding estimates
-- `moe_prop()` for one estimate as a share of another
-- `moe_ratio()` for a ratio where the numerator is not a subset of the denominator
+If the proportion is multiplied by 100, its margin of error must also be multiplied by 100.
 
 ## Coefficient of Variation
 
-The coefficient of variation, or CV, measures the sampling error relative to the estimate:
+The coefficient of variation, or CV, measures sampling error relative to the estimate:
 
 $$
 CV = \frac{SE}{Estimate} \times 100
@@ -398,26 +269,24 @@ Therefore:
 cv = (moe / 1.645) / estimate * 100
 ```
 
-A lower CV means that the margin of error is small relative to the estimate. A higher CV means more sampling uncertainty.
+A lower CV means less uncertainty relative to the estimate. A higher CV means more sampling uncertainty.
 
 ## Change Over Time
 
-ACS 5-year estimates cover overlapping periods. For example:
+ACS 5-year estimates cover overlapping periods:
 
 - The 2022 ACS 5-year estimate covers 2018–2022
 - The 2023 ACS 5-year estimate covers 2019–2023
 
-These periods overlap by four years. For a cleaner comparison, use non-overlapping periods such as 2014–2018 and 2019–2023.
+For a cleaner comparison, use non-overlapping periods such as 2014–2018 and 2019–2023.
 
 When comparing income across time, adjust for inflation before interpreting the difference.
 
 ## Creating a Reusable Function
 
-An R function is a reusable set of instructions. This function takes a year as an argument, downloads the data for that year, and creates a period label.
+An R function is a reusable set of instructions. This function takes a year as an argument, downloads the data, and creates a period label.
 
 ```{r}
-#| eval: false
-
 get_poverty <- function(yr) {
   get_acs(
     geography = "county",
@@ -430,33 +299,27 @@ get_poverty <- function(yr) {
 }
 ```
 
-Defining the function does not run it. It creates a recipe that can be used later.
+The function does not run when it is defined. It creates a recipe that can be used later.
 
 ```{r}
-#| eval: false
-
 poverty_change <- bind_rows(
   get_poverty(2018),
   get_poverty(2023)
 )
 ```
 
-The 2018 data represents 2014–2018, and the 2023 data represents 2019–2023.
-
 ## Converting Long Data to Wide Data
 
-The data returned by the two function calls is long:
+The repeated ACS results are initially in long format:
 
 | County | Period | Estimate |
 |---|---|---:|
 | Albany County | 2014–2018 | 10,000 |
 | Albany County | 2019–2023 | 12,000 |
 
-We can convert it to wide format so the two periods appear in the same row:
+We can convert them to wide format so both periods appear in the same row:
 
 ```{r}
-#| eval: false
-
 poverty_wide <- poverty_change %>%
   select(GEOID, NAME, period, estimate, moe) %>%
   pivot_wider(
@@ -465,13 +328,9 @@ poverty_wide <- poverty_change %>%
   )
 ```
 
-Wide data is useful for comparing two periods because both estimates and both margins of error are side by side.
-
 ## Calculating Change and Its Uncertainty
 
 ```{r}
-#| eval: false
-
 poverty_tested <- poverty_wide %>%
   mutate(
     change = `estimate_2019-2023` - `estimate_2014-2018`,
@@ -484,24 +343,11 @@ poverty_tested <- poverty_wide %>%
   )
 ```
 
-The difference between two estimates also has uncertainty. We calculate the standard error of the difference, then use it to calculate a margin of error for the change.
-
-`abs(z) > 1.645` tests whether the change is statistically significant using a two-sided 90% confidence level.
-
-```{r}
-#| eval: false
-
-poverty_tested %>%
-  count(significant)
-```
-
-If `significant` is `FALSE`, the estimates may look different but the difference is not large enough to distinguish from sampling variation at the selected confidence level.
+The difference between two estimates also has uncertainty. We calculate the standard error of the difference and use it to calculate a margin of error for the change.
 
 ## Visualizing Significant Change
 
 ```{r}
-#| eval: false
-
 poverty_tested %>%
   filter(significant) %>%
   mutate(NAME = str_remove(NAME, " County, New York")) %>%
@@ -522,15 +368,9 @@ poverty_tested %>%
   )
 ```
 
-The horizontal line at zero helps us see whether the change is positive or negative.
-
 ## Creating a Reliability Table
 
-The `gt` package can create a formatted table with reliability indicators.
-
 ```{r}
-#| eval: false
-
 reliability_table <- county_data %>%
   mutate(
     cv = (moe / 1.645) / estimate * 100,
@@ -548,10 +388,6 @@ reliability_table <- county_data %>%
   ) %>%
   arrange(desc(cv)) %>%
   select(dot, NAME, estimate, moe, cv, flag)
-```
-
-```{r}
-#| eval: false
 
 reliability_table %>%
   gt() %>%

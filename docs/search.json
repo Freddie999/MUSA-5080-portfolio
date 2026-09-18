@@ -340,7 +340,7 @@
     "href": "assignments/index.html",
     "title": "Assignments",
     "section": "",
-    "text": "Completed assignments for MUSA 5080. New assignments appear here automatically once you add the .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nAssignment 2: Who Do We Know the Least About?\n\n\n\n\n\n\n\n\nSep 17, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Completed assignments for MUSA 5080. New assignments appear here automatically once you add the .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nAssignment 2: Who Do We Know the Least About?\n\n\n\n\n\n\n\n\nSep 18, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -375,70 +375,63 @@
     "href": "weekly-notes/index.html",
     "title": "Weekly Notes",
     "section": "",
-    "text": "Notes from each week of MUSA 5080. New entries appear here automatically — add a .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nWeek 2: dplyr and Census\n\n\ntable functions and acs data\n\n\n\n\n\nSep 4, 2026\n\n\n\n\n\n\n\nWeek 3: Visualizing Uncertainty and Change\n\n\nUsing ggplot2, margins of error, and ACS data to study uncertainty over time.\n\n\n\n\n\nSep 4, 2026\n\n\n\n\n\n\n\nWeek 1: Getting Set Up\n\n\nUnderstanding websites, Quarto, R, and GitHub Pages.\n\n\n\n\n\nAug 28, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Notes from each week of MUSA 5080. New entries appear here automatically — add a .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nWeek 3: Visualizing Uncertainty and Change\n\n\nUsing ggplot2, margins of error, and ACS data to study uncertainty over time.\n\n\n\n\n\nSep 11, 2026\n\n\n\n\n\n\n\nWeek 2: dplyr and Census\n\n\ntable functions and acs data\n\n\n\n\n\nSep 4, 2026\n\n\n\n\n\n\n\nWeek 1: Getting Set Up\n\n\nUnderstanding websites, Quarto, R, and GitHub Pages.\n\n\n\n\n\nAug 28, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "weekly-notes/week-03.html",
     "href": "weekly-notes/week-03.html",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "",
-    "text": "This week connected data visualization with uncertainty in American Community Survey estimates. We practiced using ggplot2, calculating margins of error for derived values, comparing ACS estimates across time, and creating reusable R functions.\nThe examples below use New York county data and the ACS 2023 5-year survey. Most code chunks are marked eval: false so this study document can render without repeatedly downloading Census data. Remove that line when you want to run a chunk yourself."
-  },
-  {
-    "objectID": "weekly-notes/week-03.html#what-we-covered",
-    "href": "weekly-notes/week-03.html#what-we-covered",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "",
-    "text": "This week connected data visualization with uncertainty in American Community Survey estimates. We practiced using ggplot2, calculating margins of error for derived values, comparing ACS estimates across time, and creating reusable R functions.\nThe examples below use New York county data and the ACS 2023 5-year survey. Most code chunks are marked eval: false so this study document can render without repeatedly downloading Census data. Remove that line when you want to run a chunk yourself."
-  },
-  {
-    "objectID": "weekly-notes/week-03.html#the-grammar-of-graphics",
-    "href": "weekly-notes/week-03.html#the-grammar-of-graphics",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "The Grammar of Graphics",
-    "text": "The Grammar of Graphics\nggplot2 is based on the idea that a plot is created by connecting variables in a data frame to visual properties.\n\n\n\nData variable\nPlot feature\n\n\n\n\nEstimate\nPosition on an axis\n\n\nPopulation\nPosition on an axis\n\n\nReliability\nColor\n\n\nMargin of error\nSize or error bars\n\n\n\nThis idea is called the Grammar of Graphics. A plot is built from separate parts that work together."
+    "text": "This week connected data visualization with uncertainty in American Community Survey estimates. We practiced using ggplot2, calculating margins of error for derived values, comparing ACS estimates across time, and creating reusable R functions.\nThe examples use New York county data and the 2023 ACS 5-year survey. The charts are included in the rendered page, while the code is hidden."
   },
   {
     "objectID": "weekly-notes/week-03.html#setup",
     "href": "weekly-notes/week-03.html#setup",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Setup",
-    "text": "Setup\nInstall packages only once:\n\ninstall.packages(c(\"tidyverse\", \"tidycensus\", \"gt\"))\n\nLoad packages whenever you use them:\n\nlibrary(tidyverse)\nlibrary(tidycensus)\nlibrary(gt)"
+    "text": "Setup\nInstall these packages once in the R console, not inside this document:\ninstall.packages(c(\"tidyverse\", \"tidycensus\", \"gt\"))"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#the-grammar-of-graphics",
+    "href": "weekly-notes/week-03.html#the-grammar-of-graphics",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "The Grammar of Graphics",
+    "text": "The Grammar of Graphics\nggplot2 creates plots by mapping variables in a data frame to visual properties.\n\n\n\nData variable\nPlot feature\n\n\n\n\nEstimate\nPosition on an axis\n\n\nPopulation\nPosition on an axis\n\n\nReliability\nColor\n\n\nMargin of error\nSize or error bars\n\n\n\nThis approach is called the Grammar of Graphics. A plot is built from separate parts that work together."
   },
   {
     "objectID": "weekly-notes/week-03.html#creating-acs-data",
     "href": "weekly-notes/week-03.html#creating-acs-data",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Creating ACS Data",
-    "text": "Creating ACS Data\nThe first step is to load the packages and download the data. B17001_002 represents the number of people below 100% of the poverty level.\n\nlibrary(tidyverse)\nlibrary(tidycensus)\n\nmy_variable &lt;- \"B17001_002\"\nmy_state &lt;- \"NY\"\n\ncounty_data &lt;- get_acs(\n  geography = \"county\",\n  variables = my_variable,\n  state = my_state,\n  year = 2023,\n  survey = \"acs5\"\n)\n\nThe returned data is in tidy, or long, format. Important columns include:\n\nGEOID: geographic identifier\nNAME: county name\nestimate: Census estimate\nmoe: margin of error"
+    "text": "Creating ACS Data\nB17001_002 represents the number of people below 100% of the poverty level.\nImportant columns include:\n\nGEOID: geographic identifier\nNAME: county name\nestimate: Census estimate\nmoe: margin of error"
   },
   {
-    "objectID": "weekly-notes/week-03.html#calculating-a-relative-margin-of-error",
-    "href": "weekly-notes/week-03.html#calculating-a-relative-margin-of-error",
+    "objectID": "weekly-notes/week-03.html#relative-margin-of-error",
+    "href": "weekly-notes/week-03.html#relative-margin-of-error",
     "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Calculating a Relative Margin of Error",
-    "text": "Calculating a Relative Margin of Error\nTo compare uncertainty across counties, calculate the margin of error as a percentage of the estimate:\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(moe_pct = moe / estimate * 100)\n\nA county with an MOE of 500 may seem more uncertain than one with an MOE of 100, but that depends on the size of the estimates. The relative margin of error makes the comparison more meaningful."
+    "section": "Relative Margin of Error",
+    "text": "Relative Margin of Error\nTo compare uncertainty across counties, calculate the margin of error as a percentage of the estimate:\nA relative margin of error is useful because the same absolute MOE can have different meanings for different-sized estimates."
   },
   {
-    "objectID": "weekly-notes/week-03.html#creating-reliability-categories",
-    "href": "weekly-notes/week-03.html#creating-reliability-categories",
+    "objectID": "weekly-notes/week-03.html#reliability-categories",
+    "href": "weekly-notes/week-03.html#reliability-categories",
     "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Creating Reliability Categories",
-    "text": "Creating Reliability Categories\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(\n    reliability = case_when(\n      moe_pct &lt; 5  ~ \"High confidence\",\n      moe_pct &lt; 10 ~ \"Moderate\",\n      TRUE         ~ \"Low confidence\"\n    )\n  )\n\ncase_when() checks each condition from top to bottom. The first condition that is TRUE determines the category. TRUE ~ \"Low confidence\" catches all remaining values."
+    "section": "Reliability Categories",
+    "text": "Reliability Categories\ncase_when() checks conditions from top to bottom. The first condition that is TRUE determines the category. The final TRUE catches all remaining values."
   },
   {
-    "objectID": "weekly-notes/week-03.html#the-basic-parts-of-a-ggplot",
-    "href": "weekly-notes/week-03.html#the-basic-parts-of-a-ggplot",
+    "objectID": "weekly-notes/week-03.html#basic-scatterplot",
+    "href": "weekly-notes/week-03.html#basic-scatterplot",
     "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "The Basic Parts of a ggplot",
-    "text": "The Basic Parts of a ggplot\nA basic plot usually contains:\n\nThe data\nAesthetic mappings\nA geometric object\n\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point()\n\nThe data frame must be named correctly. This is only a placeholder and will cause an error if no object named data exists:\n\nggplot(data, aes(x = population, y = moe_pct)) +\n  geom_point()\n\nUse the actual data frame and column names instead:\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point()\n\nIn the earlier wide population data, the equivalent plot would use county_wide and popE:\n\nggplot(county_wide, aes(x = popE, y = moe_pct)) +\n  geom_point()"
+    "section": "Basic Scatterplot",
+    "text": "Basic Scatterplot\nA basic ggplot2 plot contains the data, aesthetic mappings, and a geometric object.\n\n\n\n\n\n\n\n\n\nThe first argument must be the name of an actual data frame. For example, ggplot(data, ...) would be incorrect here because data is only a placeholder."
   },
   {
     "objectID": "weekly-notes/week-03.html#mapping-versus-decorating",
     "href": "weekly-notes/week-03.html#mapping-versus-decorating",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Mapping Versus Decorating",
-    "text": "Mapping Versus Decorating\nIf a visual property depends on a variable, place it inside aes():\n\nggplot(county_data, aes(\n  x = estimate,\n  y = moe_pct,\n  color = reliability\n)) +\n  geom_point()\n\nIf every point should have one fixed color, place the color outside aes():\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point(color = \"blue\")\n\nThese two forms mean different things:\naes(color = reliability)       # maps a variable\ngeom_point(color = \"blue\")     # sets one fixed color\nWriting aes(color = \"blue\") maps the constant text value \"blue\" to color. It is not the normal way to set a fixed color."
+    "text": "Mapping Versus Decorating\nWhen a visual property depends on a variable, put it inside aes():\n\n\n\n\n\n\n\n\n\nWhen every point should have the same color, put the color outside aes():\n\n\n\n\n\n\n\n\n\naes(color = reliability)       # maps a variable\ngeom_point(color = \"blue\")     # sets one fixed color"
   },
   {
     "objectID": "weekly-notes/week-03.html#common-geometries",
@@ -452,84 +445,77 @@
     "href": "weekly-notes/week-03.html#error-bars",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Error Bars",
-    "text": "Error Bars\nAn error bar can show an estimate together with its margin of error:\n\ncounty_data %&gt;%\n  ggplot(aes(x = NAME, y = estimate)) +\n  geom_col() +\n  geom_errorbar(\n    aes(\n      ymin = estimate - moe,\n      ymax = estimate + moe\n    )\n  )\n\nThis first version may be difficult to read because it includes every county. We can keep the 15 counties with the largest relative margins of error:\n\ncounty_data %&gt;%\n  arrange(desc(moe_pct)) %&gt;%\n  slice_head(n = 15) %&gt;%\n  ggplot(aes(x = NAME, y = estimate)) +\n  geom_col() +\n  geom_errorbar(\n    aes(ymin = estimate - moe, ymax = estimate + moe)\n  )\n\nCounty names are easier to read when the chart is flipped:\n\ncounty_data %&gt;%\n  arrange(desc(moe_pct)) %&gt;%\n  slice_head(n = 15) %&gt;%\n  ggplot(aes(x = NAME, y = estimate)) +\n  geom_col() +\n  geom_errorbar(\n    aes(ymin = estimate - moe, ymax = estimate + moe),\n    width = 0.3\n  ) +\n  coord_flip()\n\nTo order the bars by estimate rather than alphabetically, use reorder():\n\ncounty_data %&gt;%\n  arrange(desc(moe_pct)) %&gt;%\n  mutate(NAME = str_remove(NAME, \" County, New York\")) %&gt;%\n  slice_head(n = 15) %&gt;%\n  ggplot(aes(x = reorder(NAME, estimate), y = estimate)) +\n  geom_col(fill = \"steelblue\") +\n  geom_errorbar(\n    aes(ymin = estimate - moe, ymax = estimate + moe),\n    width = 0.3\n  ) +\n  coord_flip() +\n  theme_minimal() +\n  scale_y_continuous(labels = scales::comma) +\n  labs(\n    title = \"Counties with the largest margins of error\",\n    subtitle = \"People below 100% of the poverty level, ACS 2023 5-year estimates\",\n    x = NULL,\n    y = \"Population below poverty level\"\n  )"
+    "text": "Error Bars\nAn error bar shows the estimate together with its margin of error:\n\n\n\n\n\n\n\n\n\nThe first aes() supplies mappings shared by the layers. The second aes() supplies the ymin and ymax mappings needed specifically by geom_errorbar().\nThe full chart is difficult to read, so we can keep the 15 counties with the largest relative margins of error:"
   },
   {
-    "objectID": "weekly-notes/week-03.html#facets-and-small-multiple-plots",
-    "href": "weekly-notes/week-03.html#facets-and-small-multiple-plots",
+    "objectID": "weekly-notes/week-03.html#facets-and-themes",
+    "href": "weekly-notes/week-03.html#facets-and-themes",
     "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Facets and Small Multiple Plots",
-    "text": "Facets and Small Multiple Plots\nA facet creates a separate panel for each category of a variable:\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point() +\n  facet_wrap(~reliability)"
-  },
-  {
-    "objectID": "weekly-notes/week-03.html#themes-and-labels",
-    "href": "weekly-notes/week-03.html#themes-and-labels",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Themes and Labels",
-    "text": "Themes and Labels\nA theme changes the appearance of a plot. It does not change the data.\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point() +\n  theme_minimal() +\n  labs(\n    title = \"Estimate and Relative Margin of Error\",\n    x = \"Estimate\",\n    y = \"Margin of error percentage\"\n  )"
+    "section": "Facets and Themes",
+    "text": "Facets and Themes\nA facet creates a separate panel for each category:\n\n\n\n\n\n\n\n\n\nThemes change the appearance of a plot without changing the data."
   },
   {
     "objectID": "weekly-notes/week-03.html#derived-uncertainty",
     "href": "weekly-notes/week-03.html#derived-uncertainty",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Derived Uncertainty",
-    "text": "Derived Uncertainty\nWhen we calculate a new value from Census estimates, the new value also has uncertainty.\nFor example, if we add the number of people below poverty across several counties, we need the margin of error for the combined estimate. We should not simply add the individual MOEs.\n\nregion &lt;- county_data %&gt;%\n  filter(NAME %in% c(\n    \"Hamilton County, New York\",\n    \"Essex County, New York\",\n    \"Greene County, New York\"\n  ))\n\nregion_total &lt;- sum(region$estimate)\nregion_total_moe &lt;- moe_sum(\n  region$moe,\n  region$estimate\n)\n\nregion_total\nregion_total_moe\n\nThe function is used as follows:\nmoe_sum(moe, estimate)\nThe margin of error for the total is not found by adding the individual MOEs together.\nWe can also calculate a margin of error for each reliability group:\n\ncounty_data %&gt;%\n  group_by(reliability) %&gt;%\n  summarize(\n    total = sum(estimate),\n    total_moe = moe_sum(moe, estimate)\n  )"
+    "text": "Derived Uncertainty\nWhen we calculate a new value from Census estimates, the new value also has uncertainty. We should not simply add individual margins of error when adding estimates.\n\n\n[1] 9594\n\n\n[1] 889.1648\n\n\nThe tidycensus functions for derived uncertainty are:\n\nmoe_sum() for adding estimates\nmoe_prop() for one estimate as a share of another\nmoe_ratio() for a ratio where the numerator is not a subset of the denominator"
   },
   {
     "objectID": "weekly-notes/week-03.html#proportions-and-moe_prop",
     "href": "weekly-notes/week-03.html#proportions-and-moe_prop",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Proportions and moe_prop()",
-    "text": "Proportions and moe_prop()\nSuppose we want the proportion of people below poverty out of a total population. Both the numerator and denominator have estimates and margins of error.\n\npoverty_share &lt;- get_acs(\n  geography = \"county\",\n  variables = c(\n    below_poverty = \"B07012_002\",\n    total = \"B07012_001\"\n  ),\n  state = \"NY\",\n  year = 2023,\n  survey = \"acs5\",\n  output = \"wide\"\n) %&gt;%\n  mutate(\n    share = below_povertyE / totalE,\n    share_moe = moe_prop(\n      below_povertyE,\n      totalE,\n      below_povertyM,\n      totalM\n    ),\n    share_pct = share * 100,\n    share_moe_pct = share_moe * 100\n  )\n\nmoe_prop() calculates the uncertainty for the proportion. If the proportion is multiplied by 100, its margin of error must also be multiplied by 100.\nOther useful functions include:\n\nmoe_sum() for adding estimates\nmoe_prop() for one estimate as a share of another\nmoe_ratio() for a ratio where the numerator is not a subset of the denominator"
+    "text": "Proportions and moe_prop()\nSuppose we want the proportion of people below poverty out of a total population. Both the numerator and denominator have estimates and margins of error.\nIf the proportion is multiplied by 100, its margin of error must also be multiplied by 100."
   },
   {
     "objectID": "weekly-notes/week-03.html#coefficient-of-variation",
     "href": "weekly-notes/week-03.html#coefficient-of-variation",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Coefficient of Variation",
-    "text": "Coefficient of Variation\nThe coefficient of variation, or CV, measures the sampling error relative to the estimate:\n\\[\nCV = \\frac{SE}{Estimate} \\times 100\n\\]\nBecause the ACS generally uses a 90% margin of error:\n\\[\nSE = \\frac{MOE}{1.645}\n\\]\nTherefore:\ncv = (moe / 1.645) / estimate * 100\nA lower CV means that the margin of error is small relative to the estimate. A higher CV means more sampling uncertainty."
+    "text": "Coefficient of Variation\nThe coefficient of variation, or CV, measures sampling error relative to the estimate:\n\\[\nCV = \\frac{SE}{Estimate} \\times 100\n\\]\nBecause the ACS generally uses a 90% margin of error:\n\\[\nSE = \\frac{MOE}{1.645}\n\\]\nTherefore:\ncv = (moe / 1.645) / estimate * 100\nA lower CV means less uncertainty relative to the estimate. A higher CV means more sampling uncertainty."
   },
   {
     "objectID": "weekly-notes/week-03.html#change-over-time",
     "href": "weekly-notes/week-03.html#change-over-time",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Change Over Time",
-    "text": "Change Over Time\nACS 5-year estimates cover overlapping periods. For example:\n\nThe 2022 ACS 5-year estimate covers 2018–2022\nThe 2023 ACS 5-year estimate covers 2019–2023\n\nThese periods overlap by four years. For a cleaner comparison, use non-overlapping periods such as 2014–2018 and 2019–2023.\nWhen comparing income across time, adjust for inflation before interpreting the difference."
+    "text": "Change Over Time\nACS 5-year estimates cover overlapping periods:\n\nThe 2022 ACS 5-year estimate covers 2018–2022\nThe 2023 ACS 5-year estimate covers 2019–2023\n\nFor a cleaner comparison, use non-overlapping periods such as 2014–2018 and 2019–2023.\nWhen comparing income across time, adjust for inflation before interpreting the difference."
   },
   {
     "objectID": "weekly-notes/week-03.html#creating-a-reusable-function",
     "href": "weekly-notes/week-03.html#creating-a-reusable-function",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Creating a Reusable Function",
-    "text": "Creating a Reusable Function\nAn R function is a reusable set of instructions. This function takes a year as an argument, downloads the data for that year, and creates a period label.\n\nget_poverty &lt;- function(yr) {\n  get_acs(\n    geography = \"county\",\n    variables = \"B07012_002\",\n    state = \"NY\",\n    year = yr,\n    survey = \"acs5\"\n  ) %&gt;%\n    mutate(period = paste0(yr - 4, \"-\", yr))\n}\n\nDefining the function does not run it. It creates a recipe that can be used later.\n\npoverty_change &lt;- bind_rows(\n  get_poverty(2018),\n  get_poverty(2023)\n)\n\nThe 2018 data represents 2014–2018, and the 2023 data represents 2019–2023."
+    "text": "Creating a Reusable Function\nAn R function is a reusable set of instructions. This function takes a year as an argument, downloads the data, and creates a period label.\nThe function does not run when it is defined. It creates a recipe that can be used later."
   },
   {
     "objectID": "weekly-notes/week-03.html#converting-long-data-to-wide-data",
     "href": "weekly-notes/week-03.html#converting-long-data-to-wide-data",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Converting Long Data to Wide Data",
-    "text": "Converting Long Data to Wide Data\nThe data returned by the two function calls is long:\n\n\n\nCounty\nPeriod\nEstimate\n\n\n\n\nAlbany County\n2014–2018\n10,000\n\n\nAlbany County\n2019–2023\n12,000\n\n\n\nWe can convert it to wide format so the two periods appear in the same row:\n\npoverty_wide &lt;- poverty_change %&gt;%\n  select(GEOID, NAME, period, estimate, moe) %&gt;%\n  pivot_wider(\n    names_from = period,\n    values_from = c(estimate, moe)\n  )\n\nWide data is useful for comparing two periods because both estimates and both margins of error are side by side."
+    "text": "Converting Long Data to Wide Data\nThe repeated ACS results are initially in long format:\n\n\n\nCounty\nPeriod\nEstimate\n\n\n\n\nAlbany County\n2014–2018\n10,000\n\n\nAlbany County\n2019–2023\n12,000\n\n\n\nWe can convert them to wide format so both periods appear in the same row:"
   },
   {
     "objectID": "weekly-notes/week-03.html#calculating-change-and-its-uncertainty",
     "href": "weekly-notes/week-03.html#calculating-change-and-its-uncertainty",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Calculating Change and Its Uncertainty",
-    "text": "Calculating Change and Its Uncertainty\n\npoverty_tested &lt;- poverty_wide %&gt;%\n  mutate(\n    change = `estimate_2019-2023` - `estimate_2014-2018`,\n    se_1 = `moe_2014-2018` / 1.645,\n    se_2 = `moe_2019-2023` / 1.645,\n    se_diff = sqrt(se_1^2 + se_2^2),\n    moe_diff = se_diff * 1.645,\n    z = change / se_diff,\n    significant = abs(z) &gt; 1.645\n  )\n\nThe difference between two estimates also has uncertainty. We calculate the standard error of the difference, then use it to calculate a margin of error for the change.\nabs(z) &gt; 1.645 tests whether the change is statistically significant using a two-sided 90% confidence level.\n\npoverty_tested %&gt;%\n  count(significant)\n\nIf significant is FALSE, the estimates may look different but the difference is not large enough to distinguish from sampling variation at the selected confidence level."
+    "text": "Calculating Change and Its Uncertainty\nThe difference between two estimates also has uncertainty. We calculate the standard error of the difference and use it to calculate a margin of error for the change."
   },
   {
     "objectID": "weekly-notes/week-03.html#visualizing-significant-change",
     "href": "weekly-notes/week-03.html#visualizing-significant-change",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Visualizing Significant Change",
-    "text": "Visualizing Significant Change\n\npoverty_tested %&gt;%\n  filter(significant) %&gt;%\n  mutate(NAME = str_remove(NAME, \" County, New York\")) %&gt;%\n  ggplot(aes(x = reorder(NAME, change), y = change)) +\n  geom_col(aes(fill = change &gt; 0)) +\n  geom_errorbar(\n    aes(ymin = change - moe_diff, ymax = change + moe_diff),\n    width = 0.3\n  ) +\n  geom_hline(yintercept = 0, linetype = \"dashed\") +\n  coord_flip() +\n  theme_minimal() +\n  labs(\n    title = \"Statistically Significant Change in Poverty Count\",\n    subtitle = \"2014–2018 versus 2019–2023, ACS 5-year estimates\",\n    x = NULL,\n    y = \"Change in people below poverty level\"\n  )\n\nThe horizontal line at zero helps us see whether the change is positive or negative."
+    "text": "Visualizing Significant Change"
   },
   {
     "objectID": "weekly-notes/week-03.html#creating-a-reliability-table",
     "href": "weekly-notes/week-03.html#creating-a-reliability-table",
     "title": "Week 3: Visualizing Uncertainty and Change",
     "section": "Creating a Reliability Table",
-    "text": "Creating a Reliability Table\nThe gt package can create a formatted table with reliability indicators.\n\nreliability_table &lt;- county_data %&gt;%\n  mutate(\n    cv = (moe / 1.645) / estimate * 100,\n    dot = case_when(\n      cv &lt; 12  ~ \"🟢\",\n      cv &lt;= 40 ~ \"🟡\",\n      TRUE     ~ \"🔴\"\n    ),\n    flag = case_when(\n      cv &lt; 12  ~ \"Reliable\",\n      cv &lt;= 40 ~ \"Somewhat reliable\",\n      TRUE     ~ \"Unreliable\"\n    ),\n    NAME = str_remove(NAME, \" County, New York\")\n  ) %&gt;%\n  arrange(desc(cv)) %&gt;%\n  select(dot, NAME, estimate, moe, cv, flag)\n\n\nreliability_table %&gt;%\n  gt() %&gt;%\n  fmt_number(columns = c(estimate, moe), decimals = 0) %&gt;%\n  fmt_number(columns = cv, decimals = 1) %&gt;%\n  cols_label(\n    dot = \"\",\n    NAME = \"County\",\n    estimate = \"Estimate\",\n    moe = \"MOE\",\n    cv = \"CV (%)\",\n    flag = \"Reliability\"\n  ) %&gt;%\n  cols_align(align = \"center\", columns = dot) %&gt;%\n  tab_header(\n    title = \"Population below 100% of the poverty level\",\n    subtitle = \"New York counties, ACS 2023 5-year estimates\"\n  ) %&gt;%\n  tab_source_note(\n    \"Reliability thresholds: CV &lt; 12% reliable, 12–40% somewhat reliable, and &gt; 40% unreliable.\"\n  )"
+    "text": "Creating a Reliability Table\n\n\n\n\n\n\n\n\nPopulation below 100% of the poverty level\n\n\nNew York counties, ACS 2023 5-year estimates\n\n\n\nCounty\nEstimate\nMOE\nCV (%)\nReliability\n\n\n\n\n🟡\nHamilton\n506\n141\n16.9\nSomewhat reliable\n\n\n🟢\nWashington\n6,304\n985\n9.5\nReliable\n\n\n🟢\nSchuyler\n2,663\n396\n9.0\nReliable\n\n\n🟢\nGreene\n4,945\n723\n8.9\nReliable\n\n\n🟢\nOrleans\n4,948\n701\n8.6\nReliable\n\n\n🟢\nWarren\n5,910\n821\n8.4\nReliable\n\n\n🟢\nSeneca\n4,167\n550\n8.0\nReliable\n\n\n🟢\nFulton\n7,532\n992\n8.0\nReliable\n\n\n🟢\nWyoming\n3,968\n520\n8.0\nReliable\n\n\n🟢\nCortland\n5,494\n717\n7.9\nReliable\n\n\n🟢\nDelaware\n6,317\n814\n7.8\nReliable\n\n\n🟢\nMontgomery\n7,163\n916\n7.8\nReliable\n\n\n🟢\nYates\n3,318\n420\n7.7\nReliable\n\n\n🟢\nTioga\n5,810\n727\n7.6\nReliable\n\n\n🟢\nFranklin\n7,179\n893\n7.6\nReliable\n\n\n🟢\nWayne\n10,174\n1,223\n7.3\nReliable\n\n\n🟢\nEssex\n4,143\n498\n7.3\nReliable\n\n\n🟢\nColumbia\n6,818\n816\n7.3\nReliable\n\n\n🟢\nGenesee\n6,018\n719\n7.3\nReliable\n\n\n🟢\nLewis\n3,230\n385\n7.2\nReliable\n\n\n🟢\nSchoharie\n3,106\n356\n7.0\nReliable\n\n\n🟢\nOntario\n9,961\n1,135\n6.9\nReliable\n\n\n🟢\nOtsego\n7,741\n879\n6.9\nReliable\n\n\n🟢\nSaratoga\n15,723\n1,777\n6.9\nReliable\n\n\n🟢\nLivingston\n6,606\n742\n6.8\nReliable\n\n\n🟢\nSullivan\n11,547\n1,269\n6.7\nReliable\n\n\n🟢\nPutnam\n6,331\n689\n6.6\nReliable\n\n\n🟢\nHerkimer\n7,826\n822\n6.4\nReliable\n\n\n🟢\nChenango\n5,597\n585\n6.4\nReliable\n\n\n🟢\nMadison\n6,033\n626\n6.3\nReliable\n\n\n🟢\nJefferson\n14,832\n1,454\n6.0\nReliable\n\n\n🟢\nCayuga\n9,914\n940\n5.8\nReliable\n\n\n🟢\nAllegany\n7,095\n659\n5.6\nReliable\n\n\n🟢\nSchenectady\n19,384\n1,737\n5.4\nReliable\n\n\n🟢\nChemung\n12,500\n1,098\n5.3\nReliable\n\n\n🟢\nSt. Lawrence\n16,924\n1,478\n5.3\nReliable\n\n\n🟢\nTompkins\n13,547\n1,167\n5.2\nReliable\n\n\n🟢\nOswego\n18,598\n1,581\n5.2\nReliable\n\n\n🟢\nClinton\n10,097\n818\n4.9\nReliable\n\n\n🟢\nSteuben\n12,537\n996\n4.8\nReliable\n\n\n🟢\nOrange\n51,238\n3,880\n4.6\nReliable\n\n\n🟢\nCattaraugus\n13,039\n974\n4.5\nReliable\n\n\n🟢\nChautauqua\n20,703\n1,460\n4.3\nReliable\n\n\n🟢\nNiagara\n27,014\n1,889\n4.3\nReliable\n\n\n🟢\nUlster\n25,084\n1,687\n4.1\nReliable\n\n\n🟢\nRockland\n51,969\n3,490\n4.1\nReliable\n\n\n🟢\nRensselaer\n18,177\n1,219\n4.1\nReliable\n\n\n🟢\nDutchess\n23,328\n1,536\n4.0\nReliable\n\n\n🟢\nRichmond\n53,177\n3,358\n3.8\nReliable\n\n\n🟢\nOneida\n32,026\n1,979\n3.8\nReliable\n\n\n🟢\nNassau\n72,719\n4,365\n3.6\nReliable\n\n\n🟢\nBroome\n35,448\n1,909\n3.3\nReliable\n\n\n🟢\nAlbany\n38,700\n2,076\n3.3\nReliable\n\n\n🟢\nWestchester\n86,670\n4,053\n2.8\nReliable\n\n\n🟢\nOnondaga\n62,884\n2,721\n2.6\nReliable\n\n\n🟢\nMonroe\n95,297\n3,815\n2.4\nReliable\n\n\n🟢\nSuffolk\n95,543\n3,570\n2.3\nReliable\n\n\n🟢\nErie\n130,009\n4,402\n2.1\nReliable\n\n\n🟢\nNew York\n250,056\n8,449\n2.1\nReliable\n\n\n🟢\nBronx\n374,138\n9,301\n1.5\nReliable\n\n\n🟢\nQueens\n282,195\n6,988\n1.5\nReliable\n\n\n🟢\nKings\n494,754\n9,477\n1.2\nReliable\n\n\n\nReliability thresholds: CV &lt; 12% reliable, 12–40% somewhat reliable, and &gt; 40% unreliable."
   },
   {
     "objectID": "weekly-notes/week-03.html#key-lessons",
