@@ -1,0 +1,515 @@
+---
+title: "Week 3: Visualizing Uncertainty and Change"
+description: "Using ggplot2, margins of error, and ACS data to study uncertainty over time."
+date: 2026-09-04
+---
+
+## What We Covered
+
+This week focused on:
+
+- Creating plots with `ggplot2`
+- Measuring uncertainty in ACS estimates
+- Calculating uncertainty for derived values
+- Comparing ACS estimates across time
+- Writing reusable R functions
+- Presenting results clearly in tables and figures
+
+## The Grammar of Graphics
+
+`ggplot2` is based on the idea that a plot is created by connecting variables in a data frame to visual properties.
+
+| Data variable | Plot feature |
+|---|---|
+| Estimate | Position on an axis |
+| Population | Position on an axis |
+| Reliability | Color |
+| Margin of error | Size or error bars |
+
+This idea is called the **Grammar of Graphics**. A plot is built from separate parts that work together.
+
+## The Basic Parts of a ggplot
+
+A basic plot usually contains:
+
+1. Data
+2. Aesthetic mappings
+3. A geometric object
+
+```{r}
+#| eval: false
+
+ggplot(county_wide, aes(x = popE, y = moe_pct)) +
+  geom_point()
+```
+
+`ggplot(county_wide)` creates the plotting canvas using `county_wide`.
+
+`aes()` maps variables from the data to visual properties.
+
+`geom_point()` tells R to display the observations as points.
+
+The data frame must be named correctly. This will cause an error:
+
+```{r}
+#| eval: false
+
+ggplot(data, aes(x = population, y = moe_pct)) +
+  geom_point()
+```
+
+Here, `data` is only a placeholder. It is not the name of an actual data frame.
+
+A correct version uses the real object and column names:
+
+```{r}
+#| eval: false
+
+ggplot(county_wide, aes(x = popE, y = moe_pct)) +
+  geom_point()
+```
+
+## Mapping Versus Decorating
+
+If a visual property depends on a variable, place it inside `aes()`:
+
+```{r}
+#| eval: false
+
+ggplot(county_data, aes(
+  x = estimate,
+  y = moe_pct,
+  color = reliability
+)) +
+  geom_point()
+```
+
+The points receive different colors based on the `reliability` column.
+
+If every point should have the same color, place the color outside `aes()`:
+
+```{r}
+#| eval: false
+
+ggplot(county_data, aes(x = estimate, y = moe_pct)) +
+  geom_point(color = "blue")
+```
+
+All points are blue in this example.
+
+```r
+aes(color = reliability)       # maps a variable
+geom_point(color = "blue")     # sets one fixed color
+```
+
+## Common Geometries
+
+The geometry, or `geom`, determines the type of chart.
+
+| Question | Useful geometry |
+|---|---|
+| How is one variable distributed? | `geom_histogram()` |
+| How are two variables related? | `geom_point()` |
+| How do groups compare? | `geom_boxplot()` or `geom_col()` |
+| How does something change over time? | `geom_line()` |
+| How uncertain is an estimate? | `geom_errorbar()` |
+
+For example, a histogram shows how values are distributed:
+
+```{r}
+#| eval: false
+
+ggplot(county_data, aes(x = moe_pct)) +
+  geom_histogram()
+```
+
+A scatterplot shows the relationship between two variables:
+
+```{r}
+#| eval: false
+
+ggplot(county_wide, aes(x = popE, y = moe_pct)) +
+  geom_point()
+```
+
+A bar chart compares categories:
+
+```{r}
+#| eval: false
+
+ggplot(summary_data, aes(x = reliability, y = n_counties)) +
+  geom_col()
+```
+
+An error bar can show an estimate together with its margin of error:
+
+```{r}
+#| eval: false
+
+ggplot(county_data, aes(x = NAME, y = estimate)) +
+  geom_point() +
+  geom_errorbar(
+    aes(
+      ymin = estimate - moe,
+      ymax = estimate + moe
+    )
+  )
+```
+
+## Facets and Small Multiple Plots
+
+A facet creates a separate panel for each category of a variable.
+
+```{r}
+#| eval: false
+
+ggplot(county_data, aes(x = estimate, y = moe_pct)) +
+  geom_point() +
+  facet_wrap(~reliability)
+```
+
+This creates one panel for each reliability category.
+
+Facets are useful when groups would be difficult to compare in a single plot.
+
+## Themes and Labels
+
+A theme changes the appearance of a plot. It does not change the data.
+
+```{r}
+#| eval: false
+
+ggplot(county_wide, aes(x = popE, y = moe_pct)) +
+  geom_point() +
+  theme_minimal()
+```
+
+Other useful themes include:
+
+```r
+theme_bw()
+theme_classic()
+theme_light()
+```
+
+Labels make a plot easier to understand:
+
+```{r}
+#| eval: false
+
+ggplot(county_wide, aes(x = popE, y = moe_pct)) +
+  geom_point() +
+  labs(
+    title = "Population and Relative Margin of Error",
+    x = "County population",
+    y = "Margin of error percentage"
+  ) +
+  theme_minimal()
+```
+
+When county names are difficult to read, a horizontal bar chart may work better:
+
+```{r}
+#| eval: false
+
+ggplot(county_data, aes(x = NAME, y = estimate)) +
+  geom_col() +
+  coord_flip()
+```
+
+## Coefficient of Variation
+
+The coefficient of variation, or CV, measures the size of the sampling error relative to the estimate.
+
+$$
+CV = \frac{SE}{Estimate} \times 100
+$$
+
+The ACS generally reports a 90% margin of error. To estimate the standard error:
+
+$$
+SE = \frac{MOE}{1.645}
+$$
+
+Therefore:
+
+```r
+cv = (moe / 1.645) / estimate * 100
+```
+
+A lower CV means the margin of error is small compared with the estimate. A higher CV means the estimate has more sampling uncertainty.
+
+The class used these general categories:
+
+| CV | Interpretation |
+|---|---|
+| Less than 15% | High reliability |
+| 15% to 30% | Medium reliability |
+| Greater than 30% | High sampling error |
+
+These are guidelines for interpreting the data. They are not universal laws.
+
+## Derived Uncertainty
+
+When we calculate a new value from Census estimates, the new value also has uncertainty.
+
+For example:
+
+$$
+Poverty\ Rate =
+\frac{People\ in\ poverty}{Total\ population}
+\times 100
+$$
+
+Both the numerator and denominator have their own margins of error. We cannot simply use the original margin of error for the new percentage.
+
+The `tidycensus` package provides functions for derived margins of error:
+
+- `moe_sum()` calculates uncertainty for a sum
+- `moe_prop()` calculates uncertainty for a proportion
+- `moe_ratio()` calculates uncertainty for a ratio
+
+If we add estimates from several counties, we should not simply add their margins of error. We should use `moe_sum()`.
+
+If we calculate the share of people in poverty out of the total population, we should use `moe_prop()`.
+
+The important idea is that a derived estimate needs its own margin of error.
+
+## Studying Change Over Time
+
+ACS 5-year estimates cover overlapping periods.
+
+For example:
+
+- The 2022 ACS 5-year estimate covers 2018–2022
+- The 2023 ACS 5-year estimate covers 2019–2023
+
+These periods overlap by four years. This makes it difficult to interpret the change because much of the data comes from the same years.
+
+For a cleaner comparison, we can use non-overlapping periods such as:
+
+- 2014–2018
+- 2019–2023
+
+When comparing income across time, we should also account for inflation. An income value from an earlier period may need to be converted into current dollars before comparison.
+
+## Difference Between Two Estimates
+
+Suppose we have these estimates:
+
+- 2014–2018: `$45,000 ± $8,000`
+- 2019–2023: `$62,000 ± $11,000`
+
+The difference is:
+
+```text
+$62,000 - $45,000 = $17,000
+```
+
+However, `$17,000` is not an exact value because both estimates contain uncertainty.
+
+First, convert each margin of error into a standard error:
+
+```text
+SE1 = 8,000 / 1.645
+SE2 = 11,000 / 1.645
+```
+
+Then calculate the standard error of the difference:
+
+$$
+SE_{diff} =
+\sqrt{SE_1^2 + SE_2^2}
+$$
+
+Finally, calculate the confidence interval:
+
+$$
+Difference \pm (1.645 \times SE_{diff})
+$$
+
+This tells us whether the observed change is large enough to be distinguished from sampling variation.
+
+## Testing Whether Change Is Significant
+
+The change can also be expressed as a z-score:
+
+$$
+z =
+\frac{Estimate_2 - Estimate_1}{SE_{diff}}
+$$
+
+For a two-sided 90% confidence test:
+
+```r
+abs(z) > 1.645
+```
+
+If this returns `TRUE`, the change is statistically significant at the 90% confidence level.
+
+If it returns `FALSE`, we cannot confidently say that the difference represents a real change rather than sampling variation.
+
+Statistical significance does not prove that one event caused the change. It only tells us whether the difference is large compared with the estimated uncertainty.
+
+## Writing Reusable Functions
+
+An R function is a reusable set of instructions.
+
+```{r}
+#| eval: false
+
+get_poverty <- function(year) {
+  get_acs(
+    geography = "county",
+    variables = c(
+      poverty = "B17001_002",
+      total = "B17001_001"
+    ),
+    state = "NY",
+    year = year,
+    survey = "acs5"
+  ) %>%
+    mutate(
+      period = paste0(year - 4, "-", year)
+    )
+}
+```
+
+Defining the function does not run it. It creates a recipe that can be used later.
+
+We can run the function for different years:
+
+```{r}
+#| eval: false
+
+data_2018 <- get_poverty(2018)
+data_2023 <- get_poverty(2023)
+```
+
+We can also use `purrr` to run it for several years:
+
+```{r}
+#| eval: false
+
+library(purrr)
+
+poverty_data <- map_dfr(
+  c(2018, 2023),
+  get_poverty
+)
+```
+
+`map_dfr()` runs the function for each year and combines the results into one data frame.
+
+## Long and Wide Data
+
+Repeated ACS pulls are usually returned in long format.
+
+Long data may look like this:
+
+| County | Period | Estimate |
+|---|---|---:|
+| Albany County | 2014–2018 | 10,000 |
+| Albany County | 2019–2023 | 12,000 |
+
+Wide data places the time periods side by side:
+
+| County | Estimate old | Estimate new |
+|---|---:|---:|
+| Albany County | 10,000 | 12,000 |
+
+Wide data is often easier for calculating change because both periods are in the same row.
+
+The `pivot_wider()` function can convert long data into wide data.
+
+## Presenting Results with Tables
+
+The `gt` package can create polished tables.
+
+A table can include:
+
+- The estimate
+- The margin of error
+- The coefficient of variation
+- A reliability category
+- A confidence interval
+- A short interpretation
+
+The goal is to make the result understandable to someone who may not know the technical details.
+
+## Hiding Code in Quarto
+
+The code can be hidden in the rendered HTML while the results remain visible.
+
+In the YAML header, we can use:
+
+```yaml
+execute:
+  echo: false
+  message: false
+  warning: false
+```
+
+`echo: false` hides the code.
+
+`message: false` hides messages produced while the code runs.
+
+`warning: false` hides warnings. Warnings should still be checked during development before hiding them in the final report.
+
+For these study notes, example chunks use:
+
+```r
+#| eval: false
+```
+
+This means Quarto displays the code but does not run it. This is useful when the code refers to example objects that have not been created in the document.
+
+## Week 3 Assignment
+
+The assignment asks us to examine a claim about change over time using ACS data.
+
+The general workflow is:
+
+1. Find an article or example that discusses change using ACS data.
+2. Identify the variable and geographic areas being studied.
+3. Determine whether the ACS periods overlap.
+4. Pull non-overlapping ACS estimates when possible.
+5. Calculate the estimate and its margin of error.
+6. Calculate the coefficient of variation.
+7. Calculate the change between the two periods.
+8. Calculate the uncertainty around the change.
+9. Test whether the change is statistically significant.
+10. Decide whether the original claim is supported.
+11. Present the results in a clear HTML document.
+
+For a poverty rate, the numerator and denominator both have uncertainty, so `moe_prop()` should be used to calculate the margin of error for the rate.
+
+The analysis should not only report the difference between two estimates. It should also explain how certain that difference is.
+
+## Key Lessons
+
+This week connected visualization with statistical reasoning.
+
+A plot is not just decoration. The variables mapped to its axes, colors, sizes, and shapes affect how the reader understands the data.
+
+ACS estimates also need to be interpreted with their margins of error. A large difference between two estimates does not automatically mean that a real change occurred.
+
+The main lessons were:
+
+- Choose a plot that matches the question.
+- Use the real data frame name in `ggplot()`.
+- Separate variable mappings from fixed decorations.
+- Use CV to compare uncertainty across estimates.
+- Use the correct `tidycensus` function for derived margins of error.
+- Avoid comparing overlapping ACS periods when studying change.
+- Calculate the uncertainty around differences over time.
+- Explain whether an observed change is statistically significant.
+- Present the result clearly for technical and non-technical readers.
+
+## Questions for Further Practice
+
+- Can I create a plot using my own ACS data?
+- Can I explain the difference between an estimate, an MOE, a standard error, and a CV?
+- Can I explain why two estimates may look different without representing a statistically significant change?
+- Can I write a function that pulls data for more than one year?
+- Can I create a table that includes estimates, margins of error, and reliability categories?

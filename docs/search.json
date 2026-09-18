@@ -151,7 +151,7 @@
     "href": "weekly-notes/index.html",
     "title": "Weekly Notes",
     "section": "",
-    "text": "Notes from each week of MUSA 5080. New entries appear here automatically — add a .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nWeek 2: dplyr and Census\n\n\ntable functions and acs data\n\n\n\n\n\nSep 4, 2026\n\n\n\n\n\n\n\nWeek 1: Getting Set Up\n\n\nUnderstanding websites, Quarto, R, and GitHub Pages.\n\n\n\n\n\nAug 28, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Notes from each week of MUSA 5080. New entries appear here automatically — add a .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nWeek 2: dplyr and Census\n\n\ntable functions and acs data\n\n\n\n\n\nSep 4, 2026\n\n\n\n\n\n\n\nWeek 3: Visualizing Uncertainty and Change\n\n\nUsing ggplot2, margins of error, and ACS data to study uncertainty over time.\n\n\n\n\n\nSep 4, 2026\n\n\n\n\n\n\n\nWeek 1: Getting Set Up\n\n\nUnderstanding websites, Quarto, R, and GitHub Pages.\n\n\n\n\n\nAug 28, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -446,5 +446,173 @@
     "title": "Assignment 2: Who Do We Know the Least About?",
     "section": "The exercise also showed me why it is important to understand the structure of the data before analyzing it. I had to distinguish between long and wide formats, identify the estimate and margin-of-error columns, and make sure my reliability cutoffs were applied consistently. I am still getting used to R syntax, but the workflow is becoming clearer.",
     "text": "The exercise also showed me why it is important to understand the structure of the data before analyzing it. I had to distinguish between long and wide formats, identify the estimate and margin-of-error columns, and make sure my reliability cutoffs were applied consistently. I am still getting used to R syntax, but the workflow is becoming clearer."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html",
+    "href": "weekly-notes/week-03.html",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "",
+    "text": "This week focused on:\n\nCreating plots with ggplot2\nMeasuring uncertainty in ACS estimates\nCalculating uncertainty for derived values\nComparing ACS estimates across time\nWriting reusable R functions\nPresenting results clearly in tables and figures"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#what-we-covered",
+    "href": "weekly-notes/week-03.html#what-we-covered",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "",
+    "text": "This week focused on:\n\nCreating plots with ggplot2\nMeasuring uncertainty in ACS estimates\nCalculating uncertainty for derived values\nComparing ACS estimates across time\nWriting reusable R functions\nPresenting results clearly in tables and figures"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#the-grammar-of-graphics",
+    "href": "weekly-notes/week-03.html#the-grammar-of-graphics",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "The Grammar of Graphics",
+    "text": "The Grammar of Graphics\nggplot2 is based on the idea that a plot is created by connecting variables in a data frame to visual properties.\n\n\n\nData variable\nPlot feature\n\n\n\n\nEstimate\nPosition on an axis\n\n\nPopulation\nPosition on an axis\n\n\nReliability\nColor\n\n\nMargin of error\nSize or error bars\n\n\n\nThis idea is called the Grammar of Graphics. A plot is built from separate parts that work together."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#the-basic-parts-of-a-ggplot",
+    "href": "weekly-notes/week-03.html#the-basic-parts-of-a-ggplot",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "The Basic Parts of a ggplot",
+    "text": "The Basic Parts of a ggplot\nA basic plot usually contains:\n\nData\nAesthetic mappings\nA geometric object\n\n\nggplot(county_wide, aes(x = popE, y = moe_pct)) +\n  geom_point()\n\nggplot(county_wide) creates the plotting canvas using county_wide.\naes() maps variables from the data to visual properties.\ngeom_point() tells R to display the observations as points.\nThe data frame must be named correctly. This will cause an error:\n\nggplot(data, aes(x = population, y = moe_pct)) +\n  geom_point()\n\nHere, data is only a placeholder. It is not the name of an actual data frame.\nA correct version uses the real object and column names:\n\nggplot(county_wide, aes(x = popE, y = moe_pct)) +\n  geom_point()"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#mapping-versus-decorating",
+    "href": "weekly-notes/week-03.html#mapping-versus-decorating",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Mapping Versus Decorating",
+    "text": "Mapping Versus Decorating\nIf a visual property depends on a variable, place it inside aes():\n\nggplot(county_data, aes(\n  x = estimate,\n  y = moe_pct,\n  color = reliability\n)) +\n  geom_point()\n\nThe points receive different colors based on the reliability column.\nIf every point should have the same color, place the color outside aes():\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point(color = \"blue\")\n\nAll points are blue in this example.\naes(color = reliability)       # maps a variable\ngeom_point(color = \"blue\")     # sets one fixed color"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#common-geometries",
+    "href": "weekly-notes/week-03.html#common-geometries",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Common Geometries",
+    "text": "Common Geometries\nThe geometry, or geom, determines the type of chart.\n\n\n\nQuestion\nUseful geometry\n\n\n\n\nHow is one variable distributed?\ngeom_histogram()\n\n\nHow are two variables related?\ngeom_point()\n\n\nHow do groups compare?\ngeom_boxplot() or geom_col()\n\n\nHow does something change over time?\ngeom_line()\n\n\nHow uncertain is an estimate?\ngeom_errorbar()\n\n\n\nFor example, a histogram shows how values are distributed:\n\nggplot(county_data, aes(x = moe_pct)) +\n  geom_histogram()\n\nA scatterplot shows the relationship between two variables:\n\nggplot(county_wide, aes(x = popE, y = moe_pct)) +\n  geom_point()\n\nA bar chart compares categories:\n\nggplot(summary_data, aes(x = reliability, y = n_counties)) +\n  geom_col()\n\nAn error bar can show an estimate together with its margin of error:\n\nggplot(county_data, aes(x = NAME, y = estimate)) +\n  geom_point() +\n  geom_errorbar(\n    aes(\n      ymin = estimate - moe,\n      ymax = estimate + moe\n    )\n  )"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#facets-and-small-multiple-plots",
+    "href": "weekly-notes/week-03.html#facets-and-small-multiple-plots",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Facets and Small Multiple Plots",
+    "text": "Facets and Small Multiple Plots\nA facet creates a separate panel for each category of a variable.\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point() +\n  facet_wrap(~reliability)\n\nThis creates one panel for each reliability category.\nFacets are useful when groups would be difficult to compare in a single plot."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#themes-and-labels",
+    "href": "weekly-notes/week-03.html#themes-and-labels",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Themes and Labels",
+    "text": "Themes and Labels\nA theme changes the appearance of a plot. It does not change the data.\n\nggplot(county_wide, aes(x = popE, y = moe_pct)) +\n  geom_point() +\n  theme_minimal()\n\nOther useful themes include:\ntheme_bw()\ntheme_classic()\ntheme_light()\nLabels make a plot easier to understand:\n\nggplot(county_wide, aes(x = popE, y = moe_pct)) +\n  geom_point() +\n  labs(\n    title = \"Population and Relative Margin of Error\",\n    x = \"County population\",\n    y = \"Margin of error percentage\"\n  ) +\n  theme_minimal()\n\nWhen county names are difficult to read, a horizontal bar chart may work better:\n\nggplot(county_data, aes(x = NAME, y = estimate)) +\n  geom_col() +\n  coord_flip()"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#coefficient-of-variation",
+    "href": "weekly-notes/week-03.html#coefficient-of-variation",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Coefficient of Variation",
+    "text": "Coefficient of Variation\nThe coefficient of variation, or CV, measures the size of the sampling error relative to the estimate.\n\\[\nCV = \\frac{SE}{Estimate} \\times 100\n\\]\nThe ACS generally reports a 90% margin of error. To estimate the standard error:\n\\[\nSE = \\frac{MOE}{1.645}\n\\]\nTherefore:\ncv = (moe / 1.645) / estimate * 100\nA lower CV means the margin of error is small compared with the estimate. A higher CV means the estimate has more sampling uncertainty.\nThe class used these general categories:\n\n\n\nCV\nInterpretation\n\n\n\n\nLess than 15%\nHigh reliability\n\n\n15% to 30%\nMedium reliability\n\n\nGreater than 30%\nHigh sampling error\n\n\n\nThese are guidelines for interpreting the data. They are not universal laws."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#derived-uncertainty",
+    "href": "weekly-notes/week-03.html#derived-uncertainty",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Derived Uncertainty",
+    "text": "Derived Uncertainty\nWhen we calculate a new value from Census estimates, the new value also has uncertainty.\nFor example:\n\\[\nPoverty\\ Rate =\n\\frac{People\\ in\\ poverty}{Total\\ population}\n\\times 100\n\\]\nBoth the numerator and denominator have their own margins of error. We cannot simply use the original margin of error for the new percentage.\nThe tidycensus package provides functions for derived margins of error:\n\nmoe_sum() calculates uncertainty for a sum\nmoe_prop() calculates uncertainty for a proportion\nmoe_ratio() calculates uncertainty for a ratio\n\nIf we add estimates from several counties, we should not simply add their margins of error. We should use moe_sum().\nIf we calculate the share of people in poverty out of the total population, we should use moe_prop().\nThe important idea is that a derived estimate needs its own margin of error."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#studying-change-over-time",
+    "href": "weekly-notes/week-03.html#studying-change-over-time",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Studying Change Over Time",
+    "text": "Studying Change Over Time\nACS 5-year estimates cover overlapping periods.\nFor example:\n\nThe 2022 ACS 5-year estimate covers 2018–2022\nThe 2023 ACS 5-year estimate covers 2019–2023\n\nThese periods overlap by four years. This makes it difficult to interpret the change because much of the data comes from the same years.\nFor a cleaner comparison, we can use non-overlapping periods such as:\n\n2014–2018\n2019–2023\n\nWhen comparing income across time, we should also account for inflation. An income value from an earlier period may need to be converted into current dollars before comparison."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#difference-between-two-estimates",
+    "href": "weekly-notes/week-03.html#difference-between-two-estimates",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Difference Between Two Estimates",
+    "text": "Difference Between Two Estimates\nSuppose we have these estimates:\n\n2014–2018: $45,000 ± $8,000\n2019–2023: $62,000 ± $11,000\n\nThe difference is:\n$62,000 - $45,000 = $17,000\nHowever, $17,000 is not an exact value because both estimates contain uncertainty.\nFirst, convert each margin of error into a standard error:\nSE1 = 8,000 / 1.645\nSE2 = 11,000 / 1.645\nThen calculate the standard error of the difference:\n\\[\nSE_{diff} =\n\\sqrt{SE_1^2 + SE_2^2}\n\\]\nFinally, calculate the confidence interval:\n\\[\nDifference \\pm (1.645 \\times SE_{diff})\n\\]\nThis tells us whether the observed change is large enough to be distinguished from sampling variation."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#testing-whether-change-is-significant",
+    "href": "weekly-notes/week-03.html#testing-whether-change-is-significant",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Testing Whether Change Is Significant",
+    "text": "Testing Whether Change Is Significant\nThe change can also be expressed as a z-score:\n\\[\nz =\n\\frac{Estimate_2 - Estimate_1}{SE_{diff}}\n\\]\nFor a two-sided 90% confidence test:\nabs(z) &gt; 1.645\nIf this returns TRUE, the change is statistically significant at the 90% confidence level.\nIf it returns FALSE, we cannot confidently say that the difference represents a real change rather than sampling variation.\nStatistical significance does not prove that one event caused the change. It only tells us whether the difference is large compared with the estimated uncertainty."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#writing-reusable-functions",
+    "href": "weekly-notes/week-03.html#writing-reusable-functions",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Writing Reusable Functions",
+    "text": "Writing Reusable Functions\nAn R function is a reusable set of instructions.\n\nget_poverty &lt;- function(year) {\n  get_acs(\n    geography = \"county\",\n    variables = c(\n      poverty = \"B17001_002\",\n      total = \"B17001_001\"\n    ),\n    state = \"NY\",\n    year = year,\n    survey = \"acs5\"\n  ) %&gt;%\n    mutate(\n      period = paste0(year - 4, \"-\", year)\n    )\n}\n\nDefining the function does not run it. It creates a recipe that can be used later.\nWe can run the function for different years:\n\ndata_2018 &lt;- get_poverty(2018)\ndata_2023 &lt;- get_poverty(2023)\n\nWe can also use purrr to run it for several years:\n\nlibrary(purrr)\n\npoverty_data &lt;- map_dfr(\n  c(2018, 2023),\n  get_poverty\n)\n\nmap_dfr() runs the function for each year and combines the results into one data frame."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#long-and-wide-data",
+    "href": "weekly-notes/week-03.html#long-and-wide-data",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Long and Wide Data",
+    "text": "Long and Wide Data\nRepeated ACS pulls are usually returned in long format.\nLong data may look like this:\n\n\n\nCounty\nPeriod\nEstimate\n\n\n\n\nAlbany County\n2014–2018\n10,000\n\n\nAlbany County\n2019–2023\n12,000\n\n\n\nWide data places the time periods side by side:\n\n\n\nCounty\nEstimate old\nEstimate new\n\n\n\n\nAlbany County\n10,000\n12,000\n\n\n\nWide data is often easier for calculating change because both periods are in the same row.\nThe pivot_wider() function can convert long data into wide data."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#presenting-results-with-tables",
+    "href": "weekly-notes/week-03.html#presenting-results-with-tables",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Presenting Results with Tables",
+    "text": "Presenting Results with Tables\nThe gt package can create polished tables.\nA table can include:\n\nThe estimate\nThe margin of error\nThe coefficient of variation\nA reliability category\nA confidence interval\nA short interpretation\n\nThe goal is to make the result understandable to someone who may not know the technical details."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#hiding-code-in-quarto",
+    "href": "weekly-notes/week-03.html#hiding-code-in-quarto",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Hiding Code in Quarto",
+    "text": "Hiding Code in Quarto\nThe code can be hidden in the rendered HTML while the results remain visible.\nIn the YAML header, we can use:\nexecute:\n  echo: false\n  message: false\n  warning: false\necho: false hides the code.\nmessage: false hides messages produced while the code runs.\nwarning: false hides warnings. Warnings should still be checked during development before hiding them in the final report.\nFor these study notes, example chunks use:\n#| eval: false\nThis means Quarto displays the code but does not run it. This is useful when the code refers to example objects that have not been created in the document."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#week-3-assignment",
+    "href": "weekly-notes/week-03.html#week-3-assignment",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Week 3 Assignment",
+    "text": "Week 3 Assignment\nThe assignment asks us to examine a claim about change over time using ACS data.\nThe general workflow is:\n\nFind an article or example that discusses change using ACS data.\nIdentify the variable and geographic areas being studied.\nDetermine whether the ACS periods overlap.\nPull non-overlapping ACS estimates when possible.\nCalculate the estimate and its margin of error.\nCalculate the coefficient of variation.\nCalculate the change between the two periods.\nCalculate the uncertainty around the change.\nTest whether the change is statistically significant.\nDecide whether the original claim is supported.\nPresent the results in a clear HTML document.\n\nFor a poverty rate, the numerator and denominator both have uncertainty, so moe_prop() should be used to calculate the margin of error for the rate.\nThe analysis should not only report the difference between two estimates. It should also explain how certain that difference is."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#key-lessons",
+    "href": "weekly-notes/week-03.html#key-lessons",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Key Lessons",
+    "text": "Key Lessons\nThis week connected visualization with statistical reasoning.\nA plot is not just decoration. The variables mapped to its axes, colors, sizes, and shapes affect how the reader understands the data.\nACS estimates also need to be interpreted with their margins of error. A large difference between two estimates does not automatically mean that a real change occurred.\nThe main lessons were:\n\nChoose a plot that matches the question.\nUse the real data frame name in ggplot().\nSeparate variable mappings from fixed decorations.\nUse CV to compare uncertainty across estimates.\nUse the correct tidycensus function for derived margins of error.\nAvoid comparing overlapping ACS periods when studying change.\nCalculate the uncertainty around differences over time.\nExplain whether an observed change is statistically significant.\nPresent the result clearly for technical and non-technical readers."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#questions-for-further-practice",
+    "href": "weekly-notes/week-03.html#questions-for-further-practice",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Questions for Further Practice",
+    "text": "Questions for Further Practice\n\nCan I create a plot using my own ACS data?\nCan I explain the difference between an estimate, an MOE, a standard error, and a CV?\nCan I explain why two estimates may look different without representing a statistically significant change?\nCan I write a function that pulls data for more than one year?\nCan I create a table that includes estimates, margins of error, and reliability categories?"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
+    "section": "",
+    "text": "Welcome to my portfolio for MUSA 5080: Public Policy Analytics at the University of Pennsylvania.\nThis site documents my work in the Master of Urban Spatial Analytics program — weekly notes, course assignments, and a final project applying data analysis to urban policy questions.\n\n\n\nI’m a student in the MUSA program at Penn. My background is in Geospatial Engineering, and I’m interested in geospatial software engineering, spatial data analytics, urban systems, transportation, and using GeoAI to help create a more equitable world.\n\n\n\n\nWeekly Notes — what I’m learning each week\nAssignments — analyses completed for the course\nAbout — more background and how to reach me\n\n\n\n\n\n\nEmail: fabalo@upenn.edu / frederick.abalo@icloud.com\nGitHub: @freddie999\nLinkedIn: Frederick Abalo\nPhone: Call me (215) 397 8467\nWhatsApp: Ping me!"
+  },
+  {
+    "objectID": "index.html#about-me",
+    "href": "index.html#about-me",
+    "title": "Home",
+    "section": "",
+    "text": "I’m a student in the MUSA program at Penn. My background is in Geospatial Engineering, and I’m interested in geospatial software engineering, spatial data analytics, urban systems, transportation, and using GeoAI to help create a more equitable world."
+  },
+  {
+    "objectID": "index.html#what-youll-find-here",
+    "href": "index.html#what-youll-find-here",
+    "title": "Home",
+    "section": "",
+    "text": "Weekly Notes — what I’m learning each week\nAssignments — analyses completed for the course\nAbout — more background and how to reach me"
+  },
+  {
+    "objectID": "index.html#get-in-touch",
+    "href": "index.html#get-in-touch",
+    "title": "Home",
+    "section": "",
+    "text": "Email: fabalo@upenn.edu / frederick.abalo@icloud.com\nGitHub: @freddie999\nLinkedIn: Frederick Abalo\nPhone: Call me (215) 397 8467\nWhatsApp: Ping me!"
   }
 ]

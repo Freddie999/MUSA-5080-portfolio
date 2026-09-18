@@ -23,7 +23,7 @@ website:
 
 format:
   html:
-    theme: slate
+    theme: cosmo
     toc: true
     code-fold: false
     code-tools: true
