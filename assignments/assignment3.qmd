@@ -1,0 +1,504 @@
+---
+title: "Assignment 3: Verify the Claim: Poverty Change in Philadelphia"
+subtitle: "Measuring uncertainty in American Community Survey data"
+author: "Frederick Abalo"
+date: today
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+  echo: true
+  eval: true
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(tidycensus)
+library(gt)
+```
+
+```{r}
+#| results: hide
+variables_2010 <- load_variables(2010, "acs5")
+head(variables_2010) %>%
+  gt() %>%
+  cols_label(name = "Variable code", label = "Description", concept = "Census concept") %>%
+  tab_header(title = "ACS variable catalog preview", subtitle = "First six entries, 2010 ACS five-year estimates")
+```
+
+## Reconstructing the comparison
+
+I examine the broad claim that poverty increased in parts of Philadelphia in [Alfred Lubrano's December 6, 2018 article](https://whyy.org/articles/new-census-figures-on-philly-neighborhoods-show-inequality-high-numbers-of-whites-living-in-poverty/). I use `B17001_002` (people below poverty) divided by `B17001_001` (people for whom poverty status is determined). This measures poverty across all racial groups. I assume this table is an appropriate reconstruction because the article does not identify its exact variables or neighborhood-to-tract crosswalk. Tracts are not neighborhoods, so this analysis cannot reproduce the named neighborhood figures exactly.
+
+The `acs5` estimates ending in 2010 and 2017 cover **2006–2010 and 2013–2017**. I use five-year estimates because they provide tract-level data and match the article's neighborhood comparison. **These periods do not overlap.** I follow the class method of treating their sampling errors as independent when calculating uncertainty in the change.
+
+```{r}
+#| label: download-2010
+#| message: false
+#| results: hide
+
+poverty_2010 <- get_acs(
+  geography = "tract",
+  variables = c(
+    below_poverty = "B17001_002",
+    total = "B17001_001"
+  ),
+  state = "PA",
+  county = "Philadelphia",
+  year = 2010,
+  survey = "acs5",
+  output = "wide"
+)
+head(poverty_2010) %>%
+  select(-NAME) %>%
+  gt() %>%
+  fmt_number(columns = c(below_povertyE, below_povertyM, totalE, totalM), decimals = 0) %>%
+  cols_label(GEOID = "Tract GEOID", below_povertyE = "Below poverty",
+             below_povertyM = "Below poverty MOE", totalE = "Poverty universe",
+             totalM = "Universe MOE") %>%
+  tab_header(title = "Poverty count estimates: 2006–2010", subtitle = "First six Philadelphia tracts") %>%
+  tab_source_note("Source: ACS B17001. Counts and 90% margins of error are in people.")
+```
+```{r}
+#| results: hide
+poverty_2017 <- get_acs(
+  geography = "tract",
+  variables = c(below_poverty = "B17001_002", 
+                total = "B17001_001"
+),
+state = "PA",
+county = "Philadelphia",
+year = 2017,
+output = "wide",
+survey = "acs5"
+)
+head(poverty_2017) %>%
+  select(-NAME) %>%
+  gt() %>%
+  fmt_number(columns = c(below_povertyE, below_povertyM, totalE, totalM), decimals = 0) %>%
+  cols_label(GEOID = "Tract GEOID", below_povertyE = "Below poverty",
+             below_povertyM = "Below poverty MOE", totalE = "Poverty universe",
+             totalM = "Universe MOE") %>%
+  tab_header(title = "Poverty count estimates: 2013–2017", subtitle = "First six Philadelphia tracts") %>%
+  tab_source_note("Source: ACS B17001. Counts and 90% margins of error are in people.")
+```
+```{r}
+#| results: hide
+tibble(
+  period = c("2006–2010", "2013–2017"),
+  tracts = c(nrow(poverty_2010), nrow(poverty_2017))
+) %>%
+  gt() %>%
+  cols_label(period = "ACS period", tracts = "Tracts") %>%
+  tab_header(title = "Philadelphia tract coverage")
+```
+```{r}
+#| label: combine-periods
+#| results: hide
+poverty_data <- bind_rows(poverty_2010 %>% mutate(period = "2006 - 2010"), poverty_2017 %>% mutate(period = "2013 - 2017"))
+head(poverty_data) %>%
+  select(-NAME) %>%
+  gt(groupname_col = "period") %>%
+  fmt_number(columns = c(below_povertyE, below_povertyM, totalE, totalM), decimals = 0) %>%
+  cols_label(GEOID = "Tract GEOID", below_povertyE = "Below poverty",
+             below_povertyM = "Below poverty MOE", totalE = "Poverty universe",
+             totalM = "Universe MOE") %>%
+  tab_header(title = "Combined data preview", subtitle = "First six rows; both periods are retained in the dataset") %>%
+  tab_source_note("Source: ACS B17001. Counts and 90% margins of error are in people.")
+```
+```{r}
+#| label: check-zero-denominators
+#| results: hide
+poverty_data %>%
+  filter(totalE == 0) %>%
+  select(GEOID, period, totalE) %>%
+  gt(groupname_col = "period") %>%
+  cols_label(GEOID = "Tract GEOID", totalE = "Poverty universe") %>%
+  tab_header(title = "Tract-period records with zero denominators") %>%
+  tab_source_note("Source: ACS B17001_001. Population is people for whom poverty status is determined.")
+```
+
+
+Records with zero denominators were retained, but their poverty rates and margins of error were marked as unavailable.
+```{r}
+#| label: calculate-poverty-rates
+#| results: hide
+
+poverty_data <- poverty_data %>%
+  mutate(
+    denominator = na_if(totalE, 0),
+
+    poverty_rate = below_povertyE / denominator * 100,
+
+    poverty_moe = moe_prop(
+      num = below_povertyE,
+      denom = denominator,
+      moe_num = below_povertyM,
+      moe_denom = totalM
+    ) * 100
+  )
+
+poverty_data %>%
+  select(GEOID, period, below_povertyE, totalE,
+         poverty_rate, poverty_moe) %>%
+  head() %>%
+  gt(groupname_col = "period") %>%
+  fmt_number(columns = c(below_povertyE, totalE), decimals = 0) %>%
+  fmt_number(columns = c(poverty_rate, poverty_moe), decimals = 1) %>%
+  sub_missing(missing_text = "Unavailable") %>%
+  cols_label(GEOID = "Tract GEOID", below_povertyE = "Below poverty",
+             totalE = "Poverty universe", poverty_rate = "Rate (%)",
+             poverty_moe = "90% MOE (pp)") %>%
+  tab_header(title = "Calculated poverty rates", subtitle = "First six tract-period records") %>%
+  tab_source_note("Source: ACS B17001. pp = percentage points; count columns are in people.")
+```
+
+
+The poverty rate estimates need to be assessed for reliability before comparing the two periods. Using the CV thresholds from Jurjevich et al. (2018), estimates are classified as reliable below 12%, somewhat reliable from 12% to 40%, and unreliable above 40%.
+
+CV measures uncertainty relative to the estimated rate. It is undefined when the rate is zero, even if the denominator is positive; that rate and its MOE can still be used to test change.
+```{r}
+#| label: classify-reliability
+
+poverty_data <- poverty_data %>%
+  mutate(
+    poverty_se = poverty_moe / 1.645,
+
+    cv = poverty_se / na_if(poverty_rate, 0) * 100,
+
+    reliability = case_when(
+      is.na(cv) ~ "Not available",
+      cv < 12   ~ "Reliable",
+      cv <= 40  ~ "Somewhat reliable",
+      TRUE      ~ "Unreliable"
+    )
+  )
+
+```
+
+
+```{r}
+#| label: check-tract-periods
+#| results: hide
+
+duplicate_records <- poverty_data %>%
+  count(GEOID, period) %>%
+  filter(n != 1)
+
+missing_periods <- poverty_data %>%
+  distinct(GEOID, period) %>%
+  count(GEOID) %>%
+  filter(n != 2)
+
+tibble(
+  check = c("Tract-period groups with duplicate records", "Tracts without both periods"),
+  flagged = c(nrow(duplicate_records), nrow(missing_periods))
+) %>%
+  gt() %>%
+  cols_label(check = "Check", flagged = "Flagged groups / tracts") %>%
+  tab_header(title = "Checks before joining the periods")
+```
+Both checks flagged zero problems, confirming that each tract has exactly one record in each period. There are no duplicate tract-period records or tracts missing a period, so the estimates can be placed side by side using GEOID.
+
+```{r}
+#| label: prepare-comparison
+#| results: hide
+
+poverty_wide <- poverty_data %>%
+  mutate(
+    year = if_else(
+      period == "2006-2010" | period == "2006 - 2010",
+      "2010",
+      "2017"
+    )
+  ) %>%
+  select(GEOID, year, poverty_rate, poverty_moe) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = c(poverty_rate, poverty_moe)
+  )
+
+head(poverty_wide) %>%
+  gt() %>%
+  fmt_number(columns = c(poverty_rate_2010, poverty_rate_2017,
+                         poverty_moe_2010, poverty_moe_2017), decimals = 1) %>%
+  sub_missing(missing_text = "Unavailable") %>%
+  cols_label(GEOID = "Tract GEOID", poverty_rate_2010 = "2006–2010 rate (%)",
+             poverty_rate_2017 = "2013–2017 rate (%)", poverty_moe_2010 = "2006–2010 MOE (pp)",
+             poverty_moe_2017 = "2013–2017 MOE (pp)") %>%
+  tab_header(title = "Poverty estimates side by side", subtitle = "First six Philadelphia tracts") %>%
+  tab_source_note("Source: ACS B17001. MOEs use 90% confidence; pp = percentage points.")
+```
+## Interpreting change
+
+A difference between the two poverty rates does not necessarily indicate a change beyond sampling uncertainty. The calculation below subtracts the earlier rate from the later rate and combines their uncertainty to produce a 90% confidence interval for the change.
+
+If this interval excludes zero, the change is statistically significant. If it includes zero, there is insufficient evidence to conclude that poverty increased or decreased.
+
+Here, zero means **no change in the poverty rate**, not a zero population denominator.
+
+These are individual tract tests at 90% confidence, without an adjustment for multiple testing; they do not guarantee that every flagged change is real.
+
+```{r}
+#| label: test-poverty-change
+#| results: hide
+
+poverty_tested <- poverty_wide %>%
+  mutate(
+    change = poverty_rate_2017 - poverty_rate_2010,
+
+    se_2010 = poverty_moe_2010 / 1.645,
+    se_2017 = poverty_moe_2017 / 1.645,
+
+    se_diff = sqrt(se_2010^2 + se_2017^2),
+    moe_diff = 1.645 * se_diff,
+
+    lower = change - moe_diff,
+    upper = change + moe_diff,
+
+    z = change / na_if(se_diff, 0),
+    significant = abs(z) > 1.645
+  )
+
+poverty_tested %>%
+  select(GEOID, change, moe_diff, lower, upper, significant) %>%
+  head() %>%
+  gt() %>%
+  fmt_number(columns = c(change, moe_diff, lower, upper), decimals = 1) %>%
+  sub_missing(missing_text = "Unavailable") %>%
+  cols_label(GEOID = "Tract GEOID", change = "Change", moe_diff = "Change MOE",
+             lower = "Lower bound", upper = "Upper bound", significant = "Significant?") %>%
+  tab_header(title = "Testing poverty-rate changes", subtitle = "First six tracts: 2006–2010 to 2013–2017") %>%
+  tab_source_note("Source: ACS B17001. Changes and 90% interval bounds are in percentage points. TRUE means significant at 90% confidence.")
+```
+
+
+
+```{r}
+#| label: summarize-change
+
+poverty_tested <- poverty_tested %>%
+  mutate(
+    change_result = case_when(
+      is.na(significant)       ~ "Cannot assess",
+      significant & change > 0 ~ "Significant increase",
+      significant & change < 0 ~ "Significant decrease",
+      TRUE                     ~ "No significant change"
+    )
+  )
+
+poverty_tested %>%
+  count(change_result) %>%
+  gt() %>%
+  cols_label(change_result = "Change classification", n = "Tracts") %>%
+  tab_header(title = "Poverty-change results for all 384 tracts",
+             subtitle = "Philadelphia: 2006–2010 to 2013–2017") %>%
+  tab_source_note("Source: ACS B17001. Tests use 90% confidence; undefined changes are classified separately.")
+```
+Of the 384 Philadelphia census tracts, 376 could be assessed. Between 2006–2010 and 2013–2017, 36 showed a statistically significant increase in poverty rates and 27 showed a significant decrease at the 90% confidence level. The remaining 313 assessable tracts had no statistically detectable change. This does not establish that poverty remained unchanged in those tracts; their estimated changes could not be distinguished from sampling uncertainty. Eight tracts could not be assessed.
+
+The summary chart includes every tract, giving context for the significant changes shown in the next chart. Counts of tracts do not establish whether the population-weighted citywide poverty rate increased.
+
+```{r}
+#| label: fig-change-summary
+#| fig-width: 9
+#| fig-height: 4.5
+#| fig-alt: "Counts of Philadelphia tracts: 36 significant increases, 27 significant decreases, 313 without significant change, and 8 that cannot be assessed."
+
+poverty_tested %>%
+  count(change_result) %>%
+  ggplot(aes(x = reorder(change_result, n), y = n)) +
+  geom_col(fill = "#2166AC", width = 0.7) +
+  geom_text(aes(label = n), hjust = -0.2) +
+  coord_flip() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank()) +
+  labs(
+    title = "Most tract-level poverty changes are inconclusive",
+    subtitle = "Philadelphia: 2006–2010 versus 2013–2017; 90% confidence",
+    x = NULL,
+    y = "Number of census tracts",
+    caption = "Source: ACS five-year estimates, table B17001. Includes all 384 tracts."
+  )
+```
+
+
+## Visualizing significant change
+
+The chart shows the 63 tracts with statistically significant changes in poverty rates. Bars show the estimated change, and black error bars show its 90% confidence interval. Changes are measured in percentage points.
+
+```{r}
+#| label: fig-significant-change
+#| fig-width: 9
+#| fig-height: 14
+
+poverty_tested %>%
+  filter(significant) %>%
+  ggplot(aes(x = reorder(GEOID, change), y = change)) +
+  geom_col(aes(fill = change_result), width = 0.7) +
+  geom_errorbar(
+    aes(
+      ymin = change - moe_diff,
+      ymax = change + moe_diff
+    ),
+    width = 0.3
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed"
+  ) +
+  coord_flip() +
+  scale_fill_manual(
+    values = c(
+      "Significant increase" = "#B35806",
+      "Significant decrease" = "#2166AC"
+    ),
+    labels = c(
+      "Significant increase" = "Increase",
+      "Significant decrease" = "Decrease"
+    )
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    axis.text.y = element_text(size = 8),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = "Statistically significant changes in poverty rates",
+    subtitle = "Philadelphia census tracts: 2006–2010 versus 2013–2017",
+    x = "Census tract GEOID",
+    y = "Change in poverty rate (percentage points)",
+    fill = NULL,
+    caption = paste(
+      "Source: ACS five-year estimates, table B17001.",
+      "Only changes significant at the 90% confidence level are shown.",
+      sep = "\n"
+    )
+  )
+```
+
+
+```{r}
+poverty_data %>%
+  arrange(desc(poverty_moe)) %>%
+  select(
+    GEOID, period,
+    below_povertyE, below_povertyM,
+    totalE, totalM,
+    poverty_rate, poverty_moe
+  ) %>%
+  head(5) %>%
+  gt() %>%
+  fmt_number(columns = c(below_povertyE, below_povertyM, totalE, totalM), decimals = 0) %>%
+  fmt_number(columns = c(poverty_rate, poverty_moe), decimals = 2) %>%
+  cols_label(GEOID = "Tract GEOID", period = "ACS period",
+             below_povertyE = "Below poverty", below_povertyM = "Count MOE",
+             totalE = "Poverty universe", totalM = "Universe MOE",
+             poverty_rate = "Rate (%)", poverty_moe = "Rate MOE (pp)") %>%
+  tab_header(title = "The five largest poverty-rate margins of error") %>%
+  tab_source_note("Source: ACS B17001. All MOEs use 90% confidence. Count MOEs are in people; rate MOEs are in percentage points.")
+```
+Two tract-period estimates have exceptionally large margins of error. Tract 9891 in 2013–2017 has an estimated poverty rate of 92.45%, with an MOE of 220.35 percentage points. Tract 9801 in 2006–2010 has an estimated rate of 0%, with an MOE of 162.69 percentage points. Both have small estimated poverty-universe populations and substantial sampling uncertainty. These records were retained, but their poverty rates should be interpreted cautiously. Neither tract has a statistically significant change, so both are excluded from the error-bar chart above; they do not explain its long error bars.
+
+
+
+## Reliability of poverty estimates
+
+Most tract poverty-rate estimates are somewhat reliable in both periods. The number classified as unreliable falls from 43 to 22 in the later period. These categories describe uncertainty in each period's rate; the separate change test determines whether the difference between periods is statistically detectable.
+
+```{r}
+#| label: reliability-table
+
+poverty_data %>%
+  count(period, reliability) %>%
+  mutate(
+    reliability = factor(reliability, levels = c(
+      "Reliable", "Somewhat reliable", "Unreliable", "Not available"
+    )),
+    symbol = case_when(
+      reliability == "Reliable" ~ "🟢",
+      reliability == "Somewhat reliable" ~ "🟡",
+      reliability == "Unreliable" ~ "🔴",
+      TRUE ~ "—"
+    )
+  ) %>%
+  pivot_wider(names_from = period, values_from = n, values_fill = 0) %>%
+  arrange(reliability) %>%
+  select(symbol, reliability, `2006 - 2010`, `2013 - 2017`) %>%
+  gt() %>%
+  cols_label(
+    symbol = "",
+    reliability = "Reliability",
+    `2006 - 2010` = "2006–2010",
+    `2013 - 2017` = "2013–2017"
+  ) %>%
+  tab_header(
+    title = "Reliability of Philadelphia poverty estimates",
+    subtitle = "Number of census tracts in each CV category; 384 per period"
+  ) %>%
+  tab_source_note(
+    "Source: ACS five-year estimates, table B17001.
+    Jurjevich et al. (2018) thresholds used in class:
+    CV below 12% = reliable; 12–40% = somewhat reliable;
+    above 40% = unreliable."
+  ) %>%
+  tab_source_note(
+    "Not available means CV is undefined, including missing rates or zero-rate estimates.
+    Undefined CV does not necessarily mean the change cannot be assessed."
+  )
+```
+
+
+## Tracts that could not be assessed
+
+The eight tracts marked “Cannot assess” are examined below to identify why their changes could not be calculated. They are kept separate from tracts with no statistically significant change.
+
+```{r}
+#| label: investigate-unassessable-tracts
+
+unassessable_tracts <- poverty_tested %>%
+  filter(change_result == "Cannot assess") %>%
+  select(GEOID)
+
+poverty_data %>%
+  semi_join(unassessable_tracts, by = "GEOID") %>%
+  select(
+    GEOID, period, below_povertyE, totalE,
+    poverty_rate, poverty_moe
+  ) %>%
+  arrange(GEOID, period) %>%
+  gt(groupname_col = "GEOID") %>%
+  fmt_number(columns = c(below_povertyE, totalE), decimals = 0) %>%
+  fmt_number(columns = c(poverty_rate, poverty_moe), decimals = 1) %>%
+  sub_missing(missing_text = "Unavailable") %>%
+  cols_label(period = "ACS period", below_povertyE = "Below poverty",
+             totalE = "Poverty universe", poverty_rate = "Rate (%)",
+             poverty_moe = "90% MOE (pp)") %>%
+  tab_header(title = "Tracts whose poverty-rate changes cannot be assessed",
+             subtitle = "Both periods shown for each tract GEOID") %>%
+  tab_source_note("Source: ACS B17001. Zero poverty-universe denominators produce undefined rates. pp = percentage points.")
+```
+
+Seven tracts had an estimated population of zero for whom poverty status was determined in both periods. Another tract, 42101980600, had an estimate of 92 in 2006–2010 but zero in 2013–2017. These zero denominators made the poverty rates undefined, so I recorded them as missing rather than treating them as 0% poverty. Because calculating change requires a valid rate and margin of error in both periods, these eight tracts could not be assessed. I retained them in the dataset and labeled them “Cannot assess,” leaving 376 tracts for the change analysis.
+
+
+## Does the analysis support the article?
+
+**Supported:** My results support the broad finding that poverty increased in some parts of Philadelphia. Comparing 2006–2010 with 2013–2017, I found statistically significant increases in 36 census tracts and decreases in 27, using a 90% confidence level. Another 313 tracts had no statistically significant change, and eight could not be assessed. **Not supported:** I cannot identify a specific neighborhood claim as contradicted or statistically unsupported without its tract aggregation and uncertainty estimates. Those claims remain in “Cannot be determined.” A result that is not statistically significant does not prove that poverty stayed the same.
+
+**Cannot be determined:** I cannot determine whether Eastwick’s reported increase from 12% to 26% is statistically significant because the article does not identify the tracts used to construct its neighborhood figures. My analysis also measures poverty across all racial groups, so it cannot verify the claims about white poverty. I have not shown that a specific neighborhood's numeric claim is false. The article acknowledges that ACS estimates have margins of error, but I would make that uncertainty more visible in the reporting. I would describe where change can be detected while keeping the neighborhood and race-specific claims separate from what this tract-level analysis establishes.
+
+## How I would report the findings
+
+Poverty rates increased in some Philadelphia census tracts and decreased in others between 2006–2010 and 2013–2017. An analysis of American Community Survey estimates found increases in 36 tracts and decreases in 27 that were statistically significant at the 90% confidence level. In 313 tracts, the estimates were too uncertain to establish a change; this does not mean poverty remained unchanged. Eight additional tracts could not be assessed because their poverty-rate denominators were zero in at least one period. These findings show an uneven pattern of detectable change, but they do not establish whether poverty rose citywide or confirm the article’s neighborhood and race-specific claims.

@@ -26,6 +26,17 @@ The lab asks: **Which low-income tracts are farthest from a station, and how cer
 
 These notes combine the class notes, explanations recovered from the recording, the join diagram, and the lab into a worked study example. The choices in the challenge section are examples to examine and defend, not claims about what our team decided in class.
 
+## Using This File
+
+Save this file as `weekly-notes/week-04.qmd` in the portfolio project. The YAML settings above show both the code and its results. Maps appear below the chunks that create them. There is no page-level theme here, so the page can inherit the theme in `_quarto.yml`.
+
+- `echo: true` displays the code.
+- `eval: true` runs it during rendering.
+- `output: true` displays its output.
+- `code-fold: false` keeps code expanded.
+- `freeze: false` lets this page execute when the project is rendered.
+
+The green Run button in RStudio runs a chunk while I am studying. A regular rendered HTML page displays the saved code and results; it does not provide a live R session in the browser.
 
 ### Install packages once, load them each session
 
