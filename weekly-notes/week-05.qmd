@@ -21,11 +21,7 @@ The main topics were linear regression, inference versus prediction, least squar
 ::: {.callout-note}
 ## About these notes and examples
 
-These notes combine my written class notes with the supplied Week 5 transcript. Obvious transcription errors have been corrected using context, and unclear numerical examples are identified as illustrations rather than verified lab results. Additional explanations are included to support learning.
-
-The runnable examples below use **invented practice data**, not ACS observations or results from the professor's lab. They are included so I can study the code and see its output without downloading data or relying on objects in my RStudio environment. The transcript describes the lecture but does not provide the complete lab script.
-
-All executable examples use base R. No package installation or API key is required. The document leaves the website theme to `_quarto.yml`.
+I used made-up data for the examples so I can run them without the lab files. The lecture transcript did not include the full lab code. The example numbers below are for practice, not results from the lab.
 :::
 
 ## Starting with the Question

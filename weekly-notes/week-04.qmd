@@ -24,11 +24,11 @@ This week connected the tables we have been using in R to the places they descri
 
 The lab asks: **Which low-income tracts are farthest from a station, and how certain are their income estimates?** To answer it, we need to define both "low-income" and "access." Different definitions can produce different answers even when the underlying data is the same.
 
-These notes combine the class notes, explanations recovered from the recording, the join diagram, and the lab into a worked study example. The choices in the challenge section are examples to examine and defend, not claims about what our team decided in class.
+I used the lab and class recording to fill in these notes. The challenge section is for practice; it is not a record of what our team decided.
 
 ## Using This File
 
-Save this file as `weekly-notes/week-04.qmd` in the portfolio project. The YAML settings above show both the code and its results. Maps appear below the chunks that create them. There is no page-level theme here, so the page can inherit the theme in `_quarto.yml`.
+The YAML settings show the code and its results. Maps appear below the chunks that create them. The page inherits its theme from `_quarto.yml`.
 
 - `echo: true` displays the code.
 - `eval: true` runs it during rendering.
