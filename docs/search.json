@@ -231,172 +231,25 @@
     "text": "Common Mistakes to Avoid\n\nUse library(dplyr), not library(deplyr).\nR functions are case-sensitive, so use select() and arrange().\nClose every pipe and parenthesis correctly.\nMake sure column names match exactly.\nStore GEOIDs as character strings.\nRemember that ACS 5-year estimates cover five years of data.\nDo not confuse an estimate with its margin of error.\nUse load_variables() to understand variables and get_acs() to download data.\nUse output = \"wide\" when comparing multiple variables side by side."
   },
   {
-    "objectID": "weekly-notes/index.html",
-    "href": "weekly-notes/index.html",
-    "title": "Weekly Notes",
-    "section": "",
-    "text": "Notes from each week of MUSA 5080. New entries appear here automatically — add a .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nWeek 5: Regression, Prediction, and Cross-Validation\n\n\nUsing income to model rent, interpret residuals, and evaluate predictions on unseen data.\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\nWeek 4: Joins, Spatial Data, and Access to Indego\n\n\nJoining tables, working with coordinate systems, and comparing ways to measure access to bike-share stations.\n\n\n\n\n\nSep 18, 2026\n\n\n\n\n\n\n\nWeek 3: Visualizing Uncertainty and Change\n\n\nUsing ggplot2, margins of error, and ACS data to study uncertainty over time.\n\n\n\n\n\nSep 11, 2026\n\n\n\n\n\n\n\nWeek 2: dplyr and Census\n\n\ntable functions and acs data\n\n\n\n\n\nSep 4, 2026\n\n\n\n\n\n\n\nWeek 1: Getting Set Up\n\n\nUnderstanding websites, Quarto, R, and GitHub Pages.\n\n\n\n\n\nAug 28, 2026\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About Me",
-    "section": "",
-    "text": "I am a Ghanaian geospatial scientist and GIS team lead with a background in Geospatial Engineering. Before joining Penn’s Master of Urban Spatial Analytics program, I worked at Zipline International in Kigali, where I helped develop geospatial systems for autonomous medical drone delivery. This work involved terrain modeling, aerial imagery, route planning, and spatial data management across complex environments. It showed me how geospatial technology can have a direct human impact, from helping patients receive medical supplies on time to improving access to essential services.\nMy interest in urban spatial analytics grew from seeing how invisible or incomplete spatial data can limit effective planning. Earlier in my career, I worked on mapping underserved communities and sanitation infrastructure, producing information that helped support improved sanitation for more than 3,000 communities. These experiences taught me that maps are not just technical products. They influence how resources are allocated, which communities receive attention, and how governments and organizations respond to urgent needs.\nAt MUSA, I am strengthening my skills in statistics, programming, spatial modeling, data visualization, and urban systems. I am particularly interested in routing, mapping, geospatial software, and the spatial intelligence that supports technologies such as delivery platforms, autonomous vehicles, and self-driving systems. I hope to work with technology companies developing products that depend on accurate maps, efficient routing, and a strong understanding of the built environment.\nAcross these interests, my central goal is to help create a more equitable society. Whether I am working on public infrastructure, medical delivery, transportation, or autonomous technology, I want to contribute to systems that are more accessible, reliable, and responsive to the needs of underserved communities."
-  },
-  {
-    "objectID": "about.html#background",
-    "href": "about.html#background",
-    "title": "About Me",
-    "section": "",
-    "text": "I am a Ghanaian geospatial scientist and GIS team lead with a background in Geospatial Engineering. Before joining Penn’s Master of Urban Spatial Analytics program, I worked at Zipline International in Kigali, where I helped develop geospatial systems for autonomous medical drone delivery. This work involved terrain modeling, aerial imagery, route planning, and spatial data management across complex environments. It showed me how geospatial technology can have a direct human impact, from helping patients receive medical supplies on time to improving access to essential services.\nMy interest in urban spatial analytics grew from seeing how invisible or incomplete spatial data can limit effective planning. Earlier in my career, I worked on mapping underserved communities and sanitation infrastructure, producing information that helped support improved sanitation for more than 3,000 communities. These experiences taught me that maps are not just technical products. They influence how resources are allocated, which communities receive attention, and how governments and organizations respond to urgent needs.\nAt MUSA, I am strengthening my skills in statistics, programming, spatial modeling, data visualization, and urban systems. I am particularly interested in routing, mapping, geospatial software, and the spatial intelligence that supports technologies such as delivery platforms, autonomous vehicles, and self-driving systems. I hope to work with technology companies developing products that depend on accurate maps, efficient routing, and a strong understanding of the built environment.\nAcross these interests, my central goal is to help create a more equitable society. Whether I am working on public infrastructure, medical delivery, transportation, or autonomous technology, I want to contribute to systems that are more accessible, reliable, and responsive to the needs of underserved communities."
-  },
-  {
-    "objectID": "about.html#skills",
-    "href": "about.html#skills",
-    "title": "About Me",
-    "section": "Skills",
-    "text": "Skills\n\n\nLanguages & Tools: R, Quarto, Git\nSpatial: (add as you learn)\nData: US Census / ACS via tidycensus"
-  },
-  {
-    "objectID": "about.html#reachable-at",
-    "href": "about.html#reachable-at",
-    "title": "About Me",
-    "section": "Reachable at",
-    "text": "Reachable at\n\n\nEmail: fabalo@upenn.edu / frederick.abalo@icloud.com\nGitHub: @freddie999\nLinkedIn: Frederick Abalo\nPhone: Call me (215) 397 8467\nWhatsApp: Ping me!"
-  },
-  {
-    "objectID": "assignments/index.html",
-    "href": "assignments/index.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "Completed assignments for MUSA 5080. New assignments appear here automatically once you add the .qmd file to this folder and render.\n\n\n\n\n\n\n\n\n\n\n\nAssignment 2: Who Do We Know the Least About?\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\nAssignment 3: Verify the Claim: Poverty Change in Philadelphia\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "assignments/assignment2.html",
-    "href": "assignments/assignment2.html",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "",
-    "text": "library(tidyverse)\nlibrary(tidycensus)"
-  },
-  {
-    "objectID": "assignments/assignment2.html#setup",
-    "href": "assignments/assignment2.html#setup",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "",
-    "text": "library(tidyverse)\nlibrary(tidycensus)"
-  },
-  {
-    "objectID": "assignments/assignment2.html#the-question",
-    "href": "assignments/assignment2.html#the-question",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "The question",
-    "text": "The question\nEvery number the American Community Survey publishes is an estimate drawn from a sample, not a count. That means every number comes with a margin of error — a statement about how wrong it might be.\nMost people ignore it. In this assignment, you won’t."
-  },
-  {
-    "objectID": "assignments/assignment2.html#choosing-what-to-measure",
-    "href": "assignments/assignment2.html#choosing-what-to-measure",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "Choosing what to measure",
-    "text": "Choosing what to measure\n\nmy_state &lt;- \"CA\"        # two-letter abbreviation, in quotes\nmy_variable &lt;- \"B01002_001\"     # the variable code, in quotes"
-  },
-  {
-    "objectID": "assignments/assignment2.html#pulling-the-data",
-    "href": "assignments/assignment2.html#pulling-the-data",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "Pulling the data",
-    "text": "Pulling the data\n\ncounty_data &lt;- get_acs(\n  geography = \"county\",\n  variables = my_variable,\n  state = my_state,\n  year = 2023,\n  survey = \"acs5\"\n)\n\nLet’s look at what came back.\n\ndim(county_data)\n\n[1] 58  5\n\nhead(county_data)\n\n# A tibble: 6 × 5\n  GEOID NAME                         variable   estimate   moe\n  &lt;chr&gt; &lt;chr&gt;                        &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;\n1 06001 Alameda County, California   B01002_001     38.7   0.2\n2 06003 Alpine County, California    B01002_001     41.1   4.8\n3 06005 Amador County, California    B01002_001     49.9   0.6\n4 06007 Butte County, California     B01002_001     36.3   0.2\n5 06009 Calaveras County, California B01002_001     52     0.7\n6 06011 Colusa County, California    B01002_001     35.7   0.9\n\n\nCalifornia has 58 counties and that number matches the number of rows (58) returned by checking the dimensions of the data."
-  },
-  {
-    "objectID": "assignments/assignment2.html#how-big-is-the-margin-of-error",
-    "href": "assignments/assignment2.html#how-big-is-the-margin-of-error",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "How big is the margin of error?",
-    "text": "How big is the margin of error?\nA margin of error of 3,000 means something very different for an estimate of 20,000 than for an estimate of 200,000. To compare across places, we need it as a percentage.\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(moe_pct = moe / estimate * 100)\n\n\ncounty_data %&gt;%\n  arrange(desc(moe_pct)) %&gt;%\n  select(NAME, estimate, moe, moe_pct) %&gt;%\n  head(10)\n\n# A tibble: 10 × 4\n   NAME                         estimate   moe moe_pct\n   &lt;chr&gt;                           &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;\n 1 Alpine County, California        41.1   4.8   11.7 \n 2 Sierra County, California        56     5      8.93\n 3 Mono County, California          40.3   1.8    4.47\n 4 Modoc County, California         49     2.1    4.29\n 5 Colusa County, California        35.7   0.9    2.52\n 6 Del Norte County, California     40.8   0.9    2.21\n 7 Mariposa County, California      51.6   1      1.94\n 8 Trinity County, California       54.8   0.9    1.64\n 9 Lassen County, California        37.8   0.6    1.59\n10 Plumas County, California        52.1   0.8    1.54\n\n\nAlpine County is the least reliable county in the dataset, with the highest relative margin of error(moe_pct) at approximately 11.68%."
-  },
-  {
-    "objectID": "assignments/assignment2.html#sorting-counties-into-reliability-categories",
-    "href": "assignments/assignment2.html#sorting-counties-into-reliability-categories",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "Sorting counties into reliability categories",
-    "text": "Sorting counties into reliability categories\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(reliability = case_when(\n    moe_pct &lt; 1  ~ \"High confidence\",\n    moe_pct &lt; 4  ~ \"Moderate\",\n    TRUE         ~ \"Low confidence\"\n  ))\n\ncount(county_data, reliability)\n\n# A tibble: 3 × 2\n  reliability         n\n  &lt;chr&gt;           &lt;int&gt;\n1 High confidence    42\n2 Low confidence      4\n3 Moderate           12\n\n\nUsing the original thresholds, 56 counties were classified as high confidence, 1 as moderate, and 1 as low confidence. Because this classification was highly concentrated in one category, I adjusted the thresholds to 1% and 4% to make differences in relative margin of error more informative for this county-level dataset."
-  },
-  {
-    "objectID": "assignments/assignment2.html#is-the-margin-of-error-bigger-in-small-places",
-    "href": "assignments/assignment2.html#is-the-margin-of-error-bigger-in-small-places",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "Is the margin of error bigger in small places?",
-    "text": "Is the margin of error bigger in small places?\nTo answer this we need population and our variable side by side, in the same row. That means a wide pull.\n\ncounty_wide &lt;- get_acs(\n  geography = \"county\",\n  variables = c(myvar = my_variable,\n                pop   = \"B01003_001\"),\n  state = my_state,\n  year = 2023,\n  survey = \"acs5\",\n  output = \"wide\"\n)\n\nhead(county_wide)\n\n# A tibble: 6 × 6\n  GEOID NAME                         myvarE myvarM    popE  popM\n  &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;\n1 06001 Alameda County, California     38.7    0.2 1651949    NA\n2 06003 Alpine County, California      41.1    4.8    1695   234\n3 06005 Amador County, California      49.9    0.6   41029    NA\n4 06007 Butte County, California       36.3    0.2  209470    NA\n5 06009 Calaveras County, California   52      0.7   45995    NA\n6 06011 Colusa County, California      35.7    0.9   21895    NA\n\n\n\ncounty_wide &lt;- county_wide %&gt;%\n  mutate(moe_pct = myvarM / myvarE * 100) %&gt;%\n  mutate(reliability = case_when(\n    moe_pct &lt; 1  ~ \"High confidence\",\n    moe_pct &lt; 4 ~ \"Moderate\",\n    TRUE         ~ \"Low confidence\"\n  ))\n\nNow compare the average population of counties in each reliability category.\n\ncounty_wide %&gt;%\n  group_by(reliability) %&gt;%\n  summarize(\n    n_counties = n(),\n    avg_population = mean(popE)\n  )\n\n# A tibble: 3 × 3\n  reliability     n_counties avg_population\n  &lt;chr&gt;                &lt;int&gt;          &lt;dbl&gt;\n1 High confidence         42        924758.\n2 Low confidence           4          6560.\n3 Moderate                12         31394.\n\n\nThe high-confidence counties had an average population of 924,758, compared with 31,394 for the moderate-confidence counties and only 6,560.25 for low-confidence counties. The pattern suggests that smaller counties tend to have larger relative margins of error and less reliable estimates."
-  },
-  {
-    "objectID": "assignments/assignment2.html#what-this-means-for-policy",
-    "href": "assignments/assignment2.html#what-this-means-for-policy",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "What this means for policy",
-    "text": "What this means for policy\nThe least reliable estimates came from Alpine, Sierra, Mono, and Modoc Counties. Their average population was 6,560, compared with 924,758 for the 42 high-confidence counties.\nThis happens because the ACS uses a sample of households. Smaller counties have fewer households in the sample, so their estimates have more uncertainty and larger margins of error.\nIf a state agency treated every estimate as equally reliable, these rural counties could receive less funding than they need for healthcare, transportation, housing, or services for older residents. Funding decisions should account for both the estimate and its margin of error."
-  },
-  {
-    "objectID": "assignments/assignment2.html#my-reflections",
-    "href": "assignments/assignment2.html#my-reflections",
-    "title": "Assignment 2: Who Do We Know the Least About?",
-    "section": "My Reflections",
-    "text": "My Reflections\nThis week helped me understand how R can be used to move from raw data to a clear result. I practiced using tidyverse functions such as filter(), select(), mutate(), arrange(), group_by(), and summarize(). Using pipes also made the code easier to follow because I could connect several steps without creating a new object after every operation.\nI also learned how to use tidycensus to download American Community Survey data. Before this, I mostly thought of Census data as a table of numbers. Working with estimates and margins of error showed me that the numbers also have different levels of reliability. In my county analysis, the smaller counties had much larger relative margins of error than the larger counties. The four low-confidence counties had an average population of 6,560, while the 42 high-confidence counties had an average population of 924,758.\nThe exercise also showed me why it is important to understand the structure of the data before analyzing it. I had to distinguish between long and wide formats, identify the estimate and margin-of-error columns, and make sure my reliability cutoffs were applied consistently. I am still getting used to R syntax, but the workflow is becoming clearer. The optional, non-scoring problems will require more practice because I need to build a stronger understanding of the concepts before I can work through them independently."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Home",
-    "section": "",
-    "text": "Welcome to my portfolio for MUSA 5080: Public Policy Analytics at the University of Pennsylvania.\nThis site documents my work in the Master of Urban Spatial Analytics program — weekly notes, course assignments, and a final project applying data analysis to urban policy questions.\n\n\n\nI’m a student in the MUSA program at Penn. My background is in Geospatial Engineering, and I’m interested in geospatial software engineering, spatial data analytics, urban systems, transportation, and using GeoAI to help create a more equitable world.\n\n\n\n\nWeekly Notes — what I’m learning each week\nAssignments — analyses completed for the course\nAbout — more background and how to reach me\n\n\n\n\n\n\nEmail: fabalo@upenn.edu / frederick.abalo@icloud.com\nGitHub: @freddie999\nLinkedIn: Frederick Abalo\nPhone: Call me (215) 397 8467\nWhatsApp: Ping me!"
-  },
-  {
-    "objectID": "index.html#about-me",
-    "href": "index.html#about-me",
-    "title": "Home",
-    "section": "",
-    "text": "I’m a student in the MUSA program at Penn. My background is in Geospatial Engineering, and I’m interested in geospatial software engineering, spatial data analytics, urban systems, transportation, and using GeoAI to help create a more equitable world."
-  },
-  {
-    "objectID": "index.html#what-youll-find-here",
-    "href": "index.html#what-youll-find-here",
-    "title": "Home",
-    "section": "",
-    "text": "Weekly Notes — what I’m learning each week\nAssignments — analyses completed for the course\nAbout — more background and how to reach me"
-  },
-  {
-    "objectID": "index.html#get-in-touch",
-    "href": "index.html#get-in-touch",
-    "title": "Home",
-    "section": "",
-    "text": "Email: fabalo@upenn.edu / frederick.abalo@icloud.com\nGitHub: @freddie999\nLinkedIn: Frederick Abalo\nPhone: Call me (215) 397 8467\nWhatsApp: Ping me!"
-  },
-  {
-    "objectID": "data/readme.html",
-    "href": "data/readme.html",
-    "title": "",
-    "section": "",
-    "text": "Code\n\n\n\n\nData files for MUSA 5080\nDownload assignment data from Canvas and save it here. Do not rename the files! Have a nice day :)"
-  },
-  {
     "objectID": "weekly-notes/week-04.html",
     "href": "weekly-notes/week-04.html",
     "title": "Week 4: Joins, Spatial Data, and Access to Indego",
     "section": "",
-    "text": "This week connected the tables we have been using in R to the places they describe. We practiced joining tables by a shared identifier, adding geographic boundaries to ACS data, checking coordinate reference systems, and using spatial operations to study access to Indego stations in Philadelphia.\nThe lab asks: Which low-income tracts are farthest from a station, and how certain are their income estimates? To answer it, we need to define both “low-income” and “access.” Different definitions can produce different answers even when the underlying data is the same.\nThese notes combine the class notes, explanations recovered from the recording, the join diagram, and the lab into a worked study example. The choices in the challenge section are examples to examine and defend, not claims about what our team decided in class."
+    "text": "This week connected the tables we have been using in R to the places they describe. We practiced joining tables by a shared identifier, adding geographic boundaries to ACS data, checking coordinate reference systems, and using spatial operations to study access to Indego stations in Philadelphia.\nThe lab asks: Which low-income tracts are farthest from a station, and how certain are their income estimates? To answer it, we need to define both “low-income” and “access.” Different definitions can produce different answers even when the underlying data is the same.\nI used the lab and class recording to fill in these notes. The challenge section is for practice; it is not a record of what our team decided."
   },
   {
     "objectID": "weekly-notes/week-04.html#what-we-did",
     "href": "weekly-notes/week-04.html#what-we-did",
     "title": "Week 4: Joins, Spatial Data, and Access to Indego",
     "section": "",
-    "text": "This week connected the tables we have been using in R to the places they describe. We practiced joining tables by a shared identifier, adding geographic boundaries to ACS data, checking coordinate reference systems, and using spatial operations to study access to Indego stations in Philadelphia.\nThe lab asks: Which low-income tracts are farthest from a station, and how certain are their income estimates? To answer it, we need to define both “low-income” and “access.” Different definitions can produce different answers even when the underlying data is the same.\nThese notes combine the class notes, explanations recovered from the recording, the join diagram, and the lab into a worked study example. The choices in the challenge section are examples to examine and defend, not claims about what our team decided in class."
+    "text": "This week connected the tables we have been using in R to the places they describe. We practiced joining tables by a shared identifier, adding geographic boundaries to ACS data, checking coordinate reference systems, and using spatial operations to study access to Indego stations in Philadelphia.\nThe lab asks: Which low-income tracts are farthest from a station, and how certain are their income estimates? To answer it, we need to define both “low-income” and “access.” Different definitions can produce different answers even when the underlying data is the same.\nI used the lab and class recording to fill in these notes. The challenge section is for practice; it is not a record of what our team decided."
   },
   {
     "objectID": "weekly-notes/week-04.html#using-this-file",
     "href": "weekly-notes/week-04.html#using-this-file",
     "title": "Week 4: Joins, Spatial Data, and Access to Indego",
     "section": "Using This File",
-    "text": "Using This File\nSave this file as weekly-notes/week-04.qmd in the portfolio project. The YAML settings above show both the code and its results. Maps appear below the chunks that create them. There is no page-level theme here, so the page can inherit the theme in _quarto.yml.\n\necho: true displays the code.\neval: true runs it during rendering.\noutput: true displays its output.\ncode-fold: false keeps code expanded.\nfreeze: false lets this page execute when the project is rendered.\n\nThe green Run button in RStudio runs a chunk while I am studying. A regular rendered HTML page displays the saved code and results; it does not provide a live R session in the browser.\n\nInstall packages once, load them each session\nRun this installation command in the R Console if these packages are not already installed. This is a displayed example, not an executable installation chunk:\ninstall.packages(\n  c(\"tidyverse\", \"tidycensus\", \"sf\"),\n  repos = \"https://cloud.r-project.org\"\n)\nThe following setup chunk does execute. Rendering starts its own R session, so packages and objects must be defined in this document rather than only in the Console.\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(tidycensus)\nlibrary(sf)\n\nLinking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE\n\n# Displays only TRUE or FALSE, never the key itself.\nSys.getenv(\"CENSUS_API_KEY\") != \"\"\n\n[1] TRUE\n\n\nKeep the Census API key in .Renviron, not in this document. If I have not configured it, I can run tidycensus::census_api_key(\"MY_KEY\", install = TRUE) privately in the Console using my actual key, then restart R. .Renviron should be excluded from Git.\n\n\nKeep a local data snapshot\nThe first full render needs an internet connection, a working Census API key, and access to the Indego feed. The download chunks save their results to an RDS folder and reuse those files on later renders. This reduces repeated downloads and stops the live station layer from changing every time I correct a sentence.\n\ndata_dir &lt;- \"week04-data\"\ndir.create(data_dir, showWarnings = FALSE, recursive = TRUE)\n\nThis folder is relative to the document’s execution directory. With Quarto’s usual file-based execution, it will be inside weekly-notes/. If the project sets execute-dir: project, it will be at the project root instead. RDS files preserve R objects, including their geometry and CRS. They are data snapshots, not API-key files.\nTo deliberately refresh a download, delete its corresponding RDS file and render again. Keep the files while studying if I want the same inputs each time. The code remains visible even when it reads a saved snapshot."
+    "text": "Using This File\nThe YAML settings show the code and its results. Maps appear below the chunks that create them. The page inherits its theme from _quarto.yml.\n\necho: true displays the code.\neval: true runs it during rendering.\noutput: true displays its output.\ncode-fold: false keeps code expanded.\nfreeze: false lets this page execute when the project is rendered.\n\nThe green Run button in RStudio runs a chunk while I am studying. A regular rendered HTML page displays the saved code and results; it does not provide a live R session in the browser.\n\nInstall packages once, load them each session\nRun this installation command in the R Console if these packages are not already installed. This is a displayed example, not an executable installation chunk:\ninstall.packages(\n  c(\"tidyverse\", \"tidycensus\", \"sf\"),\n  repos = \"https://cloud.r-project.org\"\n)\nThe following setup chunk does execute. Rendering starts its own R session, so packages and objects must be defined in this document rather than only in the Console.\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(tidycensus)\nlibrary(sf)\n\nLinking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE\n\n# Displays only TRUE or FALSE, never the key itself.\nSys.getenv(\"CENSUS_API_KEY\") != \"\"\n\n[1] TRUE\n\n\nKeep the Census API key in .Renviron, not in this document. If I have not configured it, I can run tidycensus::census_api_key(\"MY_KEY\", install = TRUE) privately in the Console using my actual key, then restart R. .Renviron should be excluded from Git.\n\n\nKeep a local data snapshot\nThe first full render needs an internet connection, a working Census API key, and access to the Indego feed. The download chunks save their results to an RDS folder and reuse those files on later renders. This reduces repeated downloads and stops the live station layer from changing every time I correct a sentence.\n\ndata_dir &lt;- \"week04-data\"\ndir.create(data_dir, showWarnings = FALSE, recursive = TRUE)\n\nThis folder is relative to the document’s execution directory. With Quarto’s usual file-based execution, it will be inside weekly-notes/. If the project sets execute-dir: project, it will be at the project root instead. RDS files preserve R objects, including their geometry and CRS. They are data snapshots, not API-key files.\nTo deliberately refresh a download, delete its corresponding RDS file and render again. Keep the files while studying if I want the same inputs each time. The code remains visible even when it reads a saved snapshot."
   },
   {
     "objectID": "weekly-notes/week-04.html#joining-tables-match-by-an-identifier",
@@ -518,158 +371,158 @@
     "text": "Render and Publish\nSave the file, restart R, and render the whole project. Run this command in RStudio’s Terminal, from the folder containing _quarto.yml:\nquarto render\nCheck the maps and tables in the rendered page. If GitHub Pages publishes a committed docs/ folder, commit the new .qmd and the updated generated website files before pushing. If the repository instead renders through GitHub Actions, that workflow needs the packages, API key configuration, and data access required by this document.\nIf an output looks out of date, check whether it comes from an intentionally saved data snapshot before deleting caches or changing code. If the render fails, fix the first reported error; later plots depend on earlier chunks having succeeded.\nThe Quarto settings and code-display behavior are described in Quarto’s R computation guide."
   },
   {
-    "objectID": "weekly-notes/week-03.html",
-    "href": "weekly-notes/week-03.html",
-    "title": "Week 3: Visualizing Uncertainty and Change",
+    "objectID": "data/readme.html",
+    "href": "data/readme.html",
+    "title": "",
     "section": "",
-    "text": "This week connected data visualization with uncertainty in American Community Survey estimates. We practiced using ggplot2, calculating margins of error for derived values, comparing ACS estimates across time, and creating reusable R functions.\nThe examples use New York county data and the 2023 ACS 5-year survey. The charts are included in the rendered page, while the code is hidden."
+    "text": "Code\n\n\n\n\nData files for MUSA 5080\nDownload assignment data from Canvas and save it here. Do not rename the files! Have a nice day :)"
   },
   {
-    "objectID": "weekly-notes/week-03.html#setup",
-    "href": "weekly-notes/week-03.html#setup",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Setup",
-    "text": "Setup\nInstall these packages once in the R console, not inside this document:\ninstall.packages(c(\"tidyverse\", \"tidycensus\", \"gt\"))\n\nlibrary(tidyverse)\nlibrary(tidycensus)\nlibrary(gt)"
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I’m Frederick Abalo, a geospatial software engineer from Ghana. My work connects spatial data with the services and tools that people use to manage it: APIs, processing pipelines, mapping applications, and quality checks.\nAt Zipline, I worked on geospatial systems supporting autonomous medical delivery. My experience includes building internal applications for spatial-data ingestion and validation, developing Python pipelines orchestrated with Prefect, working with PostgreSQL/PostGIS data models, and supporting services on AWS and Kubernetes. I also worked on imagery and terrain processing, mapping QA, and route-planning workflows, alongside engineering and operations teams.\nThat work combined software development with production support: investigating failures, improving repeatable workflows, and making spatial data usable by other teams. Employer source code, internal screenshots, and operational datasets are not included in this portfolio.\nI own Geomersive and work on its spatial-data application, including dataset and product catalogs, upload workflows, mapping viewers, and processing workers. The main application remains private and under development. The public tile utilities are a smaller example of the mapping code I maintain.\nEarlier roles included GIS analysis, satellite-image interpretation, field data collection, and mapping for sanitation and agricultural projects. My undergraduate degree is a BSc in Geomatic Engineering from the University of Mines and Technology."
   },
   {
-    "objectID": "weekly-notes/week-03.html#the-grammar-of-graphics",
-    "href": "weekly-notes/week-03.html#the-grammar-of-graphics",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "The Grammar of Graphics",
-    "text": "The Grammar of Graphics\nggplot2 creates plots by mapping variables in a data frame to visual properties.\n\n\n\nData variable\nPlot feature\n\n\n\n\nEstimate\nPosition on an axis\n\n\nPopulation\nPosition on an axis\n\n\nReliability\nColor\n\n\nMargin of error\nSize or error bars\n\n\n\nThis approach is called the Grammar of Graphics. A plot is built from separate parts that work together."
+    "objectID": "about.html#background",
+    "href": "about.html#background",
+    "title": "About",
+    "section": "",
+    "text": "I’m Frederick Abalo, a geospatial software engineer from Ghana. My work connects spatial data with the services and tools that people use to manage it: APIs, processing pipelines, mapping applications, and quality checks.\nAt Zipline, I worked on geospatial systems supporting autonomous medical delivery. My experience includes building internal applications for spatial-data ingestion and validation, developing Python pipelines orchestrated with Prefect, working with PostgreSQL/PostGIS data models, and supporting services on AWS and Kubernetes. I also worked on imagery and terrain processing, mapping QA, and route-planning workflows, alongside engineering and operations teams.\nThat work combined software development with production support: investigating failures, improving repeatable workflows, and making spatial data usable by other teams. Employer source code, internal screenshots, and operational datasets are not included in this portfolio.\nI own Geomersive and work on its spatial-data application, including dataset and product catalogs, upload workflows, mapping viewers, and processing workers. The main application remains private and under development. The public tile utilities are a smaller example of the mapping code I maintain.\nEarlier roles included GIS analysis, satellite-image interpretation, field data collection, and mapping for sanitation and agricultural projects. My undergraduate degree is a BSc in Geomatic Engineering from the University of Mines and Technology."
   },
   {
-    "objectID": "weekly-notes/week-03.html#creating-acs-data",
-    "href": "weekly-notes/week-03.html#creating-acs-data",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Creating ACS Data",
-    "text": "Creating ACS Data\nB17001_002 represents the number of people below 100% of the poverty level.\n\nmy_variable &lt;- \"B17001_002\"\nmy_state &lt;- \"NY\"\n\ncounty_data &lt;- get_acs(\n  geography = \"county\",\n  variables = my_variable,\n  state = my_state,\n  year = 2023,\n  survey = \"acs5\"\n)\n\nImportant columns include:\n\nGEOID: geographic identifier\nNAME: county name\nestimate: Census estimate\nmoe: margin of error"
+    "objectID": "about.html#education-and-current-focus",
+    "href": "about.html#education-and-current-focus",
+    "title": "About",
+    "section": "Education and current focus",
+    "text": "Education and current focus\nI’m pursuing the Master of Urban Spatial Analytics at the University of Pennsylvania, with expected graduation in May 2027. At Penn, I’m extending my work in statistics, spatial modeling, urban systems, and reproducible analysis with R and Quarto.\nI’m interested in geospatial software, mapping infrastructure, and backend engineering roles where data quality, system reliability, and clear interfaces matter."
   },
   {
-    "objectID": "weekly-notes/week-03.html#relative-margin-of-error",
-    "href": "weekly-notes/week-03.html#relative-margin-of-error",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Relative Margin of Error",
-    "text": "Relative Margin of Error\nTo compare uncertainty across counties, calculate the margin of error as a percentage of the estimate:\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(moe_pct = moe / estimate * 100)\n\nA relative margin of error is useful because the same absolute MOE can have different meanings for different-sized estimates."
+    "objectID": "about.html#technical-skills",
+    "href": "about.html#technical-skills",
+    "title": "About",
+    "section": "Technical skills",
+    "text": "Technical skills\n\n\n\n\n\n\n\nArea\nTools and experience\n\n\n\n\nBackend and orchestration\nPython, FastAPI, PostgreSQL/PostGIS, Prefect\n\n\nCloud and production systems\nAWS, Docker, Kubernetes, GitHub Actions, production troubleshooting\n\n\nSpatial processing and QA\nGeoPandas, GDAL, QGIS, imagery and terrain processing, geometry validation\n\n\nMapping and interfaces\nTypeScript/JavaScript, Cesium, Mapbox GL, Leaflet\n\n\nAnalysis and reproducibility\nR, tidyverse, tidycensus, Quarto, Git\n\n\n\nThe project case studies show which tools are used in each public example and explain their scope and limitations."
   },
   {
-    "objectID": "weekly-notes/week-03.html#reliability-categories",
-    "href": "weekly-notes/week-03.html#reliability-categories",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Reliability Categories",
-    "text": "Reliability Categories\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(\n    reliability = case_when(\n      moe_pct &lt; 5  ~ \"High confidence\",\n      moe_pct &lt; 10 ~ \"Moderate\",\n      TRUE         ~ \"Low confidence\"\n    )\n  )\n\ncase_when() checks conditions from top to bottom. The first condition that is TRUE determines the category. The final TRUE catches all remaining values."
+    "objectID": "about.html#contact",
+    "href": "about.html#contact",
+    "title": "About",
+    "section": "Contact",
+    "text": "Contact\n\nEmail: frederick.abalo@icloud.com\nPenn: fabalo@upenn.edu\nGitHub: Freddie999\nLinkedIn: Frederick Abalo\nPhone: +1 (215) 397-8467\nWhatsApp: Message me"
   },
   {
-    "objectID": "weekly-notes/week-03.html#basic-scatterplot",
-    "href": "weekly-notes/week-03.html#basic-scatterplot",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Basic Scatterplot",
-    "text": "Basic Scatterplot\nA basic ggplot2 plot contains the data, aesthetic mappings, and a geometric object.\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point()\n\n\n\n\n\n\n\n\nThe first argument must be the name of an actual data frame. For example, ggplot(data, ...) would be incorrect here because data is only a placeholder."
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "These case studies separate professional work, personal engineering demonstrations, and coursework. Public repositories and demos show what is implemented. Proprietary work is described at a high level; employer code, internal screenshots, and operational data remain private."
   },
   {
-    "objectID": "weekly-notes/week-03.html#mapping-versus-decorating",
-    "href": "weekly-notes/week-03.html#mapping-versus-decorating",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Mapping Versus Decorating",
-    "text": "Mapping Versus Decorating\nWhen a visual property depends on a variable, put it inside aes():\n\nggplot(county_data, aes(\n  x = estimate,\n  y = moe_pct,\n  color = reliability\n)) +\n  geom_point()\n\n\n\n\n\n\n\n\nWhen every point should have the same color, put the color outside aes():\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point(color = \"blue\")\n\n\n\n\n\n\n\n\naes(color = reliability)       # maps a variable\ngeom_point(color = \"blue\")     # sets one fixed color"
+    "objectID": "projects.html#spatial-validation-api",
+    "href": "projects.html#spatial-validation-api",
+    "title": "Projects",
+    "section": "Spatial-data validation API",
+    "text": "Spatial-data validation API\nPERSONAL · ENGINEERING DEMONSTRATION\nProblem. Spatial APIs need to reject malformed or ambiguous geometry before it reaches downstream systems.\nMy contribution. I developed this independent portfolio demonstration with AI assistance: the validation boundary, transactional ingestion, spatial-query API, small demo interface, Docker setup, and tests. It uses synthetic survey features, not employer datasets.\nImplementation. Python, FastAPI, Shapely, PostgreSQL/PostGIS, psycopg, Docker, and GitHub Actions. The service accepts a bounded 2D WGS84 GeoJSON subset, rejects unsupported CRS declarations, validates geometry structure and topology, and inserts an entire batch in one transaction. GiST indexing supports intersection queries; ID-based cursor pagination avoids offset scans.\nResult. A runnable local service with interactive API documentation. The published suite contains 26 passing tests, including real PostGIS checks for polygon-hole intersections, batch atomicity, pagination, and invalid input. The repository documents reproducible setup and CI.\nLimits. This is a local demonstration without authentication, tenant isolation, or a public API deployment. It does not reproject input or repair geometry. Plausible coordinate bounds alone cannot establish the true CRS. Antimeridian-spanning and 3D geometries are outside its contract.\n\n\n\nVerified local API interface returning a synthetic survey point from a PostGIS spatial query.\n\n\nCode, architecture, tests, and setup · CI history"
   },
   {
-    "objectID": "weekly-notes/week-03.html#common-geometries",
-    "href": "weekly-notes/week-03.html#common-geometries",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Common Geometries",
-    "text": "Common Geometries\n\n\n\nQuestion\nUseful geometry\n\n\n\n\nHow is one variable distributed?\ngeom_histogram()\n\n\nHow are two variables related?\ngeom_point()\n\n\nHow do groups compare?\ngeom_boxplot() or geom_col()\n\n\nHow does something change over time?\ngeom_line()\n\n\nHow uncertain is an estimate?\ngeom_errorbar()"
+    "objectID": "projects.html#terrain-explorer",
+    "href": "projects.html#terrain-explorer",
+    "title": "Projects",
+    "section": "Terrain-aware route explorer",
+    "text": "Terrain-aware route explorer\nPERSONAL · ENGINEERING DEMONSTRATION\nProblem. Route length alone hides differences in elevation, ascent, and steepness.\nMy contribution. I developed this independent demonstration with AI assistance, including the public-data retrieval and provenance script, sampling calculations, linked map/profile interface, local GeoJSON upload, CSV export, and tests. The two alignments are illustrative and independently created.\nImplementation. JavaScript, Leaflet, Vite, and public Mapzen Terrain Tiles. One bundled elevation tile keeps the example reproducible without an elevation API key. Pixel-center bilinear interpolation estimates elevation; haversine distance and sample-to-sample height changes produce distance, ascent, descent, and grade. Analysis code is separated from browser I/O.\nResult. The working demo lets visitors compare routes, change sampling distance, inspect the profile, and export samples. Six automated tests cover the mathematical helpers, invalid inputs, bundled-data coverage, and reversal of ascent/descent. CI builds and deploys the static application.\nLimits. The routes are not verified roads or trails. Terrain pixels are roughly 59 m wide here; denser sampling cannot add source detail. The demo does not optimize routes or model obstacles, access rights, weather, airspace, or flight clearance. It is not a navigation tool.\n\n\n\nVerified terrain explorer with an illustrative route, sampled elevation profile, and analysis controls.\n\n\nLive demo · Code and methods · Data provenance\nElevation: Mapzen Terrain Tiles; USGS 3DEP, GMTED2010/SRTM; NOAA ETOPO1. Basemap: © OpenStreetMap contributors. Full attribution and source terms are included in the linked repository and demo."
   },
   {
-    "objectID": "weekly-notes/week-03.html#error-bars",
-    "href": "weekly-notes/week-03.html#error-bars",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Error Bars",
-    "text": "Error Bars\nAn error bar shows the estimate together with its margin of error:\n\ncounty_data %&gt;%\n  ggplot(aes(x = NAME, y = estimate)) +\n  geom_col() +\n  geom_errorbar(\n    aes(\n      ymin = estimate - moe,\n      ymax = estimate + moe\n    )\n  )\n\n\n\n\n\n\n\n\nThe first aes() supplies mappings shared by the layers. The second aes() supplies the ymin and ymax mappings needed specifically by geom_errorbar().\nThe full chart is difficult to read, so we can keep the 15 counties with the largest relative margins of error:\n\ntop_15 &lt;- county_data %&gt;%\n  arrange(desc(moe_pct)) %&gt;%\n  slice_head(n = 15) %&gt;%\n  mutate(NAME = str_remove(NAME, \" County, New York\"))\n\nggplot(top_15, aes(x = reorder(NAME, estimate), y = estimate)) +\n  geom_col(fill = \"steelblue\") +\n  geom_errorbar(\n    aes(ymin = estimate - moe, ymax = estimate + moe),\n    width = 0.3\n  ) +\n  coord_flip() +\n  theme_minimal() +\n  scale_y_continuous(labels = scales::comma) +\n  labs(\n    title = \"Counties with the Largest Margins of Error\",\n    subtitle = \"People below 100% of the poverty level, ACS 2023 5-year estimates\",\n    x = NULL,\n    y = \"Population below poverty level\"\n  )"
+    "objectID": "projects.html#geomersive",
+    "href": "projects.html#geomersive",
+    "title": "Projects",
+    "section": "Geomersive: spatial-data application and tile utilities",
+    "text": "Geomersive: spatial-data application and tile utilities\nPROFESSIONAL · APPLICATION IN DEVELOPMENT / PUBLIC LIBRARY\nProblem. Spatial datasets need a consistent way to organize metadata, uploads, derived products, and map access.\nMy contribution. I own Geomersive and work on its dataset/product catalog, PostGIS-backed metadata, upload workflows, mapping viewers, and processing workers. I maintain the smaller public JavaScript tile-utility library. The application source is private; the public library is the inspectable code example linked here.\nImplementation. The application uses TypeScript, PostGIS-backed metadata, object storage, and spatial-processing workers. The public library implements Web Mercator XYZ tile counts and longitude/latitude-to-tile conversion. It keeps the tile-math interface small rather than presenting itself as a complete tile service.\nResult. The public repository includes runnable tests and an example input. A separate pull request adds input validation, polar/dateline boundary handling, documentation, and additional tests; those changes pass CI but are awaiting required review. The Geomersive website introduces the business.\nLimits. The main application remains under development. The public website is not evidence that every planned platform capability is deployed. The tile library does not fetch imagery, serve tiles, or process terrain. No customer deployments, performance figures, or production scale are claimed here.\nPublic tile-utility code · Pending improvements · Geomersive"
   },
   {
-    "objectID": "weekly-notes/week-03.html#facets-and-themes",
-    "href": "weekly-notes/week-03.html#facets-and-themes",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Facets and Themes",
-    "text": "Facets and Themes\nA facet creates a separate panel for each category:\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point() +\n  facet_wrap(~reliability) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nThemes change the appearance of a plot without changing the data."
+    "objectID": "projects.html#poverty-change",
+    "href": "projects.html#poverty-change",
+    "title": "Projects",
+    "section": "Poverty change in Philadelphia",
+    "text": "Poverty change in Philadelphia\nCOURSEWORK · MUSA 5080 / ASSIGNMENT 3\nProblem. A reported change in an ACS poverty estimate may not be distinguishable from sampling uncertainty.\nMy contribution. For this assignment, I reconstructed a tract-level comparison of the 2006–2010 and 2013–2017 ACS five-year estimates, checked tract-period records, calculated poverty rates and uncertainty, and wrote the interpretation. The full report retains the code and course-method assumptions.\nImplementation. R, tidyverse, tidycensus, gt, and Quarto. The analysis joins periods by GEOID, carries margins of error through the comparison, treats zero denominators as missing, and keeps unassessable tracts separate from those without a detectable change.\nResult. The existing report identifies 36 tracts with significant increases and 27 with significant decreases at the 90% confidence level, out of 376 assessable tracts. Another 313 have no statistically detectable change; eight cannot be assessed. These are the published assignment’s results, not a new analysis for this portfolio update.\nLimits. Individual tract tests are not adjusted for multiple comparisons. Tracts are not neighborhoods, and the report cannot reproduce the article’s neighborhood or race-specific claims. A nonsignificant estimate does not establish no change. The comparison assumes independent sampling errors between the nonoverlapping periods.\n\n\n\nThe assignment’s existing chart distinguishes significant increases, decreases, no significant change, and tracts that cannot be assessed.\n\n\nFull analysis and code · Quarto source"
   },
   {
-    "objectID": "weekly-notes/week-03.html#derived-uncertainty",
-    "href": "weekly-notes/week-03.html#derived-uncertainty",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Derived Uncertainty",
-    "text": "Derived Uncertainty\nWhen we calculate a new value from Census estimates, the new value also has uncertainty. We should not simply add individual margins of error when adding estimates.\n\nregion &lt;- county_data %&gt;%\n  filter(NAME %in% c(\n    \"Hamilton County, New York\",\n    \"Essex County, New York\",\n    \"Greene County, New York\"\n  ))\n\nregion_total &lt;- sum(region$estimate)\nregion_total_moe &lt;- moe_sum(region$moe, region$estimate)\n\nregion_total\n\n[1] 9594\n\nregion_total_moe\n\n[1] 889.1648\n\n\nThe tidycensus functions for derived uncertainty are:\n\nmoe_sum() for adding estimates\nmoe_prop() for one estimate as a share of another\nmoe_ratio() for a ratio where the numerator is not a subset of the denominator"
+    "objectID": "projects.html#acs-uncertainty",
+    "href": "projects.html#acs-uncertainty",
+    "title": "Projects",
+    "section": "Uncertainty in California county estimates",
+    "text": "Uncertainty in California county estimates\nCOURSEWORK · MUSA 5080 / ASSIGNMENT 2\nProblem. The same absolute margin of error has different implications for estimates of different sizes.\nMy contribution. I examined 2023 ACS five-year median-age estimates across California’s 58 counties, calculated relative margins of error, compared reliability categories with county population, and discussed implications for policy interpretation.\nImplementation. R, tidyverse, tidycensus, and Quarto. Relative MOE makes uncertainty comparable across estimates. The report documents the original categorization and an adjusted threshold scheme used to examine differences in this dataset.\nResult. The report identifies Alpine County as having the highest relative MOE, approximately 11.68%, and shows greater relative uncertainty among smaller counties. Code and reflections remain in the original assignment.\nLimits. Reliability labels depend on chosen thresholds, not an official Census classification. The comparison is descriptive, not a causal model or a funding-allocation rule. Findings concern the selected variable and ACS period.\nFull analysis and code · Quarto source\n\nFor the broader course record, see Assignments and Weekly Notes. My About page summarizes professional experience that cannot be shown as public source code."
   },
   {
-    "objectID": "weekly-notes/week-03.html#proportions-and-moe_prop",
-    "href": "weekly-notes/week-03.html#proportions-and-moe_prop",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Proportions and moe_prop()",
-    "text": "Proportions and moe_prop()\nSuppose we want the proportion of people below poverty out of a total population. Both the numerator and denominator have estimates and margins of error.\n\npoverty_share &lt;- get_acs(\n  geography = \"county\",\n  variables = c(\n    below_poverty = \"B07012_002\",\n    total = \"B07012_001\"\n  ),\n  state = \"NY\",\n  year = 2023,\n  survey = \"acs5\",\n  output = \"wide\"\n) %&gt;%\n  mutate(\n    share = below_povertyE / totalE,\n    share_moe = moe_prop(\n      below_povertyE,\n      totalE,\n      below_povertyM,\n      totalM\n    ),\n    share_pct = share * 100,\n    share_moe_pct = share_moe * 100\n  )\n\nIf the proportion is multiplied by 100, its margin of error must also be multiplied by 100."
+    "objectID": "assignments/assignment2.html",
+    "href": "assignments/assignment2.html",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(tidycensus)"
   },
   {
-    "objectID": "weekly-notes/week-03.html#coefficient-of-variation",
-    "href": "weekly-notes/week-03.html#coefficient-of-variation",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Coefficient of Variation",
-    "text": "Coefficient of Variation\nThe coefficient of variation, or CV, measures sampling error relative to the estimate:\n\\[\nCV = \\frac{SE}{Estimate} \\times 100\n\\]\nBecause the ACS generally uses a 90% margin of error:\n\\[\nSE = \\frac{MOE}{1.645}\n\\]\nTherefore:\ncv = (moe / 1.645) / estimate * 100\nA lower CV means less uncertainty relative to the estimate. A higher CV means more sampling uncertainty."
+    "objectID": "assignments/assignment2.html#setup",
+    "href": "assignments/assignment2.html#setup",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(tidycensus)"
   },
   {
-    "objectID": "weekly-notes/week-03.html#change-over-time",
-    "href": "weekly-notes/week-03.html#change-over-time",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Change Over Time",
-    "text": "Change Over Time\nACS 5-year estimates cover overlapping periods:\n\nThe 2022 ACS 5-year estimate covers 2018–2022\nThe 2023 ACS 5-year estimate covers 2019–2023\n\nFor a cleaner comparison, use non-overlapping periods such as 2014–2018 and 2019–2023.\nWhen comparing income across time, adjust for inflation before interpreting the difference."
+    "objectID": "assignments/assignment2.html#the-question",
+    "href": "assignments/assignment2.html#the-question",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "The question",
+    "text": "The question\nEvery number the American Community Survey publishes is an estimate drawn from a sample, not a count. That means every number comes with a margin of error — a statement about how wrong it might be.\nMost people ignore it. In this assignment, you won’t."
   },
   {
-    "objectID": "weekly-notes/week-03.html#creating-a-reusable-function",
-    "href": "weekly-notes/week-03.html#creating-a-reusable-function",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Creating a Reusable Function",
-    "text": "Creating a Reusable Function\nAn R function is a reusable set of instructions. This function takes a year as an argument, downloads the data, and creates a period label.\n\nget_poverty &lt;- function(yr) {\n  get_acs(\n    geography = \"county\",\n    variables = \"B07012_002\",\n    state = \"NY\",\n    year = yr,\n    survey = \"acs5\"\n  ) %&gt;%\n    mutate(period = paste0(yr - 4, \"-\", yr))\n}\n\nThe function does not run when it is defined. It creates a recipe that can be used later.\n\npoverty_change &lt;- bind_rows(\n  get_poverty(2018),\n  get_poverty(2023)\n)"
+    "objectID": "assignments/assignment2.html#choosing-what-to-measure",
+    "href": "assignments/assignment2.html#choosing-what-to-measure",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "Choosing what to measure",
+    "text": "Choosing what to measure\n\nmy_state &lt;- \"CA\"        # two-letter abbreviation, in quotes\nmy_variable &lt;- \"B01002_001\"     # the variable code, in quotes"
   },
   {
-    "objectID": "weekly-notes/week-03.html#converting-long-data-to-wide-data",
-    "href": "weekly-notes/week-03.html#converting-long-data-to-wide-data",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Converting Long Data to Wide Data",
-    "text": "Converting Long Data to Wide Data\nThe repeated ACS results are initially in long format:\n\n\n\nCounty\nPeriod\nEstimate\n\n\n\n\nAlbany County\n2014–2018\n10,000\n\n\nAlbany County\n2019–2023\n12,000\n\n\n\nWe can convert them to wide format so both periods appear in the same row:\n\npoverty_wide &lt;- poverty_change %&gt;%\n  select(GEOID, NAME, period, estimate, moe) %&gt;%\n  pivot_wider(\n    names_from = period,\n    values_from = c(estimate, moe)\n  )"
+    "objectID": "assignments/assignment2.html#pulling-the-data",
+    "href": "assignments/assignment2.html#pulling-the-data",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "Pulling the data",
+    "text": "Pulling the data\n\ncounty_data &lt;- get_acs(\n  geography = \"county\",\n  variables = my_variable,\n  state = my_state,\n  year = 2023,\n  survey = \"acs5\"\n)\n\nLet’s look at what came back.\n\ndim(county_data)\n\n[1] 58  5\n\nhead(county_data)\n\n# A tibble: 6 × 5\n  GEOID NAME                         variable   estimate   moe\n  &lt;chr&gt; &lt;chr&gt;                        &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;\n1 06001 Alameda County, California   B01002_001     38.7   0.2\n2 06003 Alpine County, California    B01002_001     41.1   4.8\n3 06005 Amador County, California    B01002_001     49.9   0.6\n4 06007 Butte County, California     B01002_001     36.3   0.2\n5 06009 Calaveras County, California B01002_001     52     0.7\n6 06011 Colusa County, California    B01002_001     35.7   0.9\n\n\nCalifornia has 58 counties and that number matches the number of rows (58) returned by checking the dimensions of the data."
   },
   {
-    "objectID": "weekly-notes/week-03.html#calculating-change-and-its-uncertainty",
-    "href": "weekly-notes/week-03.html#calculating-change-and-its-uncertainty",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Calculating Change and Its Uncertainty",
-    "text": "Calculating Change and Its Uncertainty\n\npoverty_tested &lt;- poverty_wide %&gt;%\n  mutate(\n    change = `estimate_2019-2023` - `estimate_2014-2018`,\n    se_1 = `moe_2014-2018` / 1.645,\n    se_2 = `moe_2019-2023` / 1.645,\n    se_diff = sqrt(se_1^2 + se_2^2),\n    moe_diff = se_diff * 1.645,\n    z = change / se_diff,\n    significant = abs(z) &gt; 1.645\n  )\n\nThe difference between two estimates also has uncertainty. We calculate the standard error of the difference and use it to calculate a margin of error for the change."
+    "objectID": "assignments/assignment2.html#how-big-is-the-margin-of-error",
+    "href": "assignments/assignment2.html#how-big-is-the-margin-of-error",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "How big is the margin of error?",
+    "text": "How big is the margin of error?\nA margin of error of 3,000 means something very different for an estimate of 20,000 than for an estimate of 200,000. To compare across places, we need it as a percentage.\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(moe_pct = moe / estimate * 100)\n\n\ncounty_data %&gt;%\n  arrange(desc(moe_pct)) %&gt;%\n  select(NAME, estimate, moe, moe_pct) %&gt;%\n  head(10)\n\n# A tibble: 10 × 4\n   NAME                         estimate   moe moe_pct\n   &lt;chr&gt;                           &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;\n 1 Alpine County, California        41.1   4.8   11.7 \n 2 Sierra County, California        56     5      8.93\n 3 Mono County, California          40.3   1.8    4.47\n 4 Modoc County, California         49     2.1    4.29\n 5 Colusa County, California        35.7   0.9    2.52\n 6 Del Norte County, California     40.8   0.9    2.21\n 7 Mariposa County, California      51.6   1      1.94\n 8 Trinity County, California       54.8   0.9    1.64\n 9 Lassen County, California        37.8   0.6    1.59\n10 Plumas County, California        52.1   0.8    1.54\n\n\nAlpine County is the least reliable county in the dataset, with the highest relative margin of error(moe_pct) at approximately 11.68%."
   },
   {
-    "objectID": "weekly-notes/week-03.html#visualizing-significant-change",
-    "href": "weekly-notes/week-03.html#visualizing-significant-change",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Visualizing Significant Change",
-    "text": "Visualizing Significant Change\n\npoverty_tested %&gt;%\n  filter(significant) %&gt;%\n  mutate(NAME = str_remove(NAME, \" County, New York\")) %&gt;%\n  ggplot(aes(x = reorder(NAME, change), y = change)) +\n  geom_col(aes(fill = change &gt; 0)) +\n  geom_errorbar(\n    aes(ymin = change - moe_diff, ymax = change + moe_diff),\n    width = 0.3\n  ) +\n  geom_hline(yintercept = 0, linetype = \"dashed\") +\n  coord_flip() +\n  theme_minimal() +\n  labs(\n    title = \"Statistically Significant Change in Poverty Count\",\n    subtitle = \"2014–2018 versus 2019–2023, ACS 5-year estimates\",\n    x = NULL,\n    y = \"Change in people below poverty level\"\n  )"
+    "objectID": "assignments/assignment2.html#sorting-counties-into-reliability-categories",
+    "href": "assignments/assignment2.html#sorting-counties-into-reliability-categories",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "Sorting counties into reliability categories",
+    "text": "Sorting counties into reliability categories\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(reliability = case_when(\n    moe_pct &lt; 1  ~ \"High confidence\",\n    moe_pct &lt; 4  ~ \"Moderate\",\n    TRUE         ~ \"Low confidence\"\n  ))\n\ncount(county_data, reliability)\n\n# A tibble: 3 × 2\n  reliability         n\n  &lt;chr&gt;           &lt;int&gt;\n1 High confidence    42\n2 Low confidence      4\n3 Moderate           12\n\n\nUsing the original thresholds, 56 counties were classified as high confidence, 1 as moderate, and 1 as low confidence. Because this classification was highly concentrated in one category, I adjusted the thresholds to 1% and 4% to make differences in relative margin of error more informative for this county-level dataset."
   },
   {
-    "objectID": "weekly-notes/week-03.html#creating-a-reliability-table",
-    "href": "weekly-notes/week-03.html#creating-a-reliability-table",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Creating a Reliability Table",
-    "text": "Creating a Reliability Table\n\nreliability_table &lt;- county_data %&gt;%\n  mutate(\n    cv = (moe / 1.645) / estimate * 100,\n    dot = case_when(\n      cv &lt; 12  ~ \"🟢\",\n      cv &lt;= 40 ~ \"🟡\",\n      TRUE     ~ \"🔴\"\n    ),\n    flag = case_when(\n      cv &lt; 12  ~ \"Reliable\",\n      cv &lt;= 40 ~ \"Somewhat reliable\",\n      TRUE     ~ \"Unreliable\"\n    ),\n    NAME = str_remove(NAME, \" County, New York\")\n  ) %&gt;%\n  arrange(desc(cv)) %&gt;%\n  select(dot, NAME, estimate, moe, cv, flag)\n\nreliability_table %&gt;%\n  gt() %&gt;%\n  fmt_number(columns = c(estimate, moe), decimals = 0) %&gt;%\n  fmt_number(columns = cv, decimals = 1) %&gt;%\n  cols_label(\n    dot = \"\",\n    NAME = \"County\",\n    estimate = \"Estimate\",\n    moe = \"MOE\",\n    cv = \"CV (%)\",\n    flag = \"Reliability\"\n  ) %&gt;%\n  cols_align(align = \"center\", columns = dot) %&gt;%\n  tab_header(\n    title = \"Population below 100% of the poverty level\",\n    subtitle = \"New York counties, ACS 2023 5-year estimates\"\n  ) %&gt;%\n  tab_source_note(\n    \"Reliability thresholds: CV &lt; 12% reliable, 12–40% somewhat reliable, and &gt; 40% unreliable.\"\n  )\n\n\n\n\n\n\n\nPopulation below 100% of the poverty level\n\n\nNew York counties, ACS 2023 5-year estimates\n\n\n\nCounty\nEstimate\nMOE\nCV (%)\nReliability\n\n\n\n\n🟡\nHamilton\n506\n141\n16.9\nSomewhat reliable\n\n\n🟢\nWashington\n6,304\n985\n9.5\nReliable\n\n\n🟢\nSchuyler\n2,663\n396\n9.0\nReliable\n\n\n🟢\nGreene\n4,945\n723\n8.9\nReliable\n\n\n🟢\nOrleans\n4,948\n701\n8.6\nReliable\n\n\n🟢\nWarren\n5,910\n821\n8.4\nReliable\n\n\n🟢\nSeneca\n4,167\n550\n8.0\nReliable\n\n\n🟢\nFulton\n7,532\n992\n8.0\nReliable\n\n\n🟢\nWyoming\n3,968\n520\n8.0\nReliable\n\n\n🟢\nCortland\n5,494\n717\n7.9\nReliable\n\n\n🟢\nDelaware\n6,317\n814\n7.8\nReliable\n\n\n🟢\nMontgomery\n7,163\n916\n7.8\nReliable\n\n\n🟢\nYates\n3,318\n420\n7.7\nReliable\n\n\n🟢\nTioga\n5,810\n727\n7.6\nReliable\n\n\n🟢\nFranklin\n7,179\n893\n7.6\nReliable\n\n\n🟢\nWayne\n10,174\n1,223\n7.3\nReliable\n\n\n🟢\nEssex\n4,143\n498\n7.3\nReliable\n\n\n🟢\nColumbia\n6,818\n816\n7.3\nReliable\n\n\n🟢\nGenesee\n6,018\n719\n7.3\nReliable\n\n\n🟢\nLewis\n3,230\n385\n7.2\nReliable\n\n\n🟢\nSchoharie\n3,106\n356\n7.0\nReliable\n\n\n🟢\nOntario\n9,961\n1,135\n6.9\nReliable\n\n\n🟢\nOtsego\n7,741\n879\n6.9\nReliable\n\n\n🟢\nSaratoga\n15,723\n1,777\n6.9\nReliable\n\n\n🟢\nLivingston\n6,606\n742\n6.8\nReliable\n\n\n🟢\nSullivan\n11,547\n1,269\n6.7\nReliable\n\n\n🟢\nPutnam\n6,331\n689\n6.6\nReliable\n\n\n🟢\nHerkimer\n7,826\n822\n6.4\nReliable\n\n\n🟢\nChenango\n5,597\n585\n6.4\nReliable\n\n\n🟢\nMadison\n6,033\n626\n6.3\nReliable\n\n\n🟢\nJefferson\n14,832\n1,454\n6.0\nReliable\n\n\n🟢\nCayuga\n9,914\n940\n5.8\nReliable\n\n\n🟢\nAllegany\n7,095\n659\n5.6\nReliable\n\n\n🟢\nSchenectady\n19,384\n1,737\n5.4\nReliable\n\n\n🟢\nChemung\n12,500\n1,098\n5.3\nReliable\n\n\n🟢\nSt. Lawrence\n16,924\n1,478\n5.3\nReliable\n\n\n🟢\nTompkins\n13,547\n1,167\n5.2\nReliable\n\n\n🟢\nOswego\n18,598\n1,581\n5.2\nReliable\n\n\n🟢\nClinton\n10,097\n818\n4.9\nReliable\n\n\n🟢\nSteuben\n12,537\n996\n4.8\nReliable\n\n\n🟢\nOrange\n51,238\n3,880\n4.6\nReliable\n\n\n🟢\nCattaraugus\n13,039\n974\n4.5\nReliable\n\n\n🟢\nChautauqua\n20,703\n1,460\n4.3\nReliable\n\n\n🟢\nNiagara\n27,014\n1,889\n4.3\nReliable\n\n\n🟢\nUlster\n25,084\n1,687\n4.1\nReliable\n\n\n🟢\nRockland\n51,969\n3,490\n4.1\nReliable\n\n\n🟢\nRensselaer\n18,177\n1,219\n4.1\nReliable\n\n\n🟢\nDutchess\n23,328\n1,536\n4.0\nReliable\n\n\n🟢\nRichmond\n53,177\n3,358\n3.8\nReliable\n\n\n🟢\nOneida\n32,026\n1,979\n3.8\nReliable\n\n\n🟢\nNassau\n72,719\n4,365\n3.6\nReliable\n\n\n🟢\nBroome\n35,448\n1,909\n3.3\nReliable\n\n\n🟢\nAlbany\n38,700\n2,076\n3.3\nReliable\n\n\n🟢\nWestchester\n86,670\n4,053\n2.8\nReliable\n\n\n🟢\nOnondaga\n62,884\n2,721\n2.6\nReliable\n\n\n🟢\nMonroe\n95,297\n3,815\n2.4\nReliable\n\n\n🟢\nSuffolk\n95,543\n3,570\n2.3\nReliable\n\n\n🟢\nErie\n130,009\n4,402\n2.1\nReliable\n\n\n🟢\nNew York\n250,056\n8,449\n2.1\nReliable\n\n\n🟢\nBronx\n374,138\n9,301\n1.5\nReliable\n\n\n🟢\nQueens\n282,195\n6,988\n1.5\nReliable\n\n\n🟢\nKings\n494,754\n9,477\n1.2\nReliable\n\n\n\nReliability thresholds: CV &lt; 12% reliable, 12–40% somewhat reliable, and &gt; 40% unreliable."
+    "objectID": "assignments/assignment2.html#is-the-margin-of-error-bigger-in-small-places",
+    "href": "assignments/assignment2.html#is-the-margin-of-error-bigger-in-small-places",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "Is the margin of error bigger in small places?",
+    "text": "Is the margin of error bigger in small places?\nTo answer this we need population and our variable side by side, in the same row. That means a wide pull.\n\ncounty_wide &lt;- get_acs(\n  geography = \"county\",\n  variables = c(myvar = my_variable,\n                pop   = \"B01003_001\"),\n  state = my_state,\n  year = 2023,\n  survey = \"acs5\",\n  output = \"wide\"\n)\n\nhead(county_wide)\n\n# A tibble: 6 × 6\n  GEOID NAME                         myvarE myvarM    popE  popM\n  &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;\n1 06001 Alameda County, California     38.7    0.2 1651949    NA\n2 06003 Alpine County, California      41.1    4.8    1695   234\n3 06005 Amador County, California      49.9    0.6   41029    NA\n4 06007 Butte County, California       36.3    0.2  209470    NA\n5 06009 Calaveras County, California   52      0.7   45995    NA\n6 06011 Colusa County, California      35.7    0.9   21895    NA\n\n\n\ncounty_wide &lt;- county_wide %&gt;%\n  mutate(moe_pct = myvarM / myvarE * 100) %&gt;%\n  mutate(reliability = case_when(\n    moe_pct &lt; 1  ~ \"High confidence\",\n    moe_pct &lt; 4 ~ \"Moderate\",\n    TRUE         ~ \"Low confidence\"\n  ))\n\nNow compare the average population of counties in each reliability category.\n\ncounty_wide %&gt;%\n  group_by(reliability) %&gt;%\n  summarize(\n    n_counties = n(),\n    avg_population = mean(popE)\n  )\n\n# A tibble: 3 × 3\n  reliability     n_counties avg_population\n  &lt;chr&gt;                &lt;int&gt;          &lt;dbl&gt;\n1 High confidence         42        924758.\n2 Low confidence           4          6560.\n3 Moderate                12         31394.\n\n\nThe high-confidence counties had an average population of 924,758, compared with 31,394 for the moderate-confidence counties and only 6,560.25 for low-confidence counties. The pattern suggests that smaller counties tend to have larger relative margins of error and less reliable estimates."
   },
   {
-    "objectID": "weekly-notes/week-03.html#key-lessons",
-    "href": "weekly-notes/week-03.html#key-lessons",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Key Lessons",
-    "text": "Key Lessons\nThis week connected visualization with statistical reasoning.\n\nChoose a plot that matches the question.\nUse the actual data frame name in ggplot().\nPut variable mappings inside aes().\nPut fixed visual settings outside aes().\nUse error bars to show uncertainty.\nUse moe_sum() when adding estimates.\nUse moe_prop() when calculating a proportion.\nAvoid overlapping ACS periods when studying change.\nCalculate the uncertainty around differences over time.\nDo not describe a change as meaningful without checking its uncertainty."
+    "objectID": "assignments/assignment2.html#what-this-means-for-policy",
+    "href": "assignments/assignment2.html#what-this-means-for-policy",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "What this means for policy",
+    "text": "What this means for policy\nThe least reliable estimates came from Alpine, Sierra, Mono, and Modoc Counties. Their average population was 6,560, compared with 924,758 for the 42 high-confidence counties.\nThis happens because the ACS uses a sample of households. Smaller counties have fewer households in the sample, so their estimates have more uncertainty and larger margins of error.\nIf a state agency treated every estimate as equally reliable, these rural counties could receive less funding than they need for healthcare, transportation, housing, or services for older residents. Funding decisions should account for both the estimate and its margin of error."
   },
   {
-    "objectID": "weekly-notes/week-03.html#questions-for-further-practice",
-    "href": "weekly-notes/week-03.html#questions-for-further-practice",
-    "title": "Week 3: Visualizing Uncertainty and Change",
-    "section": "Questions for Further Practice",
-    "text": "Questions for Further Practice\n\nCan I create a plot using my own ACS data?\nCan I explain the difference between an estimate, an MOE, a standard error, and a CV?\nCan I explain why two estimates may look different without representing a statistically significant change?\nCan I write a function that pulls data for more than one year?\nCan I create a table that includes estimates, margins of error, and reliability categories?"
+    "objectID": "assignments/assignment2.html#my-reflections",
+    "href": "assignments/assignment2.html#my-reflections",
+    "title": "Assignment 2: Who Do We Know the Least About?",
+    "section": "My Reflections",
+    "text": "My Reflections\nThis week helped me understand how R can be used to move from raw data to a clear result. I practiced using tidyverse functions such as filter(), select(), mutate(), arrange(), group_by(), and summarize(). Using pipes also made the code easier to follow because I could connect several steps without creating a new object after every operation.\nI also learned how to use tidycensus to download American Community Survey data. Before this, I mostly thought of Census data as a table of numbers. Working with estimates and margins of error showed me that the numbers also have different levels of reliability. In my county analysis, the smaller counties had much larger relative margins of error than the larger counties. The four low-confidence counties had an average population of 6,560, while the 42 high-confidence counties had an average population of 924,758.\nThe exercise also showed me why it is important to understand the structure of the data before analyzing it. I had to distinguish between long and wide formats, identify the estimate and margin-of-error columns, and make sure my reliability cutoffs were applied consistently. I am still getting used to R syntax, but the workflow is becoming clearer. The optional, non-scoring problems will require more practice because I need to build a stronger understanding of the concepts before I can work through them independently."
   },
   {
     "objectID": "assignments/assignment3.html",
@@ -693,11 +546,11 @@
     "text": "Interpreting change\nA difference between the two poverty rates does not necessarily indicate a change beyond sampling uncertainty. The calculation below subtracts the earlier rate from the later rate and combines their uncertainty to produce a 90% confidence interval for the change.\nIf this interval excludes zero, the change is statistically significant. If it includes zero, there is insufficient evidence to conclude that poverty increased or decreased.\nHere, zero means no change in the poverty rate, not a zero population denominator.\nThese are individual tract tests at 90% confidence, without an adjustment for multiple testing; they do not guarantee that every flagged change is real.\n\n\nShow code\npoverty_tested &lt;- poverty_wide %&gt;%\n  mutate(\n    change = poverty_rate_2017 - poverty_rate_2010,\n\n    se_2010 = poverty_moe_2010 / 1.645,\n    se_2017 = poverty_moe_2017 / 1.645,\n\n    se_diff = sqrt(se_2010^2 + se_2017^2),\n    moe_diff = 1.645 * se_diff,\n\n    lower = change - moe_diff,\n    upper = change + moe_diff,\n\n    z = change / na_if(se_diff, 0),\n    significant = abs(z) &gt; 1.645\n  )\n\npoverty_tested %&gt;%\n  select(GEOID, change, moe_diff, lower, upper, significant) %&gt;%\n  head() %&gt;%\n  gt() %&gt;%\n  fmt_number(columns = c(change, moe_diff, lower, upper), decimals = 1) %&gt;%\n  sub_missing(missing_text = \"Unavailable\") %&gt;%\n  cols_label(GEOID = \"Tract GEOID\", change = \"Change\", moe_diff = \"Change MOE\",\n             lower = \"Lower bound\", upper = \"Upper bound\", significant = \"Significant?\") %&gt;%\n  tab_header(title = \"Testing poverty-rate changes\", subtitle = \"First six tracts: 2006–2010 to 2013–2017\") %&gt;%\n  tab_source_note(\"Source: ACS B17001. Changes and 90% interval bounds are in percentage points. TRUE means significant at 90% confidence.\")\n\n\n\n\nShow code\npoverty_tested &lt;- poverty_tested %&gt;%\n  mutate(\n    change_result = case_when(\n      is.na(significant)       ~ \"Cannot assess\",\n      significant & change &gt; 0 ~ \"Significant increase\",\n      significant & change &lt; 0 ~ \"Significant decrease\",\n      TRUE                     ~ \"No significant change\"\n    )\n  )\n\npoverty_tested %&gt;%\n  count(change_result) %&gt;%\n  gt() %&gt;%\n  cols_label(change_result = \"Change classification\", n = \"Tracts\") %&gt;%\n  tab_header(title = \"Poverty-change results for all 384 tracts\",\n             subtitle = \"Philadelphia: 2006–2010 to 2013–2017\") %&gt;%\n  tab_source_note(\"Source: ACS B17001. Tests use 90% confidence; undefined changes are classified separately.\")\n\n\n\n\n\n\n\n\nPoverty-change results for all 384 tracts\n\n\nPhiladelphia: 2006–2010 to 2013–2017\n\n\nChange classification\nTracts\n\n\n\n\nCannot assess\n8\n\n\nNo significant change\n313\n\n\nSignificant decrease\n27\n\n\nSignificant increase\n36\n\n\n\nSource: ACS B17001. Tests use 90% confidence; undefined changes are classified separately.\n\n\n\n\n\n\n\n\nOf the 384 Philadelphia census tracts, 376 could be assessed. Between 2006–2010 and 2013–2017, 36 showed a statistically significant increase in poverty rates and 27 showed a significant decrease at the 90% confidence level. The remaining 313 assessable tracts had no statistically detectable change. This does not establish that poverty remained unchanged in those tracts; their estimated changes could not be distinguished from sampling uncertainty. Eight tracts could not be assessed.\nThe summary chart includes every tract, giving context for the significant changes shown in the next chart. Counts of tracts do not establish whether the population-weighted citywide poverty rate increased.\n\n\nShow code\npoverty_tested %&gt;%\n  count(change_result) %&gt;%\n  ggplot(aes(x = reorder(change_result, n), y = n)) +\n  geom_col(fill = \"#2166AC\", width = 0.7) +\n  geom_text(aes(label = n), hjust = -0.2) +\n  coord_flip() +\n  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank()) +\n  labs(\n    title = \"Most tract-level poverty changes are inconclusive\",\n    subtitle = \"Philadelphia: 2006–2010 versus 2013–2017; 90% confidence\",\n    x = NULL,\n    y = \"Number of census tracts\",\n    caption = \"Source: ACS five-year estimates, table B17001. Includes all 384 tracts.\"\n  )\n\n\n\n\n\n\n\n\nFigure 1"
   },
   {
-    "objectID": "assignments/assignment3.html#of-the-384-philadelphia-census-tracts-376-could-be-assessed.-between-20062010-and-20132017-36-showed-a-statistically-significant-increase-in-poverty-rates-and-27-showed-a-significant-decrease-at-the-90-confidence-level.-the-remaining-313-assessable-tracts-had-no-statistically-detectable-change.-this-does-not-establish-that-poverty-remained-unchanged-in-those-tracts-their-estimated-changes-could-not-be-distinguished-from-sampling-uncertainty.-eight-tracts-could-not-be-assessed.",
-    "href": "assignments/assignment3.html#of-the-384-philadelphia-census-tracts-376-could-be-assessed.-between-20062010-and-20132017-36-showed-a-statistically-significant-increase-in-poverty-rates-and-27-showed-a-significant-decrease-at-the-90-confidence-level.-the-remaining-313-assessable-tracts-had-no-statistically-detectable-change.-this-does-not-establish-that-poverty-remained-unchanged-in-those-tracts-their-estimated-changes-could-not-be-distinguished-from-sampling-uncertainty.-eight-tracts-could-not-be-assessed.",
+    "objectID": "assignments/assignment3.html#visualizing-significant-change",
+    "href": "assignments/assignment3.html#visualizing-significant-change",
     "title": "Assignment 3: Verify the Claim: Poverty Change in Philadelphia",
-    "section": "Of the 384 Philadelphia census tracts, 376 could be assessed. Between 2006–2010 and 2013–2017, 36 showed a statistically significant increase in poverty rates and 27 showed a significant decrease at the 90% confidence level. The remaining 313 assessable tracts had no statistically detectable change. This does not establish that poverty remained unchanged in those tracts; their estimated changes could not be distinguished from sampling uncertainty. Eight tracts could not be assessed.",
-    "text": "Of the 384 Philadelphia census tracts, 376 could be assessed. Between 2006–2010 and 2013–2017, 36 showed a statistically significant increase in poverty rates and 27 showed a significant decrease at the 90% confidence level. The remaining 313 assessable tracts had no statistically detectable change. This does not establish that poverty remained unchanged in those tracts; their estimated changes could not be distinguished from sampling uncertainty. Eight tracts could not be assessed."
+    "section": "Visualizing significant change",
+    "text": "Visualizing significant change\nThe chart shows the 63 tracts with statistically significant changes in poverty rates. Bars show the estimated change, and black error bars show its 90% confidence interval. Changes are measured in percentage points.\n\n\nShow code\npoverty_tested %&gt;%\n  filter(significant) %&gt;%\n  ggplot(aes(x = reorder(GEOID, change), y = change)) +\n  geom_col(aes(fill = change_result), width = 0.7) +\n  geom_errorbar(\n    aes(\n      ymin = change - moe_diff,\n      ymax = change + moe_diff\n    ),\n    width = 0.3\n  ) +\n  geom_hline(\n    yintercept = 0,\n    linetype = \"dashed\"\n  ) +\n  coord_flip() +\n  scale_fill_manual(\n    values = c(\n      \"Significant increase\" = \"#B35806\",\n      \"Significant decrease\" = \"#2166AC\"\n    ),\n    labels = c(\n      \"Significant increase\" = \"Increase\",\n      \"Significant decrease\" = \"Decrease\"\n    )\n  ) +\n  theme_minimal() +\n  theme(\n    legend.position = \"top\",\n    axis.text.y = element_text(size = 8),\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  ) +\n  labs(\n    title = \"Statistically significant changes in poverty rates\",\n    subtitle = \"Philadelphia census tracts: 2006–2010 versus 2013–2017\",\n    x = \"Census tract GEOID\",\n    y = \"Change in poverty rate (percentage points)\",\n    fill = NULL,\n    caption = paste(\n      \"Source: ACS five-year estimates, table B17001.\",\n      \"Only changes significant at the 90% confidence level are shown.\",\n      sep = \"\\n\"\n    )\n  )\n\n\n\n\n\n\n\n\nFigure 2\n\n\n\n\n\n\n\nShow code\npoverty_data %&gt;%\n  arrange(desc(poverty_moe)) %&gt;%\n  select(\n    GEOID, period,\n    below_povertyE, below_povertyM,\n    totalE, totalM,\n    poverty_rate, poverty_moe\n  ) %&gt;%\n  head(5) %&gt;%\n  gt() %&gt;%\n  fmt_number(columns = c(below_povertyE, below_povertyM, totalE, totalM), decimals = 0) %&gt;%\n  fmt_number(columns = c(poverty_rate, poverty_moe), decimals = 2) %&gt;%\n  cols_label(GEOID = \"Tract GEOID\", period = \"ACS period\",\n             below_povertyE = \"Below poverty\", below_povertyM = \"Count MOE\",\n             totalE = \"Poverty universe\", totalM = \"Universe MOE\",\n             poverty_rate = \"Rate (%)\", poverty_moe = \"Rate MOE (pp)\") %&gt;%\n  tab_header(title = \"The five largest poverty-rate margins of error\") %&gt;%\n  tab_source_note(\"Source: ACS B17001. All MOEs use 90% confidence. Count MOEs are in people; rate MOEs are in percentage points.\")\n\n\n\n\n\n\n\n\nThe five largest poverty-rate margins of error\n\n\nTract GEOID\nACS period\nBelow poverty\nCount MOE\nPoverty universe\nUniverse MOE\nRate (%)\nRate MOE (pp)\n\n\n\n\n42101989100\n2013 - 2017\n49\n81\n53\n91\n92.45\n220.35\n\n\n42101980100\n2006 - 2010\n0\n109\n67\n52\n0.00\n162.69\n\n\n42101008801\n2006 - 2010\n544\n316\n654\n304\n83.18\n28.98\n\n\n42101002000\n2006 - 2010\n962\n562\n1,870\n546\n51.44\n26.03\n\n\n42101014800\n2006 - 2010\n202\n145\n500\n167\n40.40\n25.67\n\n\n\nSource: ACS B17001. All MOEs use 90% confidence. Count MOEs are in people; rate MOEs are in percentage points.\n\n\n\n\n\n\n\n\nTwo tract-period estimates have exceptionally large margins of error. Tract 9891 in 2013–2017 has an estimated poverty rate of 92.45%, with an MOE of 220.35 percentage points. Tract 9801 in 2006–2010 has an estimated rate of 0%, with an MOE of 162.69 percentage points. Both have small estimated poverty-universe populations and substantial sampling uncertainty. These records were retained, but their poverty rates should be interpreted cautiously. Neither tract has a statistically significant change, so both are excluded from the error-bar chart above; they do not explain its long error bars."
   },
   {
     "objectID": "assignments/assignment3.html#reliability-of-poverty-estimates",
@@ -728,32 +581,88 @@
     "text": "How I would report the findings\nPoverty rates increased in some Philadelphia census tracts and decreased in others between 2006–2010 and 2013–2017. An analysis of American Community Survey estimates found increases in 36 tracts and decreases in 27 that were statistically significant at the 90% confidence level. In 313 tracts, the estimates were too uncertain to establish a change; this does not mean poverty remained unchanged. Eight additional tracts could not be assessed because their poverty-rate denominators were zero in at least one period. These findings show an uneven pattern of detectable change, but they do not establish whether poverty rose citywide or confirm the article’s neighborhood and race-specific claims."
   },
   {
-    "objectID": "assignments/assignment3.html#visualizing-significant-change",
-    "href": "assignments/assignment3.html#visualizing-significant-change",
-    "title": "Assignment 3: Verify the Claim: Poverty Change in Philadelphia",
-    "section": "Visualizing significant change",
-    "text": "Visualizing significant change\nThe chart shows the 63 tracts with statistically significant changes in poverty rates. Bars show the estimated change, and black error bars show its 90% confidence interval. Changes are measured in percentage points.\n\n\nShow code\npoverty_tested %&gt;%\n  filter(significant) %&gt;%\n  ggplot(aes(x = reorder(GEOID, change), y = change)) +\n  geom_col(aes(fill = change_result), width = 0.7) +\n  geom_errorbar(\n    aes(\n      ymin = change - moe_diff,\n      ymax = change + moe_diff\n    ),\n    width = 0.3\n  ) +\n  geom_hline(\n    yintercept = 0,\n    linetype = \"dashed\"\n  ) +\n  coord_flip() +\n  scale_fill_manual(\n    values = c(\n      \"Significant increase\" = \"#B35806\",\n      \"Significant decrease\" = \"#2166AC\"\n    ),\n    labels = c(\n      \"Significant increase\" = \"Increase\",\n      \"Significant decrease\" = \"Decrease\"\n    )\n  ) +\n  theme_minimal() +\n  theme(\n    legend.position = \"top\",\n    axis.text.y = element_text(size = 8),\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  ) +\n  labs(\n    title = \"Statistically significant changes in poverty rates\",\n    subtitle = \"Philadelphia census tracts: 2006–2010 versus 2013–2017\",\n    x = \"Census tract GEOID\",\n    y = \"Change in poverty rate (percentage points)\",\n    fill = NULL,\n    caption = paste(\n      \"Source: ACS five-year estimates, table B17001.\",\n      \"Only changes significant at the 90% confidence level are shown.\",\n      sep = \"\\n\"\n    )\n  )\n\n\n\n\n\n\n\n\nFigure 2\n\n\n\n\n\n\n\nShow code\npoverty_data %&gt;%\n  arrange(desc(poverty_moe)) %&gt;%\n  select(\n    GEOID, period,\n    below_povertyE, below_povertyM,\n    totalE, totalM,\n    poverty_rate, poverty_moe\n  ) %&gt;%\n  head(5) %&gt;%\n  gt() %&gt;%\n  fmt_number(columns = c(below_povertyE, below_povertyM, totalE, totalM), decimals = 0) %&gt;%\n  fmt_number(columns = c(poverty_rate, poverty_moe), decimals = 2) %&gt;%\n  cols_label(GEOID = \"Tract GEOID\", period = \"ACS period\",\n             below_povertyE = \"Below poverty\", below_povertyM = \"Count MOE\",\n             totalE = \"Poverty universe\", totalM = \"Universe MOE\",\n             poverty_rate = \"Rate (%)\", poverty_moe = \"Rate MOE (pp)\") %&gt;%\n  tab_header(title = \"The five largest poverty-rate margins of error\") %&gt;%\n  tab_source_note(\"Source: ACS B17001. All MOEs use 90% confidence. Count MOEs are in people; rate MOEs are in percentage points.\")\n\n\n\n\n\n\n\n\nThe five largest poverty-rate margins of error\n\n\nTract GEOID\nACS period\nBelow poverty\nCount MOE\nPoverty universe\nUniverse MOE\nRate (%)\nRate MOE (pp)\n\n\n\n\n42101989100\n2013 - 2017\n49\n81\n53\n91\n92.45\n220.35\n\n\n42101980100\n2006 - 2010\n0\n109\n67\n52\n0.00\n162.69\n\n\n42101008801\n2006 - 2010\n544\n316\n654\n304\n83.18\n28.98\n\n\n42101002000\n2006 - 2010\n962\n562\n1,870\n546\n51.44\n26.03\n\n\n42101014800\n2006 - 2010\n202\n145\n500\n167\n40.40\n25.67\n\n\n\nSource: ACS B17001. All MOEs use 90% confidence. Count MOEs are in people; rate MOEs are in percentage points.\n\n\n\n\n\n\n\n\nTwo tract-period estimates have exceptionally large margins of error. Tract 9891 in 2013–2017 has an estimated poverty rate of 92.45%, with an MOE of 220.35 percentage points. Tract 9801 in 2006–2010 has an estimated rate of 0%, with an MOE of 162.69 percentage points. Both have small estimated poverty-universe populations and substantial sampling uncertainty. These records were retained, but their poverty rates should be interpreted cautiously. Neither tract has a statistically significant change, so both are excluded from the error-bar chart above; they do not explain its long error bars."
+    "objectID": "assignments/index.html",
+    "href": "assignments/index.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "Analyses completed for MUSA 5080: Public Policy Analytics, with methods, code, findings, and reflections.\n\n\n\n\n\n\n\n\n\n\n\nAssignment 2: Who Do We Know the Least About?\n\n\n\n\n\n\n\n\nOct 9, 2026\n\n\n\n\n\n\n\nAssignment 3: Verify the Claim: Poverty Change in Philadelphia\n\n\n\n\n\n\n\n\nOct 9, 2026\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "assignments/assignment3.html#the-poverty-rate-estimates-need-to-be-assessed-for-reliability-before-comparing-the-two-periods.-using-the-cv-thresholds-from-jurjevich-et-al.-2018-estimates-are-classified-as-reliable-below-12-somewhat-reliable-from-12-to-40-and-unreliable-above-40.",
-    "href": "assignments/assignment3.html#the-poverty-rate-estimates-need-to-be-assessed-for-reliability-before-comparing-the-two-periods.-using-the-cv-thresholds-from-jurjevich-et-al.-2018-estimates-are-classified-as-reliable-below-12-somewhat-reliable-from-12-to-40-and-unreliable-above-40.",
-    "title": "Assignment 3: Verify the Claim: Poverty Change in Philadelphia",
-    "section": "The poverty rate estimates need to be assessed for reliability before comparing the two periods. Using the CV thresholds from Jurjevich et al. (2018), estimates are classified as reliable below 12%, somewhat reliable from 12% to 40%, and unreliable above 40%.",
-    "text": "The poverty rate estimates need to be assessed for reliability before comparing the two periods. Using the CV thresholds from Jurjevich et al. (2018), estimates are classified as reliable below 12%, somewhat reliable from 12% to 40%, and unreliable above 40%.\n\n\nShow code\npoverty_data &lt;- poverty_data %&gt;%\n  mutate(\n    poverty_se = poverty_moe / 1.645,\n\n    cv = poverty_se / na_if(poverty_rate, 0) * 100,\n\n    reliability = case_when(\n      is.na(cv) ~ \"Not available\",\n      cv &lt; 12   ~ \"Reliable\",\n      cv &lt;= 40  ~ \"Somewhat reliable\",\n      TRUE      ~ \"Unreliable\"\n    )\n  )\n\npoverty_data %&gt;%\n  count(period, reliability)\n\n\n# A tibble: 8 × 3\n  period      reliability           n\n  &lt;chr&gt;       &lt;chr&gt;             &lt;int&gt;\n1 2006 - 2010 Not available         9\n2 2006 - 2010 Reliable             11\n3 2006 - 2010 Somewhat reliable   321\n4 2006 - 2010 Unreliable           43\n5 2013 - 2017 Not available         8\n6 2013 - 2017 Reliable             22\n7 2013 - 2017 Somewhat reliable   332\n8 2013 - 2017 Unreliable           22\n\n\n\n\nShow code\npoverty_data %&gt;%\n  count(GEOID, period) %&gt;%\n  filter(n != 1)\n\n\n# A tibble: 0 × 3\n# ℹ 3 variables: GEOID &lt;chr&gt;, period &lt;chr&gt;, n &lt;int&gt;\n\n\nShow code\npoverty_data %&gt;%\n  distinct(GEOID, period) %&gt;%\n  count(GEOID) %&gt;%\n  filter(n != 2)\n\n\n# A tibble: 0 × 2\n# ℹ 2 variables: GEOID &lt;chr&gt;, n &lt;int&gt;\n\n\n#Both checks returned zero rows, confirming that each tract has exactly one record in each period. There are no duplicate tract-period records or tracts missing a period, so the estimates can be placed side by side using GEOID.\n\n\nShow code\npoverty_wide &lt;- poverty_data %&gt;%\n  mutate(\n    year = if_else(\n      period == \"2006-2010\" | period == \"2006 - 2010\",\n      \"2010\",\n      \"2017\"\n    )\n  ) %&gt;%\n  select(GEOID, year, poverty_rate, poverty_moe) %&gt;%\n  pivot_wider(\n    names_from = year,\n    values_from = c(poverty_rate, poverty_moe)\n  )\n\nhead(poverty_wide)\n\n\n# A tibble: 6 × 5\n  GEOID    poverty_rate_2010 poverty_rate_2017 poverty_moe_2010 poverty_moe_2017\n  &lt;chr&gt;                &lt;dbl&gt;             &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;\n1 4210100…              34.4              34.7            11.2             11.2 \n2 4210100…              33.2              34.7             8.95            11.3 \n3 4210100…              23.8              29.1            10.5             14.1 \n4 4210100…              34.9              33.7            10.7              9.24\n5 4210100…              38.4              45.5            14.0              9.85\n6 4210100…              21.5              24.1             6.36             7.63"
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Frederick Abalo",
+    "section": "",
+    "text": "GEOSPATIAL SOFTWARE · MAPPING INFRASTRUCTURE · BACKEND SYSTEMS\n\n\nBuilding software for spatial data and mapping systems.\nI’m a geospatial software engineer with experience in spatial-data pipelines, mapping applications, and backend systems. At Zipline, I worked on geospatial systems supporting autonomous delivery. I also own Geomersive, where I work on spatial-data infrastructure.\nI’m pursuing a Master of Urban Spatial Analytics at the University of Pennsylvania, with expected graduation in May 2027. This portfolio brings together my engineering work and academic analyses.\n\nExplore projects GitHub LinkedIn Email me"
+  },
+  {
+    "objectID": "index.html#selected-projects",
+    "href": "index.html#selected-projects",
+    "title": "Frederick Abalo",
+    "section": "Selected Projects",
+    "text": "Selected Projects\n\n\nPERSONAL · ENGINEERING DEMONSTRATION\n\nSpatial-data validation API\nFastAPI and PostGIS service with strict GeoJSON validation, atomic ingestion, spatial queries, and cursor pagination. Tested against a real database and packaged with Docker.\nRead the API case study\n\n\n\nPERSONAL · ENGINEERING DEMONSTRATION\n\nTerrain-aware route explorer\nA map and linked elevation profile for comparing illustrative routes against public terrain data, with explicit sampling and accuracy limits.\nRead the terrain case study · Try the demo\n\n\n\nCOURSEWORK · PUBLIC POLICY ANALYTICS\n\nPoverty change in Philadelphia\nAn ACS analysis that separates detectable changes from sampling uncertainty and keeps unassessable tracts visible in the results.\nRead the academic case study · Full analysis"
+  },
+  {
+    "objectID": "index.html#engineering-experience",
+    "href": "index.html#engineering-experience",
+    "title": "Frederick Abalo",
+    "section": "Engineering experience",
+    "text": "Engineering experience\nMy work spans Python services, PostgreSQL/PostGIS, geospatial ETL, imagery and terrain processing, spatial QA, and production support. I use AWS, Prefect, Docker, and Kubernetes alongside mapping tools and TypeScript/JavaScript interfaces.\nMuch of my professional code is proprietary. The Projects page distinguishes professional work, independently built demonstrations, and coursework, with public code and evidence where available.\nMore about my background · Geomersive work"
+  },
+  {
+    "objectID": "index.html#coursework-at-penn",
+    "href": "index.html#coursework-at-penn",
+    "title": "Frederick Abalo",
+    "section": "Coursework at Penn",
+    "text": "Coursework at Penn\nMy MUSA work develops statistical reasoning, spatial analysis, and reproducible reporting alongside my engineering experience.\nCoursework overview · Assignments · Weekly notes"
+  },
+  {
+    "objectID": "coursework.html",
+    "href": "coursework.html",
+    "title": "Coursework",
+    "section": "",
+    "text": "This section collects my MUSA 5080: Public Policy Analytics assignments and weekly notes at the University of Pennsylvania. These are academic analyses and learning records, separate from the professional work and personal engineering demonstrations on the Projects page."
+  },
+  {
+    "objectID": "coursework.html#assignments",
+    "href": "coursework.html#assignments",
+    "title": "Coursework",
+    "section": "Assignments",
+    "text": "Assignments\nCompleted analyses with methods, code, findings, and reflections.\nBrowse assignments"
+  },
+  {
+    "objectID": "coursework.html#weekly-notes",
+    "href": "coursework.html#weekly-notes",
+    "title": "Coursework",
+    "section": "Weekly Notes",
+    "text": "Weekly Notes\nWorking notes on data manipulation, spatial operations, statistical modeling, and interpretation.\nBrowse weekly notes"
+  },
+  {
+    "objectID": "coursework.html#selected-analyses",
+    "href": "coursework.html#selected-analyses",
+    "title": "Coursework",
+    "section": "Selected analyses",
+    "text": "Selected analyses\n\nPoverty change in Philadelphia: comparing ACS periods while accounting for sampling uncertainty.\nWho do we know the least about?: examining relative margins of error in California county estimates.\n\nEach analysis retains its original page and URL. Interpret findings in the context of the data, course methods, and limitations documented on that page."
+  },
+  {
+    "objectID": "weekly-notes/index.html",
+    "href": "weekly-notes/index.html",
+    "title": "Weekly Notes",
+    "section": "",
+    "text": "Weekly learning notes from MUSA 5080, covering data manipulation, spatial analysis, statistics, and interpretation.\n\n\n\n\n\n\n\n\n\n\n\nWeek 5: Regression, Prediction, and Cross-Validation\n\n\nUsing income to model rent, interpret residuals, and evaluate predictions on unseen data.\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\nWeek 4: Joins, Spatial Data, and Access to Indego\n\n\nJoining tables, working with coordinate systems, and comparing ways to measure access to bike-share stations.\n\n\n\n\n\nSep 18, 2026\n\n\n\n\n\n\n\nWeek 3: Visualizing Uncertainty and Change\n\n\nUsing ggplot2, margins of error, and ACS data to study uncertainty over time.\n\n\n\n\n\nSep 11, 2026\n\n\n\n\n\n\n\nWeek 2: dplyr and Census\n\n\ntable functions and acs data\n\n\n\n\n\nSep 4, 2026\n\n\n\n\n\n\n\nWeek 1: Getting Set Up\n\n\nUnderstanding websites, Quarto, R, and GitHub Pages.\n\n\n\n\n\nAug 28, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "weekly-notes/week-05.html",
     "href": "weekly-notes/week-05.html",
     "title": "Week 5: Regression, Prediction, and Cross-Validation",
     "section": "",
-    "text": "This week focused on a question: Where are rents higher than we would expect given household income? We used regression to describe the relationship between income and rent, then considered how to check whether a model predicts well beyond the data used to fit it.\nThe main topics were linear regression, inference versus prediction, least squares, residuals, measurement error, training and test data, cross-validation, overfitting, and multicollinearity.\n\n\n\n\n\n\nNoteAbout these notes and examples\n\n\n\nThese notes combine my written class notes with the supplied Week 5 transcript. Obvious transcription errors have been corrected using context, and unclear numerical examples are identified as illustrations rather than verified lab results. Additional explanations are included to support learning.\nThe runnable examples below use invented practice data, not ACS observations or results from the professor’s lab. They are included so I can study the code and see its output without downloading data or relying on objects in my RStudio environment. The transcript describes the lecture but does not provide the complete lab script.\nAll executable examples use base R. No package installation or API key is required. The document leaves the website theme to _quarto.yml."
+    "text": "This week focused on a question: Where are rents higher than we would expect given household income? We used regression to describe the relationship between income and rent, then considered how to check whether a model predicts well beyond the data used to fit it.\nThe main topics were linear regression, inference versus prediction, least squares, residuals, measurement error, training and test data, cross-validation, overfitting, and multicollinearity.\n\n\n\n\n\n\nNoteAbout these notes and examples\n\n\n\nI used made-up data for the examples so I can run them without the lab files. The lecture transcript did not include the full lab code. The example numbers below are for practice, not results from the lab."
   },
   {
     "objectID": "weekly-notes/week-05.html#what-we-studied",
     "href": "weekly-notes/week-05.html#what-we-studied",
     "title": "Week 5: Regression, Prediction, and Cross-Validation",
     "section": "",
-    "text": "This week focused on a question: Where are rents higher than we would expect given household income? We used regression to describe the relationship between income and rent, then considered how to check whether a model predicts well beyond the data used to fit it.\nThe main topics were linear regression, inference versus prediction, least squares, residuals, measurement error, training and test data, cross-validation, overfitting, and multicollinearity.\n\n\n\n\n\n\nNoteAbout these notes and examples\n\n\n\nThese notes combine my written class notes with the supplied Week 5 transcript. Obvious transcription errors have been corrected using context, and unclear numerical examples are identified as illustrations rather than verified lab results. Additional explanations are included to support learning.\nThe runnable examples below use invented practice data, not ACS observations or results from the professor’s lab. They are included so I can study the code and see its output without downloading data or relying on objects in my RStudio environment. The transcript describes the lecture but does not provide the complete lab script.\nAll executable examples use base R. No package installation or API key is required. The document leaves the website theme to _quarto.yml."
+    "text": "This week focused on a question: Where are rents higher than we would expect given household income? We used regression to describe the relationship between income and rent, then considered how to check whether a model predicts well beyond the data used to fit it.\nThe main topics were linear regression, inference versus prediction, least squares, residuals, measurement error, training and test data, cross-validation, overfitting, and multicollinearity.\n\n\n\n\n\n\nNoteAbout these notes and examples\n\n\n\nI used made-up data for the examples so I can run them without the lab files. The lecture transcript did not include the full lab code. The example numbers below are for practice, not results from the lab."
   },
   {
     "objectID": "weekly-notes/week-05.html#starting-with-the-question",
@@ -929,5 +838,159 @@
     "title": "Week 5: Regression, Prediction, and Cross-Validation",
     "section": "Further Reading",
     "text": "Further Reading\nThe lecture-specific examples and emphasis above come from the supplied September 25, 2026 class transcript. The sources below provide further explanation and technical reference. The transcript is imperfect, so it is not used as a verbatim quotation or a verified record of the lab’s numerical results.\n\nAn Introduction to Statistical Learning: Chapters 2, 3, 5, and 6 cover statistical learning, regression, resampling, and regularization.\nR documentation: lm().\nR documentation: summary.lm().\nR documentation: predict.lm().\nPenn State STAT 501: Multicollinearity and other regression pitfalls.\nMeasurement error and attenuation: hdme package vignette."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html",
+    "href": "weekly-notes/week-03.html",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "",
+    "text": "This week connected data visualization with uncertainty in American Community Survey estimates. We practiced using ggplot2, calculating margins of error for derived values, comparing ACS estimates across time, and creating reusable R functions.\nThe examples use New York county data and the 2023 ACS 5-year survey. The charts are included in the rendered page, while the code is hidden."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#setup",
+    "href": "weekly-notes/week-03.html#setup",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Setup",
+    "text": "Setup\nInstall these packages once in the R console, not inside this document:\ninstall.packages(c(\"tidyverse\", \"tidycensus\", \"gt\"))\n\nlibrary(tidyverse)\nlibrary(tidycensus)\nlibrary(gt)"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#the-grammar-of-graphics",
+    "href": "weekly-notes/week-03.html#the-grammar-of-graphics",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "The Grammar of Graphics",
+    "text": "The Grammar of Graphics\nggplot2 creates plots by mapping variables in a data frame to visual properties.\n\n\n\nData variable\nPlot feature\n\n\n\n\nEstimate\nPosition on an axis\n\n\nPopulation\nPosition on an axis\n\n\nReliability\nColor\n\n\nMargin of error\nSize or error bars\n\n\n\nThis approach is called the Grammar of Graphics. A plot is built from separate parts that work together."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#creating-acs-data",
+    "href": "weekly-notes/week-03.html#creating-acs-data",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Creating ACS Data",
+    "text": "Creating ACS Data\nB17001_002 represents the number of people below 100% of the poverty level.\n\nmy_variable &lt;- \"B17001_002\"\nmy_state &lt;- \"NY\"\n\ncounty_data &lt;- get_acs(\n  geography = \"county\",\n  variables = my_variable,\n  state = my_state,\n  year = 2023,\n  survey = \"acs5\"\n)\n\nImportant columns include:\n\nGEOID: geographic identifier\nNAME: county name\nestimate: Census estimate\nmoe: margin of error"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#relative-margin-of-error",
+    "href": "weekly-notes/week-03.html#relative-margin-of-error",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Relative Margin of Error",
+    "text": "Relative Margin of Error\nTo compare uncertainty across counties, calculate the margin of error as a percentage of the estimate:\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(moe_pct = moe / estimate * 100)\n\nA relative margin of error is useful because the same absolute MOE can have different meanings for different-sized estimates."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#reliability-categories",
+    "href": "weekly-notes/week-03.html#reliability-categories",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Reliability Categories",
+    "text": "Reliability Categories\n\ncounty_data &lt;- county_data %&gt;%\n  mutate(\n    reliability = case_when(\n      moe_pct &lt; 5  ~ \"High confidence\",\n      moe_pct &lt; 10 ~ \"Moderate\",\n      TRUE         ~ \"Low confidence\"\n    )\n  )\n\ncase_when() checks conditions from top to bottom. The first condition that is TRUE determines the category. The final TRUE catches all remaining values."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#basic-scatterplot",
+    "href": "weekly-notes/week-03.html#basic-scatterplot",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Basic Scatterplot",
+    "text": "Basic Scatterplot\nA basic ggplot2 plot contains the data, aesthetic mappings, and a geometric object.\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point()\n\n\n\n\n\n\n\n\nThe first argument must be the name of an actual data frame. For example, ggplot(data, ...) would be incorrect here because data is only a placeholder."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#mapping-versus-decorating",
+    "href": "weekly-notes/week-03.html#mapping-versus-decorating",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Mapping Versus Decorating",
+    "text": "Mapping Versus Decorating\nWhen a visual property depends on a variable, put it inside aes():\n\nggplot(county_data, aes(\n  x = estimate,\n  y = moe_pct,\n  color = reliability\n)) +\n  geom_point()\n\n\n\n\n\n\n\n\nWhen every point should have the same color, put the color outside aes():\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point(color = \"blue\")\n\n\n\n\n\n\n\n\naes(color = reliability)       # maps a variable\ngeom_point(color = \"blue\")     # sets one fixed color"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#common-geometries",
+    "href": "weekly-notes/week-03.html#common-geometries",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Common Geometries",
+    "text": "Common Geometries\n\n\n\nQuestion\nUseful geometry\n\n\n\n\nHow is one variable distributed?\ngeom_histogram()\n\n\nHow are two variables related?\ngeom_point()\n\n\nHow do groups compare?\ngeom_boxplot() or geom_col()\n\n\nHow does something change over time?\ngeom_line()\n\n\nHow uncertain is an estimate?\ngeom_errorbar()"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#error-bars",
+    "href": "weekly-notes/week-03.html#error-bars",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Error Bars",
+    "text": "Error Bars\nAn error bar shows the estimate together with its margin of error:\n\ncounty_data %&gt;%\n  ggplot(aes(x = NAME, y = estimate)) +\n  geom_col() +\n  geom_errorbar(\n    aes(\n      ymin = estimate - moe,\n      ymax = estimate + moe\n    )\n  )\n\n\n\n\n\n\n\n\nThe first aes() supplies mappings shared by the layers. The second aes() supplies the ymin and ymax mappings needed specifically by geom_errorbar().\nThe full chart is difficult to read, so we can keep the 15 counties with the largest relative margins of error:\n\ntop_15 &lt;- county_data %&gt;%\n  arrange(desc(moe_pct)) %&gt;%\n  slice_head(n = 15) %&gt;%\n  mutate(NAME = str_remove(NAME, \" County, New York\"))\n\nggplot(top_15, aes(x = reorder(NAME, estimate), y = estimate)) +\n  geom_col(fill = \"steelblue\") +\n  geom_errorbar(\n    aes(ymin = estimate - moe, ymax = estimate + moe),\n    width = 0.3\n  ) +\n  coord_flip() +\n  theme_minimal() +\n  scale_y_continuous(labels = scales::comma) +\n  labs(\n    title = \"Counties with the Largest Margins of Error\",\n    subtitle = \"People below 100% of the poverty level, ACS 2023 5-year estimates\",\n    x = NULL,\n    y = \"Population below poverty level\"\n  )"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#facets-and-themes",
+    "href": "weekly-notes/week-03.html#facets-and-themes",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Facets and Themes",
+    "text": "Facets and Themes\nA facet creates a separate panel for each category:\n\nggplot(county_data, aes(x = estimate, y = moe_pct)) +\n  geom_point() +\n  facet_wrap(~reliability) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nThemes change the appearance of a plot without changing the data."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#derived-uncertainty",
+    "href": "weekly-notes/week-03.html#derived-uncertainty",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Derived Uncertainty",
+    "text": "Derived Uncertainty\nWhen we calculate a new value from Census estimates, the new value also has uncertainty. We should not simply add individual margins of error when adding estimates.\n\nregion &lt;- county_data %&gt;%\n  filter(NAME %in% c(\n    \"Hamilton County, New York\",\n    \"Essex County, New York\",\n    \"Greene County, New York\"\n  ))\n\nregion_total &lt;- sum(region$estimate)\nregion_total_moe &lt;- moe_sum(region$moe, region$estimate)\n\nregion_total\n\n[1] 9594\n\nregion_total_moe\n\n[1] 889.1648\n\n\nThe tidycensus functions for derived uncertainty are:\n\nmoe_sum() for adding estimates\nmoe_prop() for one estimate as a share of another\nmoe_ratio() for a ratio where the numerator is not a subset of the denominator"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#proportions-and-moe_prop",
+    "href": "weekly-notes/week-03.html#proportions-and-moe_prop",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Proportions and moe_prop()",
+    "text": "Proportions and moe_prop()\nSuppose we want the proportion of people below poverty out of a total population. Both the numerator and denominator have estimates and margins of error.\n\npoverty_share &lt;- get_acs(\n  geography = \"county\",\n  variables = c(\n    below_poverty = \"B07012_002\",\n    total = \"B07012_001\"\n  ),\n  state = \"NY\",\n  year = 2023,\n  survey = \"acs5\",\n  output = \"wide\"\n) %&gt;%\n  mutate(\n    share = below_povertyE / totalE,\n    share_moe = moe_prop(\n      below_povertyE,\n      totalE,\n      below_povertyM,\n      totalM\n    ),\n    share_pct = share * 100,\n    share_moe_pct = share_moe * 100\n  )\n\nIf the proportion is multiplied by 100, its margin of error must also be multiplied by 100."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#coefficient-of-variation",
+    "href": "weekly-notes/week-03.html#coefficient-of-variation",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Coefficient of Variation",
+    "text": "Coefficient of Variation\nThe coefficient of variation, or CV, measures sampling error relative to the estimate:\n\\[\nCV = \\frac{SE}{Estimate} \\times 100\n\\]\nBecause the ACS generally uses a 90% margin of error:\n\\[\nSE = \\frac{MOE}{1.645}\n\\]\nTherefore:\ncv = (moe / 1.645) / estimate * 100\nA lower CV means less uncertainty relative to the estimate. A higher CV means more sampling uncertainty."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#change-over-time",
+    "href": "weekly-notes/week-03.html#change-over-time",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Change Over Time",
+    "text": "Change Over Time\nACS 5-year estimates cover overlapping periods:\n\nThe 2022 ACS 5-year estimate covers 2018–2022\nThe 2023 ACS 5-year estimate covers 2019–2023\n\nFor a cleaner comparison, use non-overlapping periods such as 2014–2018 and 2019–2023.\nWhen comparing income across time, adjust for inflation before interpreting the difference."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#creating-a-reusable-function",
+    "href": "weekly-notes/week-03.html#creating-a-reusable-function",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Creating a Reusable Function",
+    "text": "Creating a Reusable Function\nAn R function is a reusable set of instructions. This function takes a year as an argument, downloads the data, and creates a period label.\n\nget_poverty &lt;- function(yr) {\n  get_acs(\n    geography = \"county\",\n    variables = \"B07012_002\",\n    state = \"NY\",\n    year = yr,\n    survey = \"acs5\"\n  ) %&gt;%\n    mutate(period = paste0(yr - 4, \"-\", yr))\n}\n\nThe function does not run when it is defined. It creates a recipe that can be used later.\n\npoverty_change &lt;- bind_rows(\n  get_poverty(2018),\n  get_poverty(2023)\n)"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#converting-long-data-to-wide-data",
+    "href": "weekly-notes/week-03.html#converting-long-data-to-wide-data",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Converting Long Data to Wide Data",
+    "text": "Converting Long Data to Wide Data\nThe repeated ACS results are initially in long format:\n\n\n\nCounty\nPeriod\nEstimate\n\n\n\n\nAlbany County\n2014–2018\n10,000\n\n\nAlbany County\n2019–2023\n12,000\n\n\n\nWe can convert them to wide format so both periods appear in the same row:\n\npoverty_wide &lt;- poverty_change %&gt;%\n  select(GEOID, NAME, period, estimate, moe) %&gt;%\n  pivot_wider(\n    names_from = period,\n    values_from = c(estimate, moe)\n  )"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#calculating-change-and-its-uncertainty",
+    "href": "weekly-notes/week-03.html#calculating-change-and-its-uncertainty",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Calculating Change and Its Uncertainty",
+    "text": "Calculating Change and Its Uncertainty\n\npoverty_tested &lt;- poverty_wide %&gt;%\n  mutate(\n    change = `estimate_2019-2023` - `estimate_2014-2018`,\n    se_1 = `moe_2014-2018` / 1.645,\n    se_2 = `moe_2019-2023` / 1.645,\n    se_diff = sqrt(se_1^2 + se_2^2),\n    moe_diff = se_diff * 1.645,\n    z = change / se_diff,\n    significant = abs(z) &gt; 1.645\n  )\n\nThe difference between two estimates also has uncertainty. We calculate the standard error of the difference and use it to calculate a margin of error for the change."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#visualizing-significant-change",
+    "href": "weekly-notes/week-03.html#visualizing-significant-change",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Visualizing Significant Change",
+    "text": "Visualizing Significant Change\n\npoverty_tested %&gt;%\n  filter(significant) %&gt;%\n  mutate(NAME = str_remove(NAME, \" County, New York\")) %&gt;%\n  ggplot(aes(x = reorder(NAME, change), y = change)) +\n  geom_col(aes(fill = change &gt; 0)) +\n  geom_errorbar(\n    aes(ymin = change - moe_diff, ymax = change + moe_diff),\n    width = 0.3\n  ) +\n  geom_hline(yintercept = 0, linetype = \"dashed\") +\n  coord_flip() +\n  theme_minimal() +\n  labs(\n    title = \"Statistically Significant Change in Poverty Count\",\n    subtitle = \"2014–2018 versus 2019–2023, ACS 5-year estimates\",\n    x = NULL,\n    y = \"Change in people below poverty level\"\n  )"
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#creating-a-reliability-table",
+    "href": "weekly-notes/week-03.html#creating-a-reliability-table",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Creating a Reliability Table",
+    "text": "Creating a Reliability Table\n\nreliability_table &lt;- county_data %&gt;%\n  mutate(\n    cv = (moe / 1.645) / estimate * 100,\n    dot = case_when(\n      cv &lt; 12  ~ \"🟢\",\n      cv &lt;= 40 ~ \"🟡\",\n      TRUE     ~ \"🔴\"\n    ),\n    flag = case_when(\n      cv &lt; 12  ~ \"Reliable\",\n      cv &lt;= 40 ~ \"Somewhat reliable\",\n      TRUE     ~ \"Unreliable\"\n    ),\n    NAME = str_remove(NAME, \" County, New York\")\n  ) %&gt;%\n  arrange(desc(cv)) %&gt;%\n  select(dot, NAME, estimate, moe, cv, flag)\n\nreliability_table %&gt;%\n  gt() %&gt;%\n  fmt_number(columns = c(estimate, moe), decimals = 0) %&gt;%\n  fmt_number(columns = cv, decimals = 1) %&gt;%\n  cols_label(\n    dot = \"\",\n    NAME = \"County\",\n    estimate = \"Estimate\",\n    moe = \"MOE\",\n    cv = \"CV (%)\",\n    flag = \"Reliability\"\n  ) %&gt;%\n  cols_align(align = \"center\", columns = dot) %&gt;%\n  tab_header(\n    title = \"Population below 100% of the poverty level\",\n    subtitle = \"New York counties, ACS 2023 5-year estimates\"\n  ) %&gt;%\n  tab_source_note(\n    \"Reliability thresholds: CV &lt; 12% reliable, 12–40% somewhat reliable, and &gt; 40% unreliable.\"\n  )\n\n\n\n\n\n\n\nPopulation below 100% of the poverty level\n\n\nNew York counties, ACS 2023 5-year estimates\n\n\n\nCounty\nEstimate\nMOE\nCV (%)\nReliability\n\n\n\n\n🟡\nHamilton\n506\n141\n16.9\nSomewhat reliable\n\n\n🟢\nWashington\n6,304\n985\n9.5\nReliable\n\n\n🟢\nSchuyler\n2,663\n396\n9.0\nReliable\n\n\n🟢\nGreene\n4,945\n723\n8.9\nReliable\n\n\n🟢\nOrleans\n4,948\n701\n8.6\nReliable\n\n\n🟢\nWarren\n5,910\n821\n8.4\nReliable\n\n\n🟢\nSeneca\n4,167\n550\n8.0\nReliable\n\n\n🟢\nFulton\n7,532\n992\n8.0\nReliable\n\n\n🟢\nWyoming\n3,968\n520\n8.0\nReliable\n\n\n🟢\nCortland\n5,494\n717\n7.9\nReliable\n\n\n🟢\nDelaware\n6,317\n814\n7.8\nReliable\n\n\n🟢\nMontgomery\n7,163\n916\n7.8\nReliable\n\n\n🟢\nYates\n3,318\n420\n7.7\nReliable\n\n\n🟢\nTioga\n5,810\n727\n7.6\nReliable\n\n\n🟢\nFranklin\n7,179\n893\n7.6\nReliable\n\n\n🟢\nWayne\n10,174\n1,223\n7.3\nReliable\n\n\n🟢\nEssex\n4,143\n498\n7.3\nReliable\n\n\n🟢\nColumbia\n6,818\n816\n7.3\nReliable\n\n\n🟢\nGenesee\n6,018\n719\n7.3\nReliable\n\n\n🟢\nLewis\n3,230\n385\n7.2\nReliable\n\n\n🟢\nSchoharie\n3,106\n356\n7.0\nReliable\n\n\n🟢\nOntario\n9,961\n1,135\n6.9\nReliable\n\n\n🟢\nOtsego\n7,741\n879\n6.9\nReliable\n\n\n🟢\nSaratoga\n15,723\n1,777\n6.9\nReliable\n\n\n🟢\nLivingston\n6,606\n742\n6.8\nReliable\n\n\n🟢\nSullivan\n11,547\n1,269\n6.7\nReliable\n\n\n🟢\nPutnam\n6,331\n689\n6.6\nReliable\n\n\n🟢\nHerkimer\n7,826\n822\n6.4\nReliable\n\n\n🟢\nChenango\n5,597\n585\n6.4\nReliable\n\n\n🟢\nMadison\n6,033\n626\n6.3\nReliable\n\n\n🟢\nJefferson\n14,832\n1,454\n6.0\nReliable\n\n\n🟢\nCayuga\n9,914\n940\n5.8\nReliable\n\n\n🟢\nAllegany\n7,095\n659\n5.6\nReliable\n\n\n🟢\nSchenectady\n19,384\n1,737\n5.4\nReliable\n\n\n🟢\nChemung\n12,500\n1,098\n5.3\nReliable\n\n\n🟢\nSt. Lawrence\n16,924\n1,478\n5.3\nReliable\n\n\n🟢\nTompkins\n13,547\n1,167\n5.2\nReliable\n\n\n🟢\nOswego\n18,598\n1,581\n5.2\nReliable\n\n\n🟢\nClinton\n10,097\n818\n4.9\nReliable\n\n\n🟢\nSteuben\n12,537\n996\n4.8\nReliable\n\n\n🟢\nOrange\n51,238\n3,880\n4.6\nReliable\n\n\n🟢\nCattaraugus\n13,039\n974\n4.5\nReliable\n\n\n🟢\nChautauqua\n20,703\n1,460\n4.3\nReliable\n\n\n🟢\nNiagara\n27,014\n1,889\n4.3\nReliable\n\n\n🟢\nUlster\n25,084\n1,687\n4.1\nReliable\n\n\n🟢\nRockland\n51,969\n3,490\n4.1\nReliable\n\n\n🟢\nRensselaer\n18,177\n1,219\n4.1\nReliable\n\n\n🟢\nDutchess\n23,328\n1,536\n4.0\nReliable\n\n\n🟢\nRichmond\n53,177\n3,358\n3.8\nReliable\n\n\n🟢\nOneida\n32,026\n1,979\n3.8\nReliable\n\n\n🟢\nNassau\n72,719\n4,365\n3.6\nReliable\n\n\n🟢\nBroome\n35,448\n1,909\n3.3\nReliable\n\n\n🟢\nAlbany\n38,700\n2,076\n3.3\nReliable\n\n\n🟢\nWestchester\n86,670\n4,053\n2.8\nReliable\n\n\n🟢\nOnondaga\n62,884\n2,721\n2.6\nReliable\n\n\n🟢\nMonroe\n95,297\n3,815\n2.4\nReliable\n\n\n🟢\nSuffolk\n95,543\n3,570\n2.3\nReliable\n\n\n🟢\nErie\n130,009\n4,402\n2.1\nReliable\n\n\n🟢\nNew York\n250,056\n8,449\n2.1\nReliable\n\n\n🟢\nBronx\n374,138\n9,301\n1.5\nReliable\n\n\n🟢\nQueens\n282,195\n6,988\n1.5\nReliable\n\n\n🟢\nKings\n494,754\n9,477\n1.2\nReliable\n\n\n\nReliability thresholds: CV &lt; 12% reliable, 12–40% somewhat reliable, and &gt; 40% unreliable."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#key-lessons",
+    "href": "weekly-notes/week-03.html#key-lessons",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Key Lessons",
+    "text": "Key Lessons\nThis week connected visualization with statistical reasoning.\n\nChoose a plot that matches the question.\nUse the actual data frame name in ggplot().\nPut variable mappings inside aes().\nPut fixed visual settings outside aes().\nUse error bars to show uncertainty.\nUse moe_sum() when adding estimates.\nUse moe_prop() when calculating a proportion.\nAvoid overlapping ACS periods when studying change.\nCalculate the uncertainty around differences over time.\nDo not describe a change as meaningful without checking its uncertainty."
+  },
+  {
+    "objectID": "weekly-notes/week-03.html#questions-for-further-practice",
+    "href": "weekly-notes/week-03.html#questions-for-further-practice",
+    "title": "Week 3: Visualizing Uncertainty and Change",
+    "section": "Questions for Further Practice",
+    "text": "Questions for Further Practice\n\nCan I create a plot using my own ACS data?\nCan I explain the difference between an estimate, an MOE, a standard error, and a CV?\nCan I explain why two estimates may look different without representing a statistically significant change?\nCan I write a function that pulls data for more than one year?\nCan I create a table that includes estimates, margins of error, and reliability categories?"
   }
 ]
