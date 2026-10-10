@@ -1,54 +1,47 @@
-# MUSA 5080 — Student Portfolio Template
+# Frederick Abalo — engineering and MUSA portfolio
 
-Your portfolio for **Public Policy Analytics**, Fall 2026.
+[Published site](https://freddie999.github.io/MUSA-5080-portfolio/)
 
-Everything you publish for this course lives here: weekly notes, assignments,
-and your final project. By December it's a public, professional artifact you
-can send to employers.
+A Quarto website presenting professional geospatial engineering experience, personal engineering demonstrations, and MUSA 5080 coursework. Project descriptions distinguish implemented public examples from proprietary work and academic analyses.
 
-**See what you're building toward:** [Dr. Delmelle's example portfolio](https://ecdelmelle.github.io/MUSA-5080-instructor-portolio/)
+## Structure
 
----
+- `index.qmd`: engineering introduction and selected projects
+- `projects.qmd`: evidence-backed case studies, links, and limitations
+- `coursework.qmd`: course overview
+- `about.qmd`: background, skills, and contact details
+- `assignments/` and `weekly-notes/`: existing coursework pages and automatic listings
+- `assets/projects/`: verified screenshots and an existing assignment chart
+- `styles.scss`: shared responsive styling
+- `docs/`: committed rendered website, served by GitHub Pages
+- `_freeze/`: committed execution results used by Quarto
 
-## Setup instructions are on Canvas
+## Render and validate
 
-Do not follow setup steps from this file or from anywhere else in this repo.
+The portfolio update was rendered with Quarto 1.10.18 and the existing local R environment.
 
-> **Canvas → Files → `session1_student_handout.md`**
-
-That handout is the only current version. 
-
----
-
-## What's in here
-
-```
-index.qmd            your homepage
-about.qmd            about you
-weekly-notes/        one file per week
-assignments/         graded work
-_quarto.yml          site settings (nav, theme)
-docs/                the generated website — never edit
+```sh
+quarto render
+python3 scripts/check_site.py docs
+quarto preview --no-render
 ```
 
-New `.qmd` files added to `weekly-notes/` or `assignments/` appear in your
-navigation automatically. You don't need to edit `_quarto.yml` to add a page.
+Python is only used for the optional standard-library link checker; use your project's uv-managed interpreter where applicable. Quarto/R remain the site's build tools. Existing course computations retain their original execution settings and dependencies (`tidyverse`, `tidycensus`, `sf`, `gt`, and packages declared in individual notes).
 
----
+The project keeps `freeze: auto`. Week 4 explicitly disables freezing and uses the committed `week04-data/*.rds` snapshots when present. A fresh data refresh may need Census credentials and network access as documented in that note; never commit `.Renviron` or API keys. Do not substitute synthetic data into academic results.
 
-## The weekly loop
+After rendering, inspect `git diff` and commit the intended source, asset, frozen-result, and `docs/` changes. Avoid committing unrelated local notebook or R-session output. The checker verifies local links, anchors, asset references, and image alt attributes; it does not validate external services or the statistical methods.
 
-```
-Edit in RStudio → Save → Render → Commit → Push → wait 2 min → refresh live site
-```
+## Deployment
 
-Every week, all semester. Save is not render. Render is not push.
+Existing behavior is preserved: **GitHub Pages serves `/docs` on `main`**. Feature branches and pull requests are for review; pushing this branch does not publish the site. Merge only after review. No new deployment workflow is introduced.
 
----
+Assignment and weekly-note source paths and published URLs are unchanged. The Coursework dropdown groups their existing index pages without moving them.
 
-## Getting help
+## Evidence and attribution
 
-- **In class:** ask two neighbors, then raise your hand
-- **Canvas discussion board:** post it — someone else has the same problem
-- **Office hours:** see the syllabus
-- **Email:** delmelle@design.upenn.edu
+The API and terrain screenshots were captured from the running public portfolio demonstrations. They show synthetic GeoJSON and illustrative routes with public elevation data. Terrain source and basemap attribution appear in the demo, screenshot, and Projects page. The poverty-change figure is reused from the existing Assignment 3 frozen output; results were not newly estimated for the portfolio rewrite.
+
+Geomersive's main application remains private. The public tile library is linked separately, and pending PR work is labeled. Zipline source code, internal screenshots, and operational data are not included.
+
+`filters/coursework-image-alt.lua` supplies source-backed descriptions for 19 existing course figures that lacked image alt attributes. This changes rendered accessibility metadata, not the analysis code or visible captions. Existing descriptions take precedence. Update its filename mappings if course figures are renamed.

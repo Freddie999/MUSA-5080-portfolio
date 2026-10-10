@@ -10,5 +10,4 @@ listing:
   filter-ui: false
 ---
 
-Notes from each week of MUSA 5080. New entries appear here automatically —
-add a `.qmd` file to this folder and render.
+Weekly learning notes from MUSA 5080, covering data manipulation, spatial analysis, statistics, and interpretation.

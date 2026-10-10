@@ -9,7 +9,7 @@
 <meta name="dcterms.date" content="2026-09-18">
 <meta name="description" content="Joining tables, working with coordinate systems, and comparing ways to measure access to bike-share stations.">
 
-<title>Week 4: Joins, Spatial Data, and Access to Indego – Frederick Abalo - MUSA 5080 Portfolio</title>
+<title>Week 4: Joins, Spatial Data, and Access to Indego – Frederick Abalo</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6a2b564723c042b0e428f357d9a015bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4eed11f2f8a20affca13df5758378602.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Portfolio</span>
+    <span class="navbar-title">Frederick Abalo</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -136,23 +136,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-coursework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Coursework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
+        <li>
+    <a class="dropdown-item" href="../coursework.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../assignments/index.html">
+ <span class="dropdown-text">Assignments</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../weekly-notes/index.html">
+ <span class="dropdown-text">Weekly Notes</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
     <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../weekly-notes/index.html"> 
-<span class="menu-text">Weekly Notes</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../assignments/index.html"> 
-<span class="menu-text">Assignments</span></a>
-  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/freddie999/MUSA-5080-portfolio"> <i class="bi bi-github" role="img">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/Freddie999"> <i class="bi bi-github" role="img">
 </i> 
-<span class="menu-text"></span></a>
+<span class="menu-text">GitHub</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.linkedin.com/in/frederick-abalo-782054ba/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text">LinkedIn</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -278,11 +298,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="what-we-did">What We Did</h2>
 <p>This week connected the tables we have been using in R to the places they describe. We practiced joining tables by a shared identifier, adding geographic boundaries to ACS data, checking coordinate reference systems, and using spatial operations to study access to Indego stations in Philadelphia.</p>
 <p>The lab asks: <strong>Which low-income tracts are farthest from a station, and how certain are their income estimates?</strong> To answer it, we need to define both “low-income” and “access.” Different definitions can produce different answers even when the underlying data is the same.</p>
-<p>These notes combine the class notes, explanations recovered from the recording, the join diagram, and the lab into a worked study example. The choices in the challenge section are examples to examine and defend, not claims about what our team decided in class.</p>
+<p>I used the lab and class recording to fill in these notes. The challenge section is for practice; it is not a record of what our team decided.</p>
 </section>
 <section id="using-this-file" class="level2">
 <h2 class="anchored" data-anchor-id="using-this-file">Using This File</h2>
-<p>Save this file as <code>weekly-notes/week-04.qmd</code> in the portfolio project. The YAML settings above show both the code and its results. Maps appear below the chunks that create them. There is no page-level theme here, so the page can inherit the theme in <code>_quarto.yml</code>.</p>
+<p>The YAML settings show the code and its results. Maps appear below the chunks that create them. The page inherits its theme from <code>_quarto.yml</code>.</p>
 <ul>
 <li><code>echo: true</code> displays the code.</li>
 <li><code>eval: true</code> runs it during rendering.</li>
@@ -668,7 +688,7 @@ Geodetic CRS:  NAD83
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="week-04_files/figure-html/income-map-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="week-04_files/figure-html/income-map-1.png" class="img-fluid figure-img" alt="Philadelphia census tracts shaded by median household income in the 2019–2023 ACS; gray denotes missing estimates." width="672"></p>
 <figcaption>Median household income estimates for populated Philadelphia tracts. Gray indicates a missing estimate.</figcaption>
 </figure>
 </div>
@@ -1098,7 +1118,7 @@ $ station_row            &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="week-04_files/figure-html/stations-map-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="week-04_files/figure-html/stations-map-1.png" class="img-fluid figure-img" alt="Indego station points over Philadelphia census tract boundaries using the saved station snapshot." width="672"></p>
 </figure>
 </div>
 </div>
@@ -1275,7 +1295,7 @@ $ station_row            &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="week-04_files/figure-html/spatial-operation-diagram-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="week-04_files/figure-html/spatial-operation-diagram-1.png" class="img-fluid figure-img" alt="Two overlapping circles illustrating spatial set operations; colored areas show each result against the original gray outlines." width="768"></p>
 <figcaption>Colored regions are the output of each operation. The gray outlines show the two original circles.</figcaption>
 </figure>
 </div>
@@ -1474,7 +1494,7 @@ $ station_row            &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="week-04_files/figure-html/nearest-distance-map-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="week-04_files/figure-html/nearest-distance-map-1.png" class="img-fluid figure-img" alt="Philadelphia tracts shaded by straight-line distance from their centroid to the nearest Indego station; white points mark stations." width="672"></p>
 </figure>
 </div>
 </div>
@@ -1501,7 +1521,7 @@ $ station_row            &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="week-04_files/figure-html/station-buffer-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="week-04_files/figure-html/station-buffer-1.png" class="img-fluid figure-img" alt="Dissolved half-mile buffers around Indego stations over Philadelphia tract boundaries." width="672"></p>
 </figure>
 </div>
 </div>
@@ -1609,7 +1629,7 @@ all geometries</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="week-04_files/figure-html/coverage-map-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="week-04_files/figure-html/coverage-map-1.png" class="img-fluid figure-img" alt="Philadelphia tracts shaded by the proportion of their area within half a mile of an Indego station; area coverage does not measure residents served." width="672"></p>
 </figure>
 </div>
 </div>
@@ -1689,7 +1709,7 @@ all geometries</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="week-04_files/figure-html/challenge-map-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="week-04_files/figure-html/challenge-map-1.png" class="img-fluid figure-img" alt="Low-income Philadelphia tracts with centroids more than half a mile from Indego, highlighted in orange with stations in blue." width="672"></p>
 </figure>
 </div>
 </div>
@@ -1774,7 +1794,7 @@ all geometries</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="week-04_files/figure-html/farthest-low-income-chart-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="week-04_files/figure-html/farthest-low-income-chart-1.png" class="img-fluid figure-img" alt="Up to 15 low-income tracts ranked by distance to the nearest Indego station, with color indicating income-estimate reliability." width="672"></p>
 </figure>
 </div>
 </div>
@@ -1824,7 +1844,7 @@ all geometries</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="week-04_files/figure-html/compare-access-definitions-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="week-04_files/figure-html/compare-access-definitions-1.png" class="img-fluid figure-img" alt="Counts of low-income tracts without access under different spatial definitions, showing how the chosen rule changes the count." width="672"></p>
 </figure>
 </div>
 </div>
@@ -2522,11 +2542,11 @@ all geometries</code></pre>
 <span id="cb110-24"><a href="#cb110-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb110-25"><a href="#cb110-25" aria-hidden="true" tabindex="-1"></a>The lab asks: **Which low-income tracts are farthest from a station, and how certain are their income estimates?** To answer it, we need to define both "low-income" and "access." Different definitions can produce different answers even when the underlying data is the same.</span>
 <span id="cb110-26"><a href="#cb110-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb110-27"><a href="#cb110-27" aria-hidden="true" tabindex="-1"></a>These notes combine the class notes, explanations recovered from the recording, the join diagram, and the lab into a worked study example. The choices in the challenge section are examples to examine and defend, not claims about what our team decided in class.</span>
+<span id="cb110-27"><a href="#cb110-27" aria-hidden="true" tabindex="-1"></a>I used the lab and class recording to fill in these notes. The challenge section is for practice; it is not a record of what our team decided.</span>
 <span id="cb110-28"><a href="#cb110-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb110-29"><a href="#cb110-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Using This File</span></span>
 <span id="cb110-30"><a href="#cb110-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb110-31"><a href="#cb110-31" aria-hidden="true" tabindex="-1"></a>Save this file as <span class="in">`weekly-notes/week-04.qmd`</span> in the portfolio project. The YAML settings above show both the code and its results. Maps appear below the chunks that create them. There is no page-level theme here, so the page can inherit the theme in <span class="in">`_quarto.yml`</span>.</span>
+<span id="cb110-31"><a href="#cb110-31" aria-hidden="true" tabindex="-1"></a>The YAML settings show the code and its results. Maps appear below the chunks that create them. The page inherits its theme from <span class="in">`_quarto.yml`</span>.</span>
 <span id="cb110-32"><a href="#cb110-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb110-33"><a href="#cb110-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`echo: true`</span> displays the code.</span>
 <span id="cb110-34"><a href="#cb110-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`eval: true`</span> runs it during rendering.</span>
@@ -3631,6 +3651,30 @@ all geometries</code></pre>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Frederick Abalo · Geospatial software &amp; urban spatial analytics</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="mailto:frederick.abalo@icloud.com">
+<p>Email</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/Freddie999/MUSA-5080-portfolio">
+<p>Site source</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 

@@ -1,36 +1,44 @@
 ---
-title: "About Me"
+title: "About"
+description: "Geospatial software engineering, mapping systems, and spatial analytics."
+code-tools: false
 ---
 
 ## Background
 
-<!-- CHANGE THIS -->
+I'm Frederick Abalo, a geospatial software engineer from Ghana. My work connects spatial data with the services and tools that people use to manage it: APIs, processing pipelines, mapping applications, and quality checks.
 
-I am a Ghanaian geospatial scientist and GIS team lead with a background in Geospatial Engineering. Before joining Penn’s Master of Urban Spatial Analytics program, I worked at Zipline International in Kigali, where I helped develop geospatial systems for autonomous medical drone delivery. This work involved terrain modeling, aerial imagery, route planning, and spatial data management across complex environments. It showed me how geospatial technology can have a direct human impact, from helping patients receive medical supplies on time to improving access to essential services.
+At **Zipline**, I worked on geospatial systems supporting autonomous medical delivery. My experience includes building internal applications for spatial-data ingestion and validation, developing Python pipelines orchestrated with Prefect, working with PostgreSQL/PostGIS data models, and supporting services on AWS and Kubernetes. I also worked on imagery and terrain processing, mapping QA, and route-planning workflows, alongside engineering and operations teams.
 
-My interest in urban spatial analytics grew from seeing how invisible or incomplete spatial data can limit effective planning. Earlier in my career, I worked on mapping underserved communities and sanitation infrastructure, producing information that helped support improved sanitation for more than 3,000 communities. These experiences taught me that maps are not just technical products. They influence how resources are allocated, which communities receive attention, and how governments and organizations respond to urgent needs.
+That work combined software development with production support: investigating failures, improving repeatable workflows, and making spatial data usable by other teams. Employer source code, internal screenshots, and operational datasets are not included in this portfolio.
 
-At MUSA, I am strengthening my skills in statistics, programming, spatial modeling, data visualization, and urban systems. I am particularly interested in routing, mapping, geospatial software, and the spatial intelligence that supports technologies such as delivery platforms, autonomous vehicles, and self-driving systems. I hope to work with technology companies developing products that depend on accurate maps, efficient routing, and a strong understanding of the built environment.
+I own **[Geomersive](https://geomersive.org)** and work on its spatial-data application, including dataset and product catalogs, upload workflows, mapping viewers, and processing workers. The main application remains private and under development. The [public tile utilities](https://github.com/GeomersiveTeam/geomersive-tile-utils) are a smaller example of the mapping code I maintain.
 
-Across these interests, my central goal is to help create a more equitable society. Whether I am working on public infrastructure, medical delivery, transportation, or autonomous technology, I want to contribute to systems that are more accessible, reliable, and responsive to the needs of underserved communities.
+Earlier roles included GIS analysis, satellite-image interpretation, field data collection, and mapping for sanitation and agricultural projects. My undergraduate degree is a **BSc in Geomatic Engineering from the University of Mines and Technology**.
 
+## Education and current focus
 
-## Skills
+I'm pursuing the **Master of Urban Spatial Analytics at the University of Pennsylvania**, with expected graduation in **May 2027**. At Penn, I'm extending my work in statistics, spatial modeling, urban systems, and reproducible analysis with R and Quarto.
 
-<!-- CHANGE THIS: update this through the semester as it becomes true -->
+I'm interested in geospatial software, mapping infrastructure, and backend engineering roles where data quality, system reliability, and clear interfaces matter.
 
-- **Languages & Tools:** R, Quarto, Git
-- **Spatial:** (add as you learn)
-- **Data:** US Census / ACS via `tidycensus`
+## Technical skills
 
-## Reachable at
+| Area | Tools and experience |
+|---|---|
+| Backend and orchestration | Python, FastAPI, PostgreSQL/PostGIS, Prefect |
+| Cloud and production systems | AWS, Docker, Kubernetes, GitHub Actions, production troubleshooting |
+| Spatial processing and QA | GeoPandas, GDAL, QGIS, imagery and terrain processing, geometry validation |
+| Mapping and interfaces | TypeScript/JavaScript, Cesium, Mapbox GL, Leaflet |
+| Analysis and reproducibility | R, tidyverse, tidycensus, Quarto, Git |
 
-<!-- CHANGE THIS -->
+The [project case studies](projects.qmd) show which tools are used in each public example and explain their scope and limitations.
 
-- Email: [fabalo@upenn.edu](mailto:fabalo@upenn.edu) / [frederick.abalo@icloud.com](mailto:frederick.abalo@icloud.com)
-- GitHub: [@freddie999](https://github.com/freddie999)
-- LinkedIn: [Frederick Abalo](https://www.linkedin.com/in/frederick-abalo)
-- Phone: [Call me](+12153978467) (215) 397 8467
-- WhatsApp: [Ping me!](https://wa.me/233248779393)
+## Contact
 
-
+- **Email:** [frederick.abalo@icloud.com](mailto:frederick.abalo@icloud.com)
+- **Penn:** [fabalo@upenn.edu](mailto:fabalo@upenn.edu)
+- **GitHub:** [Freddie999](https://github.com/Freddie999)
+- **LinkedIn:** [Frederick Abalo](https://www.linkedin.com/in/frederick-abalo-782054ba/)
+- **Phone:** [+1 (215) 397-8467](tel:+12153978467)
+- **WhatsApp:** [Message me](https://wa.me/233248779393)

@@ -1,0 +1,33 @@
+---
+title: "Coursework"
+description: "Academic work from Penn's Master of Urban Spatial Analytics program."
+toc: false
+code-tools: false
+---
+
+This section collects my **MUSA 5080: Public Policy Analytics** assignments and weekly notes at the University of Pennsylvania. These are academic analyses and learning records, separate from the professional work and personal engineering demonstrations on the [Projects page](projects.qmd).
+
+::: {.project-grid}
+::: {.project-card}
+## Assignments
+
+Completed analyses with methods, code, findings, and reflections.
+
+[Browse assignments](assignments/index.qmd)
+:::
+
+::: {.project-card}
+## Weekly Notes
+
+Working notes on data manipulation, spatial operations, statistical modeling, and interpretation.
+
+[Browse weekly notes](weekly-notes/index.qmd)
+:::
+:::
+
+## Selected analyses
+
+- [Poverty change in Philadelphia](assignments/assignment3.qmd): comparing ACS periods while accounting for sampling uncertainty.
+- [Who do we know the least about?](assignments/assignment2.qmd): examining relative margins of error in California county estimates.
+
+Each analysis retains its original page and URL. Interpret findings in the context of the data, course methods, and limitations documented on that page.
