@@ -4,26 +4,43 @@ project:
   execute-dir: project
 
 website:
-  title: "Frederick Abalo - MUSA 5080 Portfolio"        # <-- CHANGE THIS
-  description: "Public Policy Analytics portfolio"
+  title: "Frederick Abalo"
+  description: "Geospatial software, mapping infrastructure, backend systems, and urban spatial analytics."
   navbar:
-    title: "Portfolio"
+    title: "Frederick Abalo"
     left:
       - href: index.qmd
         text: Home
+      - href: projects.qmd
+        text: Projects
+      - text: Coursework
+        menu:
+          - href: coursework.qmd
+            text: Overview
+          - href: assignments/index.qmd
+            text: Assignments
+          - href: weekly-notes/index.qmd
+            text: Weekly Notes
       - href: about.qmd
         text: About
-      - href: weekly-notes/index.qmd
-        text: "Weekly Notes"
-      - href: assignments/index.qmd
-        text: "Assignments"
     right:
       - icon: github
-        href: https://github.com/freddie999/MUSA-5080-portfolio      # <-- CHANGE THIS
+        text: GitHub
+        href: https://github.com/Freddie999
+      - icon: linkedin
+        text: LinkedIn
+        href: https://www.linkedin.com/in/frederick-abalo-782054ba/
+  page-footer:
+    left: "Frederick Abalo · Geospatial software & urban spatial analytics"
+    right:
+      - text: Email
+        href: mailto:frederick.abalo@icloud.com
+      - text: Site source
+        href: https://github.com/Freddie999/MUSA-5080-portfolio
 
 format:
   html:
-    theme: cosmo
+    theme: [cosmo, styles.scss]
     toc: true
     code-fold: false
     code-tools: true
@@ -33,3 +50,6 @@ execute:
   echo: true
   warning: false
   message: false
+
+filters:
+  - filters/coursework-image-alt.lua

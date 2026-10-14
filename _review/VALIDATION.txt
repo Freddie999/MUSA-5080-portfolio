@@ -1,0 +1,15 @@
+Portfolio review — 2026-10-09
+
+Quarto 1.10.18: full quarto render completed successfully (14 pages).
+Local site checker: 14 HTML pages, 0 local link/image issues.
+Original rendered baseline: 12 pages, 21 issues (2 phone links, 19 missing image alt attributes).
+Source-only git diff --check: passed. Quarto-generated HTML retains renderer whitespace.
+
+Browser checks: desktop home/projects, Coursework dropdown, assignment listing and Assignment 3 figures; mobile homepage and expanded Coursework menu at 390 CSS px. Mobile document width equals viewport width (no horizontal overflow). All three Projects images loaded. Screenshots are in this directory.
+
+Existing assignment and weekly-note .qmd content unchanged except introductory prose on the two listing index pages. All original HTML page paths preserved. Week 5 frozen output was refreshed to match its already-committed source during rendering; no statistical code was changed.
+
+GitHub Pages remains main /docs. No deployment workflow or Pages settings changed. This branch is for review only.
+The original working checkout and its two pre-existing modified Week 5 files were left untouched; implementation used a separate clone.
+
+Public project descriptions distinguish independent demonstrations, professional work under development, pending Geomersive PR 12, and coursework. No private employer code, operational data, credentials, or internal screenshots are included.

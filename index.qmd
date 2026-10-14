@@ -1,38 +1,74 @@
 ---
-title: "Home"
+title: ""
+pagetitle: "Frederick Abalo — Geospatial Software Engineer"
+title-block-style: none
+toc: false
+code-tools: false
 ---
 
-# FREDERICK ABALO {#welcome}
+::: {.hero}
+[GEOSPATIAL SOFTWARE · MAPPING INFRASTRUCTURE · BACKEND SYSTEMS]{.eyebrow}
 
-<!-- CHANGE THIS: replace with your own name above -->
+# Frederick Abalo
 
-Welcome to my portfolio for **MUSA 5080: Public Policy Analytics** at the
-University of Pennsylvania.
+[Building software for spatial data and mapping systems.]{.hero-lead}
 
-This site documents my work in the Master of Urban Spatial Analytics program —
-weekly notes, course assignments, and a final project applying data analysis to
-urban policy questions.
+I'm a geospatial software engineer with experience in spatial-data pipelines, mapping applications, and backend systems. At Zipline, I worked on geospatial systems supporting autonomous delivery. I also own Geomersive, where I work on spatial-data infrastructure.
 
-## About Me
+I'm pursuing a **Master of Urban Spatial Analytics at the University of Pennsylvania**, with expected graduation in **May 2027**. This portfolio brings together my engineering work and academic analyses.
 
-<!-- CHANGE THIS: two or three sentences about yourself -->
+::: {.contact-links}
+[Explore projects](projects.qmd){.btn .btn-primary}
+[GitHub](https://github.com/Freddie999){.btn .btn-outline-primary}
+[LinkedIn](https://www.linkedin.com/in/frederick-abalo-782054ba/){.btn .btn-outline-primary}
+[Email me](mailto:frederick.abalo@icloud.com){.btn .btn-outline-primary}
+:::
+:::
 
-I'm a student in the MUSA program at Penn. My background is in
-Geospatial Engineering, and I'm interested in geospatial software engineering, spatial data analytics, urban systems, transportation, and using GeoAI to help create a more equitable world.
+## Selected Projects
 
-## What You'll Find Here
+::: {.project-grid}
+::: {.project-card}
+[PERSONAL · ENGINEERING DEMONSTRATION]{.eyebrow}
 
-- **[Weekly Notes](weekly-notes/index.qmd)** — what I'm learning each week
-- **[Assignments](assignments/index.qmd)** — analyses completed for the course
-- **[About](about.qmd)** — more background and how to reach me
+### Spatial-data validation API
 
-## Get in Touch
+FastAPI and PostGIS service with strict GeoJSON validation, atomic ingestion, spatial queries, and cursor pagination. Tested against a real database and packaged with Docker.
 
-<!-- CHANGE THIS -->
+[Read the API case study](projects.qmd#spatial-validation-api)
+:::
 
-- Email: [fabalo@upenn.edu](mailto:fabalo@upenn.edu) / [frederick.abalo@icloud.com](mailto:frederick.abalo@icloud.com)
-- GitHub: [@freddie999](https://github.com/freddie999)
-- LinkedIn: [Frederick Abalo](https://www.linkedin.com/in/frederick-abalo)
-- Phone: [Call me](+12153978467) (215) 397 8467
-- WhatsApp: [Ping me!](https://wa.me/233248779393)
+::: {.project-card}
+[PERSONAL · ENGINEERING DEMONSTRATION]{.eyebrow}
 
+### Terrain-aware route explorer
+
+A map and linked elevation profile for comparing illustrative routes against public terrain data, with explicit sampling and accuracy limits.
+
+[Read the terrain case study](projects.qmd#terrain-explorer) · [Try the demo](https://freddie999.github.io/terrain-route-explorer/)
+:::
+
+::: {.project-card}
+[COURSEWORK · PUBLIC POLICY ANALYTICS]{.eyebrow}
+
+### Poverty change in Philadelphia
+
+An ACS analysis that separates detectable changes from sampling uncertainty and keeps unassessable tracts visible in the results.
+
+[Read the academic case study](projects.qmd#poverty-change) · [Full analysis](assignments/assignment3.qmd)
+:::
+:::
+
+## Engineering experience
+
+My work spans Python services, PostgreSQL/PostGIS, geospatial ETL, imagery and terrain processing, spatial QA, and production support. I use AWS, Prefect, Docker, and Kubernetes alongside mapping tools and TypeScript/JavaScript interfaces.
+
+Much of my professional code is proprietary. The [Projects page](projects.qmd) distinguishes professional work, independently built demonstrations, and coursework, with public code and evidence where available.
+
+[More about my background](about.qmd) · [Geomersive work](projects.qmd#geomersive)
+
+## Coursework at Penn
+
+My MUSA work develops statistical reasoning, spatial analysis, and reproducible reporting alongside my engineering experience.
+
+[Coursework overview](coursework.qmd) · [Assignments](assignments/index.qmd) · [Weekly notes](weekly-notes/index.qmd)

@@ -10,5 +10,4 @@ listing:
   filter-ui: false
 ---
 
-Completed assignments for MUSA 5080. New assignments appear here automatically
-once you add the `.qmd` file to this folder and render.
+Analyses completed for MUSA 5080: Public Policy Analytics, with methods, code, findings, and reflections.
