@@ -217,7 +217,7 @@ nrow(tracts)
 
 **Answer:** How many tracts did you lose, and what kinds of places are they?
 
-The run retained 387 of the 408 ACS tracts, excluding 21 for zero population, unavailable outcome reliability, or missing baseline measures. These exclusions reflect data availability and should not be assumed to be a random subset of Philadelphia neighborhoods.
+The run retained 387 of the 408 ACS tracts. Seventeen excluded tracts have an ACS population estimate of zero; most are high-numbered 9800-series tract geographies, so they are not a random cross-section of residential neighborhoods. Four additional populated tracts are excluded because the poverty estimate or its CV is unavailable, or a baseline rate cannot be calculated. I would map these exclusions before making a stronger claim about their land use or neighborhood type.
 
 ---
 
@@ -476,7 +476,7 @@ tracts <- tracts %>%
 f2 <- update(f1, . ~ . + burglary_per_sqmi)
 model_log <- model_log %>% add_row(
   model = "m2", added = "Burglary records per square mile",
-  cv_rmse = cv_rmse(f2, tracts), notes = "Improved over ACS baseline")
+  cv_rmse = cv_rmse(f2, tracts), notes = "Slightly worse than ACS baseline")
 
 f3 <- update(f2, . ~ . + shootings_per_sqmi)
 model_log <- model_log %>% add_row(
@@ -538,7 +538,7 @@ summary(m_sq)
 
 ```{r}
 #| label: squared-plot
-ggplot(tracts, aes(x = dist_ch_mi, y = y)) +
+ggplot(tracts, aes(x = dist_burglary_mi, y = y)) +
   geom_point(alpha = 0.4) +
   geom_smooth(method = "lm", formula = y ~ x + I(x^2), se = FALSE, color = "red") +
   theme_minimal()
@@ -602,7 +602,7 @@ model_log
 
 **Answer:** Which transformation helped most? For your categorical variable, write one sentence reading one of its coefficients correctly, naming the reference level.
 
-The log-density model performed best (m5, RMSE 8.89). In categorical model m7, `Core` is the reference; its `ringOuter` estimate is −1.92, meaning Outer tracts are predicted to have poverty rates about 1.92 percentage points lower than Core tracts, holding the other predictors fixed. This is an adjusted association; m7 is not the final model because its CV RMSE is slightly higher.
+The log-density model performed best (m5, RMSE 8.89). In categorical model m7, `Core` is the reference; its `ringOuter` estimate is +1.52, meaning Outer tracts are predicted to have poverty rates about 1.52 percentage points higher than Core tracts, holding the other predictors fixed. This is an adjusted association; m7 is not the final model because its CV RMSE is slightly higher.
 
 ---
 
@@ -690,7 +690,7 @@ The ACS baseline had a 10-fold CV RMSE of 9.05 percentage points. Adding burglar
 
 In the final model, the shooting-victim density coefficient is about 0.020. Holding other predictors fixed, 100 additional shooting-victim records per square mile correspond to about a 2-percentage-point higher predicted poverty rate. For an ŷ reading, the example Core tract (GEOID 42101001301) has a fitted rate of 5.90% versus an observed estimate of 13.03%; the example Outer tract (GEOID 42101027402) has a fitted rate of 22.16% versus an observed estimate of 16.09%. These are predictions for two actual tracts, not a controlled Core-versus-Outer comparison.
 
-The residual map still shows clusters of over- and under-prediction, especially in central and northern parts of the city. A useful next feature could measure access to jobs or commute times, since the model has no direct measure of economic opportunity. The CV-versus-absolute-in-sample-residual plot trends upward at higher CV values, but is noisy and does not tell us what share of error is sampling uncertainty; residuals also reflect omitted predictors, measurement error, and model form. In addition, these random 10-fold splits can place nearby tracts in both training and test sets, so they may overstate how well the model predicts in a geographically separate area; spatially blocked validation would be a useful next check. Poverty passes the assignment's one-third low-reliability screen, but most estimates are only moderate reliability rather than precise. I would use this model to explore broad patterns, not make high-stakes decisions about individual tracts.
+The residual map still shows clusters of over- and under-prediction, especially in central and northern parts of the city. A useful next feature could measure access to jobs or commute times, using ACS commute-time estimates or Census LEHD/LODES job-flow data, since the model has no direct measure of economic opportunity. The CV-versus-absolute-in-sample-residual plot trends upward at higher CV values, but is noisy and does not tell us what share of error is sampling uncertainty; residuals also reflect omitted predictors, measurement error, and model form. In addition, these random 10-fold splits can place nearby tracts in both training and test sets, so they may overstate how well the model predicts in a geographically separate area; spatially blocked validation would be a useful next check. Poverty passes the assignment's one-third low-reliability screen, but most estimates are only moderate reliability rather than precise. I would use this model to explore broad patterns, not make high-stakes decisions about individual tracts.
 
 ---
 

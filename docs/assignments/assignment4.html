@@ -550,7 +550,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><strong>Answer:</strong> How many tracts did you lose, and what kinds of places are they?</p>
-<p>The run retained 387 of the 408 ACS tracts, excluding 21 for zero population, unavailable outcome reliability, or missing baseline measures. These exclusions reflect data availability and should not be assumed to be a random subset of Philadelphia neighborhoods.</p>
+<p>The run retained 387 of the 408 ACS tracts. Seventeen excluded tracts have an ACS population estimate of zero; most are high-numbered 9800-series tract geographies, so they are not a random cross-section of residential neighborhoods. Four additional populated tracts are excluded because the poverty estimate or its CV is unavailable, or a baseline rate cannot be calculated. I would map these exclusions before making a stronger claim about their land use or neighborhood type.</p>
 <hr>
 </section>
 </section>
@@ -936,7 +936,7 @@ F-statistic: 106.3 on 5 and 381 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="fu">update</span>(f1, . <span class="sc">~</span> . <span class="sc">+</span> burglary_per_sqmi)</span>
 <span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>model_log <span class="ot">&lt;-</span> model_log <span class="sc">%&gt;%</span> <span class="fu">add_row</span>(</span>
 <span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"m2"</span>, <span class="at">added =</span> <span class="st">"Burglary records per square mile"</span>,</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">cv_rmse =</span> <span class="fu">cv_rmse</span>(f2, tracts), <span class="at">notes =</span> <span class="st">"Improved over ACS baseline"</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">cv_rmse =</span> <span class="fu">cv_rmse</span>(f2, tracts), <span class="at">notes =</span> <span class="st">"Slightly worse than ACS baseline"</span>)</span>
 <span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="fu">update</span>(f2, . <span class="sc">~</span> . <span class="sc">+</span> shootings_per_sqmi)</span>
 <span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>model_log <span class="ot">&lt;-</span> model_log <span class="sc">%&gt;%</span> <span class="fu">add_row</span>(</span>
@@ -954,7 +954,7 @@ F-statistic: 106.3 on 5 and 381 DF,  p-value: &lt; 2.2e-16</code></pre>
   model added                                   cv_rmse notes                   
   &lt;chr&gt; &lt;chr&gt;                                     &lt;dbl&gt; &lt;chr&gt;                   
 1 m1    ACS baseline                               9.05 Unemployment, renter sh…
-2 m2    Burglary records per square mile           9.09 Improved over ACS basel…
+2 m2    Burglary records per square mile           9.09 Slightly worse than ACS…
 3 m3    Shooting-victim records per square mile    8.94 Small additional improv…
 4 m4    Distance to nearest burglary record        8.95 Little change from m3   </code></pre>
 </div>
@@ -1058,7 +1058,7 @@ F-statistic: 21.41 on 2 and 384 DF,  p-value: 1.529e-09</code></pre>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tracts, <span class="fu">aes</span>(<span class="at">x =</span> dist_ch_mi, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tracts, <span class="fu">aes</span>(<span class="at">x =</span> dist_burglary_mi, <span class="at">y =</span> y)) <span class="sc">+</span></span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>), <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
 <span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1175,7 +1175,7 @@ F-statistic: 29.28 on 2 and 384 DF,  p-value: 1.466e-12</code></pre>
   model added                                   cv_rmse notes                   
   &lt;chr&gt; &lt;chr&gt;                                     &lt;dbl&gt; &lt;chr&gt;                   
 1 m1    ACS baseline                               9.05 Unemployment, renter sh…
-2 m2    Burglary records per square mile           9.09 Improved over ACS basel…
+2 m2    Burglary records per square mile           9.09 Slightly worse than ACS…
 3 m3    Shooting-victim records per square mile    8.94 Small additional improv…
 4 m4    Distance to nearest burglary record        8.95 Little change from m3   
 5 m5    log1p burglary density                     8.89 Compresses right tail   
@@ -1184,7 +1184,7 @@ F-statistic: 29.28 on 2 and 384 DF,  p-value: 1.466e-12</code></pre>
 </div>
 </div>
 <p><strong>Answer:</strong> Which transformation helped most? For your categorical variable, write one sentence reading one of its coefficients correctly, naming the reference level.</p>
-<p>The log-density model performed best (m5, RMSE 8.89). In categorical model m7, <code>Core</code> is the reference; its <code>ringOuter</code> estimate is −1.92, meaning Outer tracts are predicted to have poverty rates about 1.92 percentage points lower than Core tracts, holding the other predictors fixed. This is an adjusted association; m7 is not the final model because its CV RMSE is slightly higher.</p>
+<p>The log-density model performed best (m5, RMSE 8.89). In categorical model m7, <code>Core</code> is the reference; its <code>ringOuter</code> estimate is +1.52, meaning Outer tracts are predicted to have poverty rates about 1.52 percentage points higher than Core tracts, holding the other predictors fixed. This is an adjusted association; m7 is not the final model because its CV RMSE is slightly higher.</p>
 <hr>
 </section>
 </section>
@@ -1240,7 +1240,7 @@ F-statistic: 72.83 on 8 and 378 DF,  p-value: &lt; 2.2e-16</code></pre>
   model added                                                      cv_rmse notes
   &lt;chr&gt; &lt;chr&gt;                                                        &lt;dbl&gt; &lt;chr&gt;
 1 m1    ACS baseline                                                  9.05 Unem…
-2 m2    Burglary records per square mile                              9.09 Impr…
+2 m2    Burglary records per square mile                              9.09 Slig…
 3 m3    Shooting-victim records per square mile                       8.94 Smal…
 4 m4    Distance to nearest burglary record                           8.95 Litt…
 5 m5    log1p burglary density                                        8.89 Comp…
@@ -1332,7 +1332,7 @@ F-statistic: 72.83 on 8 and 378 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ol>
 <p>The ACS baseline had a 10-fold CV RMSE of 9.05 percentage points. Adding burglary density raised it slightly to 9.09; adding shooting-victim density then lowered it to 8.94. Nearest-burglary distance changed it to 8.95, so that feature did not help. The relationship may reflect broader neighborhood conditions, but incident counts are indirect measures and are influenced by reporting and enforcement. Among the transformations, log burglary density performed best (8.89); the distance category scored 8.96 and squared distance 8.99. The log model’s improvement over baseline is small, so it should not be oversold.</p>
 <p>In the final model, the shooting-victim density coefficient is about 0.020. Holding other predictors fixed, 100 additional shooting-victim records per square mile correspond to about a 2-percentage-point higher predicted poverty rate. For an ŷ reading, the example Core tract (GEOID 42101001301) has a fitted rate of 5.90% versus an observed estimate of 13.03%; the example Outer tract (GEOID 42101027402) has a fitted rate of 22.16% versus an observed estimate of 16.09%. These are predictions for two actual tracts, not a controlled Core-versus-Outer comparison.</p>
-<p>The residual map still shows clusters of over- and under-prediction, especially in central and northern parts of the city. A useful next feature could measure access to jobs or commute times, since the model has no direct measure of economic opportunity. The CV-versus-absolute-in-sample-residual plot trends upward at higher CV values, but is noisy and does not tell us what share of error is sampling uncertainty; residuals also reflect omitted predictors, measurement error, and model form. In addition, these random 10-fold splits can place nearby tracts in both training and test sets, so they may overstate how well the model predicts in a geographically separate area; spatially blocked validation would be a useful next check. Poverty passes the assignment’s one-third low-reliability screen, but most estimates are only moderate reliability rather than precise. I would use this model to explore broad patterns, not make high-stakes decisions about individual tracts.</p>
+<p>The residual map still shows clusters of over- and under-prediction, especially in central and northern parts of the city. A useful next feature could measure access to jobs or commute times, using ACS commute-time estimates or Census LEHD/LODES job-flow data, since the model has no direct measure of economic opportunity. The CV-versus-absolute-in-sample-residual plot trends upward at higher CV values, but is noisy and does not tell us what share of error is sampling uncertainty; residuals also reflect omitted predictors, measurement error, and model form. In addition, these random 10-fold splits can place nearby tracts in both training and test sets, so they may overstate how well the model predicts in a geographically separate area; spatially blocked validation would be a useful next check. Poverty passes the assignment’s one-third low-reliability screen, but most estimates are only moderate reliability rather than precise. I would use this model to explore broad patterns, not make high-stakes decisions about individual tracts.</p>
 <hr>
 
 
@@ -2011,7 +2011,7 @@ F-statistic: 72.83 on 8 and 378 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb61-231"><a href="#cb61-231" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-232"><a href="#cb61-232" aria-hidden="true" tabindex="-1"></a>**Answer:** How many tracts did you lose, and what kinds of places are they?</span>
 <span id="cb61-233"><a href="#cb61-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-234"><a href="#cb61-234" aria-hidden="true" tabindex="-1"></a>The run retained 387 of the 408 ACS tracts, excluding 21 for zero population, unavailable outcome reliability, or missing baseline measures. These exclusions reflect data availability and should not be assumed to be a random subset of Philadelphia neighborhoods.</span>
+<span id="cb61-234"><a href="#cb61-234" aria-hidden="true" tabindex="-1"></a>The run retained 387 of the 408 ACS tracts. Seventeen excluded tracts have an ACS population estimate of zero; most are high-numbered 9800-series tract geographies, so they are not a random cross-section of residential neighborhoods. Four additional populated tracts are excluded because the poverty estimate or its CV is unavailable, or a baseline rate cannot be calculated. I would map these exclusions before making a stronger claim about their land use or neighborhood type.</span>
 <span id="cb61-235"><a href="#cb61-235" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-236"><a href="#cb61-236" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb61-237"><a href="#cb61-237" aria-hidden="true" tabindex="-1"></a></span>
@@ -2270,7 +2270,7 @@ F-statistic: 72.83 on 8 and 378 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb61-514"><a href="#cb61-514" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="fu">update</span>(f1, . <span class="sc">~</span> . <span class="sc">+</span> burglary_per_sqmi)</span>
 <span id="cb61-515"><a href="#cb61-515" aria-hidden="true" tabindex="-1"></a>model_log <span class="ot">&lt;-</span> model_log <span class="sc">%&gt;%</span> <span class="fu">add_row</span>(</span>
 <span id="cb61-516"><a href="#cb61-516" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"m2"</span>, <span class="at">added =</span> <span class="st">"Burglary records per square mile"</span>,</span>
-<span id="cb61-517"><a href="#cb61-517" aria-hidden="true" tabindex="-1"></a>  <span class="at">cv_rmse =</span> <span class="fu">cv_rmse</span>(f2, tracts), <span class="at">notes =</span> <span class="st">"Improved over ACS baseline"</span>)</span>
+<span id="cb61-517"><a href="#cb61-517" aria-hidden="true" tabindex="-1"></a>  <span class="at">cv_rmse =</span> <span class="fu">cv_rmse</span>(f2, tracts), <span class="at">notes =</span> <span class="st">"Slightly worse than ACS baseline"</span>)</span>
 <span id="cb61-518"><a href="#cb61-518" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-519"><a href="#cb61-519" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="fu">update</span>(f2, . <span class="sc">~</span> . <span class="sc">+</span> shootings_per_sqmi)</span>
 <span id="cb61-520"><a href="#cb61-520" aria-hidden="true" tabindex="-1"></a>model_log <span class="ot">&lt;-</span> model_log <span class="sc">%&gt;%</span> <span class="fu">add_row</span>(</span>
@@ -2332,7 +2332,7 @@ F-statistic: 72.83 on 8 and 378 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb61-580"><a href="#cb61-580" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-583"><a href="#cb61-583" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb61-584"><a href="#cb61-584" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: squared-plot</span></span>
-<span id="cb61-585"><a href="#cb61-585" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tracts, <span class="fu">aes</span>(<span class="at">x =</span> dist_ch_mi, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb61-585"><a href="#cb61-585" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tracts, <span class="fu">aes</span>(<span class="at">x =</span> dist_burglary_mi, <span class="at">y =</span> y)) <span class="sc">+</span></span>
 <span id="cb61-586"><a href="#cb61-586" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
 <span id="cb61-587"><a href="#cb61-587" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>), <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
 <span id="cb61-588"><a href="#cb61-588" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
@@ -2396,7 +2396,7 @@ F-statistic: 72.83 on 8 and 378 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb61-650"><a href="#cb61-650" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-651"><a href="#cb61-651" aria-hidden="true" tabindex="-1"></a>**Answer:** Which transformation helped most? For your categorical variable, write one sentence reading one of its coefficients correctly, naming the reference level.</span>
 <span id="cb61-652"><a href="#cb61-652" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-653"><a href="#cb61-653" aria-hidden="true" tabindex="-1"></a>The log-density model performed best (m5, RMSE 8.89). In categorical model m7, <span class="in">`Core`</span> is the reference; its <span class="in">`ringOuter`</span> estimate is −1.92, meaning Outer tracts are predicted to have poverty rates about 1.92 percentage points lower than Core tracts, holding the other predictors fixed. This is an adjusted association; m7 is not the final model because its CV RMSE is slightly higher.</span>
+<span id="cb61-653"><a href="#cb61-653" aria-hidden="true" tabindex="-1"></a>The log-density model performed best (m5, RMSE 8.89). In categorical model m7, <span class="in">`Core`</span> is the reference; its <span class="in">`ringOuter`</span> estimate is +1.52, meaning Outer tracts are predicted to have poverty rates about 1.52 percentage points higher than Core tracts, holding the other predictors fixed. This is an adjusted association; m7 is not the final model because its CV RMSE is slightly higher.</span>
 <span id="cb61-654"><a href="#cb61-654" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-655"><a href="#cb61-655" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb61-656"><a href="#cb61-656" aria-hidden="true" tabindex="-1"></a></span>
@@ -2484,7 +2484,7 @@ F-statistic: 72.83 on 8 and 378 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb61-746"><a href="#cb61-746" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-747"><a href="#cb61-747" aria-hidden="true" tabindex="-1"></a>In the final model, the shooting-victim density coefficient is about 0.020. Holding other predictors fixed, 100 additional shooting-victim records per square mile correspond to about a 2-percentage-point higher predicted poverty rate. For an ŷ reading, the example Core tract (GEOID 42101001301) has a fitted rate of 5.90% versus an observed estimate of 13.03%; the example Outer tract (GEOID 42101027402) has a fitted rate of 22.16% versus an observed estimate of 16.09%. These are predictions for two actual tracts, not a controlled Core-versus-Outer comparison.</span>
 <span id="cb61-748"><a href="#cb61-748" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-749"><a href="#cb61-749" aria-hidden="true" tabindex="-1"></a>The residual map still shows clusters of over- and under-prediction, especially in central and northern parts of the city. A useful next feature could measure access to jobs or commute times, since the model has no direct measure of economic opportunity. The CV-versus-absolute-in-sample-residual plot trends upward at higher CV values, but is noisy and does not tell us what share of error is sampling uncertainty; residuals also reflect omitted predictors, measurement error, and model form. In addition, these random 10-fold splits can place nearby tracts in both training and test sets, so they may overstate how well the model predicts in a geographically separate area; spatially blocked validation would be a useful next check. Poverty passes the assignment's one-third low-reliability screen, but most estimates are only moderate reliability rather than precise. I would use this model to explore broad patterns, not make high-stakes decisions about individual tracts.</span>
+<span id="cb61-749"><a href="#cb61-749" aria-hidden="true" tabindex="-1"></a>The residual map still shows clusters of over- and under-prediction, especially in central and northern parts of the city. A useful next feature could measure access to jobs or commute times, using ACS commute-time estimates or Census LEHD/LODES job-flow data, since the model has no direct measure of economic opportunity. The CV-versus-absolute-in-sample-residual plot trends upward at higher CV values, but is noisy and does not tell us what share of error is sampling uncertainty; residuals also reflect omitted predictors, measurement error, and model form. In addition, these random 10-fold splits can place nearby tracts in both training and test sets, so they may overstate how well the model predicts in a geographically separate area; spatially blocked validation would be a useful next check. Poverty passes the assignment's one-third low-reliability screen, but most estimates are only moderate reliability rather than precise. I would use this model to explore broad patterns, not make high-stakes decisions about individual tracts.</span>
 <span id="cb61-750"><a href="#cb61-750" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-751"><a href="#cb61-751" aria-hidden="true" tabindex="-1"></a>---</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
