@@ -1,5 +1,5 @@
 ---
-title: "Assignment: Building Features, Watching What Happens"
+title: "Assignment 4: Building Features, Watching What Happens"
 subtitle: "MUSA 5080 · Integrates Weeks 1–5 · Due Friday, October 16"
 author: "Frederick Abalo"
 format:
@@ -127,10 +127,17 @@ philly_tracts <- get_acs(
     total_pop = "B01003_001",
     below_poverty = "B17001_002",
     poverty_universe = "B17001_001",
-    income = "B19013_001",
-    built = "B25035_001",
+    civilian_labor_force = "B23025_003",
+    unemployed = "B23025_005",
     occupied = "B25003_001",
-    renter = "B25003_003"
+    renter = "B25003_003",
+    households = "B08201_001",
+    no_vehicle = "B08201_002",
+    adults_25plus = "B15003_001",
+    bachelors = "B15003_022",
+    masters = "B15003_023",
+    professional = "B15003_024",
+    doctorate = "B15003_025"
   ),
   year = 2023,
   output = "wide",
@@ -149,7 +156,11 @@ philly_tracts <- philly_tracts %>%
       below_povertyE, poverty_universeE, below_povertyM, poverty_universeM
     ),
     y_cv = if_else(y > 0, (y_moe / 1.645) / y * 100, NA_real_),
-    renter_pct = 100 * renterE / occupiedE
+    renter_pct = 100 * renterE / occupiedE,
+    unemployment_pct = 100 * unemployedE / civilian_labor_forceE,
+    no_vehicle_pct = 100 * no_vehicleE / householdsE,
+    college_plus_pct = 100 * (bachelorsE + mastersE + professionalE + doctorateE) /
+      adults_25plusE
   )
 ```
 
@@ -185,7 +196,7 @@ If more than about a third of tracts have low reliability, consider a different 
 
 **Answer (2–3 sentences):** What is your outcome, why would an agency want to predict it, and how reliable is it?
 
-I model the percentage of people below the poverty level among those with poverty status determined in each Philadelphia tract, which can help agencies understand where service needs may be concentrated. Reliability improved compared with vacancy: 59 of 408 tracts (14.5%) are low reliability, below the assignment's one-third warning; 20 have unavailable CVs. I use poverty as the outcome but still treat individual tract estimates cautiously.
+I model the percentage of people below the poverty level among those with poverty status determined in each Philadelphia tract, which can help agencies understand where service needs may be concentrated. Fifty-nine of 408 tracts (14.5%) are low reliability, below the assignment's one-third warning; 20 have unavailable CVs. Among the 388 tracts with a calculable CV, 59 (15.2%) are low reliability. My baseline predictors are unemployment, renter share, college attainment, vehicle access, and population—not the poverty count itself—so I can test related conditions without reusing the outcome measure.
 
 ### 1C: Decide which tracts to model
 
@@ -195,8 +206,9 @@ Filter once, here, and never again. Every later step uses `tracts`.
 #| label: filter
 tracts <- philly_tracts %>%
   filter(total_popE > 0,
-         is.finite(y), is.finite(y_cv), is.finite(incomeE),
-         is.finite(builtE), is.finite(renter_pct)
+         is.finite(y), is.finite(y_cv), is.finite(renter_pct),
+         is.finite(unemployment_pct), is.finite(no_vehicle_pct),
+         is.finite(college_plus_pct)
          )
 
 nrow(philly_tracts)
@@ -205,7 +217,7 @@ nrow(tracts)
 
 **Answer:** How many tracts did you lose, and what kinds of places are they?
 
-The run retained 380 of the 408 ACS tracts, excluding 28 for zero population, unavailable outcome reliability, or missing predictor values. These exclusions reflect data availability and should not be assumed to be a random subset of Philadelphia neighborhoods.
+The run retained 387 of the 408 ACS tracts, excluding 21 for zero population, unavailable outcome reliability, or missing baseline measures. These exclusions reflect data availability and should not be assumed to be a random subset of Philadelphia neighborhoods.
 
 ---
 
@@ -217,7 +229,8 @@ Plot your outcome against each predictor before modeling (the Week 3 habit).
 
 ```{r}
 #| label: look
-predictors <- c("incomeE", "builtE", "renter_pct", "total_popE")
+predictors <- c("unemployment_pct", "renter_pct", "college_plus_pct",
+                "no_vehicle_pct", "total_popE")
 tracts %>% st_drop_geometry() %>%
   select(y, all_of(predictors)) %>%
   pivot_longer(-y, names_to = "predictor", values_to = "value") %>%
@@ -231,7 +244,8 @@ tracts %>% st_drop_geometry() %>%
 
 ```{r}
 #| label: m1
-f1 <- y ~ incomeE + builtE + renter_pct + total_popE
+f1 <- y ~ unemployment_pct + renter_pct + college_plus_pct +
+  no_vehicle_pct + total_popE
 
 m1 <- lm(f1, data = tracts)
 summary(m1)
@@ -239,12 +253,12 @@ summary(m1)
 model_log <- model_log %>%
   add_row(model = "m1", added = "ACS baseline",
           cv_rmse = cv_rmse(f1, tracts),
-          notes = "Income, median year built, renter share, population")
+          notes = "Unemployment, renter share, college, no vehicle, population")
 
 model_log
 ```
 
-**Answer:** On held-out tracts, the baseline model misses the poverty-rate estimate by about 9.46 percentage points on average (RMSE).
+**Answer:** On held-out tracts, the baseline model misses the poverty-rate estimate by about 9.05 percentage points on average (RMSE).
 
 ### 2C: Where is the baseline wrong?
 
@@ -379,7 +393,7 @@ layer2 <- layer2 %>% filter(!st_is_empty(geometry))
 
 **Answer:** Why these layers? What do you expect them to capture that the ACS variables don't?
 
-These layers capture recorded neighborhood safety conditions not represented by the four ACS predictors. Burglary and shooting records are imperfect measures of neighborhood context (and shooting rows represent victims, not necessarily unique incidents); I use them as predictors, not as causal explanations of poverty.
+These layers add recorded neighborhood safety context beyond the ACS measures. They are indirect candidate predictors, not measures of poverty; incident counts can reflect reporting and policing patterns, and shooting rows represent victims rather than necessarily unique events. I include them to test whether they add predictive information, not as causal explanations of poverty.
 
 ---
 
@@ -478,7 +492,7 @@ model_log
 
 **Answer:** Which spatial feature helped most? Did any feature you expected to help do nothing, or make CV RMSE worse? Why might that be?
 
-Burglary density lowered RMSE from 9.46 to 9.34; adding shooting-victim density reduced it further to 9.07. Nearest-burglary distance slightly worsened it to 9.10, perhaps because it overlaps with density or is a weak proxy for poverty-related conditions. These are modest predictive changes, not causal effects.
+Burglary density slightly worsened RMSE from 9.05 to 9.09. Adding shooting-victim density improved it to 8.94, while nearest-burglary distance raised it slightly to 8.95. Shooting counts may proxy broader neighborhood conditions, but their contribution is modest and the feature is not a direct measure of poverty. Crime counts are also affected by reporting and enforcement patterns, so I would not interpret this association causally.
 
 ---
 
@@ -565,11 +579,15 @@ Try **at least one of each**: a log, a squared term, and a categorical variable.
 
 ```{r}
 #| label: my-transforms
-f_log <- y ~ incomeE + builtE + renter_pct + total_popE +
+f_log <- y ~ unemployment_pct + renter_pct + college_plus_pct +
+  no_vehicle_pct + total_popE +
   log1p(burglary_per_sqmi) + shootings_per_sqmi + dist_burglary_mi
 f_square <- update(f4, . ~ . + I(dist_burglary_mi^2))
-f_category <- y ~ incomeE + builtE + renter_pct + total_popE +
+f_category <- y ~ unemployment_pct + renter_pct + college_plus_pct +
+  no_vehicle_pct + total_popE +
   burglary_per_sqmi + shootings_per_sqmi + ring
+m_category <- lm(f_category, data = tracts)
+coef(summary(m_category))["ringOuter", ]
 
 model_log <- model_log %>%
   add_row(model = "m5", added = "log1p burglary density",
@@ -584,7 +602,7 @@ model_log
 
 **Answer:** Which transformation helped most? For your categorical variable, write one sentence reading one of its coefficients correctly, naming the reference level.
 
-The Core/Inner/Outer distance category performed best (m7, RMSE 8.98), narrowly beating the log-density model (9.05). `Core` is the reference; holding other predictors fixed, the final model's `ringOuter` coefficient (−4.62) means Outer tracts are predicted to have poverty rates 4.62 percentage points lower than Core tracts. This is a model association, not a causal effect.
+The log-density model performed best (m5, RMSE 8.89). In categorical model m7, `Core` is the reference; its `ringOuter` estimate is −1.92, meaning Outer tracts are predicted to have poverty rates about 1.92 percentage points lower than Core tracts, holding the other predictors fixed. This is an adjusted association; m7 is not the final model because its CV RMSE is slightly higher.
 
 ---
 
@@ -594,13 +612,13 @@ Combine the features and transformations that earned their place, **judged by CV
 
 ```{r}
 #| label: final
-f_final <- f_category
+f_final <- f_log
 
 m_final <- lm(f_final, data = tracts)
 summary(m_final)
 
 model_log <- model_log %>%
-  add_row(model = "final", added = "Selected m7: ACS + densities + distance ring",
+  add_row(model = "final", added = "Selected m5: ACS + log burglary density + spatial features",
           cv_rmse = cv_rmse(f_final, tracts),
           notes = "Lowest 10-fold CV RMSE among tested candidates")
 
@@ -613,9 +631,9 @@ To read a fitted value as ŷ, compare predictions for two actual tracts. These e
 #| label: prediction-examples
 prediction_examples <- bind_rows(
   tracts %>% filter(ring == "Core") %>%
-    slice_min(abs(y - median(y)), n = 1),
+    slice_min(abs(y - median(y)), n = 1, with_ties = FALSE),
   tracts %>% filter(ring == "Outer") %>%
-    slice_min(abs(y - median(y)), n = 1)
+    slice_min(abs(y - median(y)), n = 1, with_ties = FALSE)
 ) %>%
   mutate(predicted_poverty_pct = predict(m_final, newdata = .)) %>%
   st_drop_geometry() %>%
@@ -650,7 +668,8 @@ Put your two residual maps side by side, or put them next to each other in the r
 ggplot(tracts, aes(x = y_cv, y = abs(resid_final))) +
   geom_point(alpha = 0.5) +
   geom_smooth(se = FALSE) +
-  labs(x = "CV of your outcome estimate (%)", y = "Size of the miss") +
+  labs(x = "CV of your outcome estimate (%)",
+       y = "Absolute in-sample residual (percentage points)") +
   theme_minimal()
 ```
 
@@ -667,11 +686,11 @@ Answer in prose, drawing on your model log (incorporate our words of the day for
 3. **What's still missing?** Look at your final residual map. Name one thing about those places you'd want to measure next, and where you might get the data.
 4. **How much of the remaining error might be uncertainty or statistical noise?** Use your last plot.
 
-The ACS baseline had a 10-fold CV RMSE of 9.46 percentage points. Burglary density improved it modestly to 9.34, and shooting-victim density lowered it to 9.07. Nearest-burglary distance raised RMSE slightly to 9.10, so it did not help in this run; it may overlap with density or poorly represent poverty-related conditions. The log-density model scored 9.05, the squared-distance model 9.11, and the Core/Inner/Outer category 8.98. The categorical model performed best, though its advantage over the log model is small and the distance cutoffs are only one possible grouping.
+The ACS baseline had a 10-fold CV RMSE of 9.05 percentage points. Adding burglary density raised it slightly to 9.09; adding shooting-victim density then lowered it to 8.94. Nearest-burglary distance changed it to 8.95, so that feature did not help. The relationship may reflect broader neighborhood conditions, but incident counts are indirect measures and are influenced by reporting and enforcement. Among the transformations, log burglary density performed best (8.89); the distance category scored 8.96 and squared distance 8.99. The log model's improvement over baseline is small, so it should not be oversold.
 
-In the final model, the `ringOuter` coefficient is −4.62. Holding income, housing age, renter share, population, and incident densities fixed, an Outer tract is predicted to have a poverty rate 4.62 percentage points lower than a Core tract. For an ŷ reading, the example Core tract (GEOID 42101001301) has a fitted poverty rate of 2.64%, while the example Outer tract (GEOID 42101021000) has a fitted rate of 12.40%. The Core example's observed estimate is 13.03%, illustrating that a fitted value can still miss substantially.
+In the final model, the shooting-victim density coefficient is about 0.020. Holding other predictors fixed, 100 additional shooting-victim records per square mile correspond to about a 2-percentage-point higher predicted poverty rate. For an ŷ reading, the example Core tract (GEOID 42101001301) has a fitted rate of 5.90% versus an observed estimate of 13.03%; the example Outer tract (GEOID 42101027402) has a fitted rate of 22.16% versus an observed estimate of 16.09%. These are predictions for two actual tracts, not a controlled Core-versus-Outer comparison.
 
-The residual map still shows clusters of over- and under-prediction, especially in central and northern parts of the city. A useful next feature could measure access to jobs or commute times, using ACS commuting tables or a job-accessibility dataset, because the current model has no direct measure of economic opportunity. In the CV-versus-absolute-residual plot, the smoother rises at higher CV values, suggesting less reliable estimates can coincide with larger misses, though the pattern is noisy. The plot cannot tell us what share of error is sampling uncertainty: residuals also reflect omitted predictors, measurement error, and model form. Poverty now passes the assignment's one-third low-reliability screen, but many estimates remain moderately reliable rather than precise. I would use the model to explore broad patterns, not to make high-stakes decisions about individual tracts.
+The residual map still shows clusters of over- and under-prediction, especially in central and northern parts of the city. A useful next feature could measure access to jobs or commute times, since the model has no direct measure of economic opportunity. The CV-versus-absolute-in-sample-residual plot trends upward at higher CV values, but is noisy and does not tell us what share of error is sampling uncertainty; residuals also reflect omitted predictors, measurement error, and model form. In addition, these random 10-fold splits can place nearby tracts in both training and test sets, so they may overstate how well the model predicts in a geographically separate area; spatially blocked validation would be a useful next check. Poverty passes the assignment's one-third low-reliability screen, but most estimates are only moderate reliability rather than precise. I would use this model to explore broad patterns, not make high-stakes decisions about individual tracts.
 
 ---
 
