@@ -25,7 +25,13 @@ Working notes on data manipulation, spatial operations, statistical modeling, an
 :::
 :::
 
-## Selected analyses
+## Selected projects
+
+- [When blood takes a shortcut](projects.qmd#blood-shortcut): interactive geographic storytelling in JavaScript.
+- [Land-cover classification](projects.qmd#land-cover): CNN comparisons and evaluation on satellite imagery.
+- [Philadelphia housing values](projects.qmd#housing-values): a team statistics project with regression and spatial diagnostics.
+
+## Public Policy Analytics
 
 - [Poverty change in Philadelphia](assignments/assignment3.qmd): comparing ACS periods while accounting for sampling uncertainty.
 - [Who do we know the least about?](assignments/assignment2.qmd): examining relative margins of error in California county estimates.

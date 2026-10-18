@@ -29,6 +29,36 @@ I'm pursuing a **Master of Urban Spatial Analytics at the University of Pennsylv
 
 ::: {.project-grid}
 ::: {.project-card}
+[ACADEMIC PROJECT · JAVASCRIPT / LEAFLET]{.eyebrow}
+
+### When blood takes a shortcut
+
+An interactive geographic narrative exploring modeled medical-delivery journeys in Rwanda.
+
+[Read the case study](projects.qmd#blood-shortcut) · [Explore the map](https://freddie999.github.io/story-map-project/)
+:::
+
+::: {.project-card}
+[ACADEMIC PROJECT · PYTORCH / REMOTE SENSING]{.eyebrow}
+
+### Land-cover classification
+
+Five CNN configurations on EuroSAT RGB imagery, with validation-based selection, held-out evaluation, and per-class error analysis.
+
+[Read the classification case study](projects.qmd#land-cover)
+:::
+
+::: {.project-card}
+[TEAM ACADEMIC PROJECT · STATISTICS / R]{.eyebrow}
+
+### Philadelphia housing values
+
+A team study combining regression, geographic diagnostics, and cross-validation on historical census data.
+
+[Read the housing case study](projects.qmd#housing-values)
+:::
+
+::: {.project-card}
 [PERSONAL · ENGINEERING DEMONSTRATION]{.eyebrow}
 
 ### Spatial-data validation API

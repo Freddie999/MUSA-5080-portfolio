@@ -9,13 +9,59 @@ code-tools: false
 
 These case studies separate **professional work**, **personal engineering demonstrations**, and **coursework**. Public repositories and demos show what is implemented. Proprietary work is described at a high level; employer code, internal screenshots, and operational data remain private.
 
+## When blood takes a shortcut {#blood-shortcut}
+
+[ACADEMIC PROJECT · JAVASCRIPT / LEAFLET]{.eyebrow}
+
+**Question.** How does geography shape medical-delivery journeys in Rwanda?
+
+**Work.** I adapted a scrolling-map structure into an authored story, pairing geographic context and route reveals with modeled road-versus-drone travel comparisons. JavaScript modules load scene-specific GeoJSON into a persistent Leaflet map. A companion HTML table provides another way to read the travel estimates.
+
+**Interpretation.** The map illustrates outbound transport scenarios; these are not observed complete deliveries or site-specific mortality estimates. The healthcare-name screen does not establish blood-service eligibility. This independent course project relates to my prior work at Zipline. Sources and assumptions appear in the narrative.
+
+[Explore the story map](https://freddie999.github.io/story-map-project/) · [Repository and methods](https://github.com/Freddie999/story-map-project)
+
+## Land-cover classification with convolutional networks {#land-cover}
+
+[ACADEMIC PROJECT · PYTHON / PYTORCH / REMOTE SENSING]{.eyebrow}
+
+**Question.** Which architecture and training changes improve classification of EuroSAT RGB image patches?
+
+**Work.** I compared five CNN configurations, starting with a corrected starter baseline and testing deeper features, global average pooling, image augmentation, skip connections, and dropout. The split, seed, optimizer, and training budget were held fixed. Model selection used validation results; training normalization and augmentation excluded validation and test images. The work adapts a course notebook by Xiaojiang Li.
+
+**Results.** The selected augmented plain CNN correctly classified 3,958 of 4,050 held-out test images: **97.73% accuracy** and **0.9767 macro F1**. Skip connections and dropout did not improve the validation selection metric in this run. Per-class errors, learning curves, and an image-split manifest accompany the notebook.
+
+![Confusion matrix for the selected EuroSAT classifier.](assets/projects/land-cover.png){.project-image fig-alt="Confusion matrix showing held-out predictions for ten EuroSAT land-cover classes."}
+
+**Limits.** These results use one seed and a random image split. Similar or nearby scenes can occur across partitions; the scores do not establish generalization to a new region. The starter-to-deeper comparison changes several architecture components together.
+
+[Executed notebook](https://github.com/Freddie999/ai-urban-sustainability/blob/main/Homework4.ipynb) · [Saved metrics and figures](https://github.com/Freddie999/ai-urban-sustainability/tree/main/homework4-output)
+
+## Explaining Philadelphia housing values {#housing-values}
+
+[TEAM ACADEMIC PROJECT · STATISTICS / R]{.eyebrow}
+
+**Question.** How are neighborhood characteristics associated with median housing values across Philadelphia block groups?
+
+**Team.** Vincent Bio Bediako, Frederick Abalo, and Emmanuel Sampson. This is a shared report; the available submission does not document individual task allocation.
+
+**Methods.** We analyzed 1,720 block groups from the supplied 2000 Census dataset, mapped neighborhood characteristics, fitted a log-outcome multiple regression, examined residuals, and compared models using the same five cross-validation folds.
+
+**Results.** The four-predictor model explains approximately **66% of variation in logged house values**. Its held-out RMSE was **0.366440 log units**, compared with **0.442722** for vacancy and income: a **17.2% reduction** in this comparison. These are the existing report's results.
+
+![Historical Philadelphia housing values by block group.](assets/projects/housing-values.png){.project-image fig-alt="Map of logged median house values across Philadelphia block groups using 2000 Census data."}
+
+**Limits.** Historical block-group associations do not establish individual-house predictions or causal effects. Residual plots suggest nonlinearity, unequal variance, and geographic clustering. Random cross-validation can be optimistic when nearby observations appear in both training and validation.
+
+[Read the team report](reports/philadelphia-housing-values.html) · [Quarto source](https://github.com/Freddie999/MUSA-5080-portfolio/blob/main/reports/philadelphia-housing-values-source.qmd)
+
 ## Spatial-data validation API {#spatial-validation-api}
 
 [PERSONAL · ENGINEERING DEMONSTRATION]{.eyebrow}
 
 **Problem.** Spatial APIs need to reject malformed or ambiguous geometry before it reaches downstream systems.
 
-**My contribution.** I developed this independent portfolio demonstration with AI assistance: the validation boundary, transactional ingestion, spatial-query API, small demo interface, Docker setup, and tests. It uses synthetic survey features, not employer datasets.
+**My contribution.** I developed this independent portfolio demonstration: the validation boundary, transactional ingestion, spatial-query API, small demo interface, Docker setup, and tests. It uses synthetic survey features, not employer datasets.
 
 **Implementation.** Python, FastAPI, Shapely, PostgreSQL/PostGIS, psycopg, Docker, and GitHub Actions. The service accepts a bounded 2D WGS84 GeoJSON subset, rejects unsupported CRS declarations, validates geometry structure and topology, and inserts an entire batch in one transaction. GiST indexing supports intersection queries; ID-based cursor pagination avoids offset scans.
 
@@ -33,7 +79,7 @@ These case studies separate **professional work**, **personal engineering demons
 
 **Problem.** Route length alone hides differences in elevation, ascent, and steepness.
 
-**My contribution.** I developed this independent demonstration with AI assistance, including the public-data retrieval and provenance script, sampling calculations, linked map/profile interface, local GeoJSON upload, CSV export, and tests. The two alignments are illustrative and independently created.
+**My contribution.** I developed this independent demonstration, including the public-data retrieval and provenance script, sampling calculations, linked map/profile interface, local GeoJSON upload, CSV export, and tests. The two alignments are illustrative and independently created.
 
 **Implementation.** JavaScript, Leaflet, Vite, and public Mapzen Terrain Tiles. One bundled elevation tile keeps the example reproducible without an elevation API key. Pixel-center bilinear interpolation estimates elevation; haversine distance and sample-to-sample height changes produce distance, ascent, descent, and grade. Analysis code is separated from browser I/O.
 

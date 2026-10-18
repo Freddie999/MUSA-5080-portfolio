@@ -2,6 +2,13 @@
 -- analysis code, numerical results, or visible captions. Descriptions follow
 -- the plotted variables and titles in the original .qmd sources.
 local descriptions = {
+  ["week7-adjusted-age-curve-1.png"] = "Adjusted relationship between age and the modeled outcome, holding other predictors fixed.",
+  ["week7-age-pattern-1.png"] = "Observed age pattern compared with fitted model relationships.",
+  ["week7-district-coefficients-1.png"] = "Estimated district coefficients and their uncertainty intervals.",
+  ["week7-income-histograms-1.png"] = "Income distributions shown on original and logarithmic scales.",
+  ["week7-model-comparison-plot-1.png"] = "Cross-validation errors for the candidate regression models.",
+  ["week7-residual-maps-1.png"] = "Geographic patterns of residuals for the compared regression models.",
+  ["week7-ring-exploration-1.png"] = "Exploratory comparison of observations across geographic distance rings.",
   ["week-03_files/figure-html/unnamed-chunk-5-1.png"] = "New York county poverty-count estimates plotted against their relative margins of error.",
   ["week-03_files/figure-html/unnamed-chunk-6-1.png"] = "New York county poverty-count estimates versus relative margins of error, colored by reliability category.",
   ["week-03_files/figure-html/unnamed-chunk-7-1.png"] = "The same county poverty estimates and relative margins of error, with all points colored blue to illustrate fixed styling.",

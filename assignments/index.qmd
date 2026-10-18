@@ -2,7 +2,9 @@
 title: "Assignments"
 description: "Graded work for MUSA 5080."
 listing:
-  contents: "*.qmd"
+  contents:
+    - assignment2.qmd
+    - assignment3.qmd
   sort: "date desc"
   type: default
   fields: [title, date, description]

@@ -4,6 +4,15 @@
 
 A Quarto website presenting professional geospatial engineering experience, personal engineering demonstrations, and MUSA 5080 coursework. Project descriptions distinguish implemented public examples from proprietary work and academic analyses.
 
+## Featured academic projects
+
+- **When blood takes a shortcut:** JavaScript/Leaflet geographic storytelling about medical-delivery accessibility in Rwanda.
+- **Land-cover classification:** five CNN configurations on EuroSAT RGB, with held-out evaluation and error analysis.
+- **Philadelphia poverty change:** ACS sampling uncertainty and policy interpretation.
+- **Philadelphia housing values:** a team regression study with Vincent Bio Bediako and Emmanuel Sampson.
+
+See [Projects](https://freddie999.github.io/MUSA-5080-portfolio/projects.html) for the case studies, source links, and limitations.
+
 ## Structure
 
 - `index.qmd`: engineering introduction and selected projects
@@ -22,7 +31,7 @@ The portfolio update was rendered with Quarto 1.10.18 and the existing local R e
 
 ```sh
 quarto render
-python3 scripts/check_site.py docs
+uv run --no-project --managed-python --python 3.14 python scripts/check_site.py docs
 quarto preview --no-render
 ```
 
@@ -34,7 +43,7 @@ After rendering, inspect `git diff` and commit the intended source, asset, froze
 
 ## Deployment
 
-Existing behavior is preserved: **GitHub Pages serves `/docs` on `main`**. Feature branches and pull requests are for review; pushing this branch does not publish the site. Merge only after review. No new deployment workflow is introduced.
+Existing behavior is preserved: **GitHub Pages serves `/docs` on `main`**. Pushing changes to main publishes the committed rendered website. No new deployment workflow is introduced.
 
 Assignment and weekly-note source paths and published URLs are unchanged. The Coursework dropdown groups their existing index pages without moving them.
 
@@ -44,4 +53,17 @@ The API and terrain screenshots were captured from the running public portfolio 
 
 Geomersive's main application remains private. The public tile library is linked separately, and pending PR work is labeled. Zipline source code, internal screenshots, and operational data are not included.
 
-`filters/coursework-image-alt.lua` supplies source-backed descriptions for 19 existing course figures that lacked image alt attributes. This changes rendered accessibility metadata, not the analysis code or visible captions. Existing descriptions take precedence. Update its filename mappings if course figures are renamed.
+`filters/coursework-image-alt.lua` supplies source-backed descriptions for existing course figures that lacked image alt attributes. This changes rendered accessibility metadata, not the analysis code or visible captions. Existing descriptions take precedence. Update its filename mappings if course figures are renamed.
+
+## Updating project presentation
+
+Render only the changed presentation pages when the analyses have not changed:
+
+```sh
+quarto render index.qmd --no-execute
+quarto render projects.qmd --no-execute
+quarto render coursework.qmd --no-execute
+quarto render assignments/index.qmd --no-execute
+```
+
+Keep the existing executed assignment and weekly-note HTML and figures. Unfinished assignment instructions are excluded from the published listing. The housing report is an existing self-contained team report with publication and accessibility adjustments; its input course dataset is not redistributed.

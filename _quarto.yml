@@ -2,6 +2,23 @@ project:
   type: website
   output-dir: docs
   execute-dir: project
+  render:
+    - "index.qmd"
+    - "about.qmd"
+    - "projects.qmd"
+    - "coursework.qmd"
+    - "assignments/index.qmd"
+    - "assignments/assignment2.qmd"
+    - "assignments/assignment3.qmd"
+    - "weekly-notes/index.qmd"
+    - "weekly-notes/week-01.qmd"
+    - "weekly-notes/week-02.qmd"
+    - "weekly-notes/week-03.qmd"
+    - "weekly-notes/week-04.qmd"
+    - "weekly-notes/week-05.qmd"
+    - "weekly-notes/week-07.qmd"
+  resources:
+    - "reports/*.html"
 
 website:
   title: "Frederick Abalo"
