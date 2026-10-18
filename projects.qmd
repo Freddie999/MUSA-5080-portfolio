@@ -19,6 +19,8 @@ These case studies separate **professional work**, **personal engineering demons
 
 **Interpretation.** The map illustrates outbound transport scenarios; these are not observed complete deliveries or site-specific mortality estimates. The healthcare-name screen does not establish blood-service eligibility. This independent course project relates to my prior work at Zipline. Sources and assumptions appear in the narrative.
 
+![Road and flight comparison from the live story map.](assets/projects/blood-shortcut.jpg){.project-image fig-alt="Live story-map scene showing the orange road route and dashed turquoise flight path between Muhanga and Ruli in Rwanda."}
+
 [Explore the story map](https://freddie999.github.io/story-map-project/) · [Repository and methods](https://github.com/Freddie999/story-map-project)
 
 ## Land-cover classification with convolutional networks {#land-cover}

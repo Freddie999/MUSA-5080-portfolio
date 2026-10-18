@@ -202,6 +202,12 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Question.</strong> How does geography shape medical-delivery journeys in Rwanda?</p>
 <p><strong>Work.</strong> I adapted a scrolling-map structure into an authored story, pairing geographic context and route reveals with modeled road-versus-drone travel comparisons. JavaScript modules load scene-specific GeoJSON into a persistent Leaflet map. A companion HTML table provides another way to read the travel estimates.</p>
 <p><strong>Interpretation.</strong> The map illustrates outbound transport scenarios; these are not observed complete deliveries or site-specific mortality estimates. The healthcare-name screen does not establish blood-service eligibility. This independent course project relates to my prior work at Zipline. Sources and assumptions appear in the narrative.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="assets/projects/blood-shortcut.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Road and flight comparison from the live story map."><img src="assets/projects/blood-shortcut.jpg" class="project-image img-fluid figure-img" alt="Live story-map scene showing the orange road route and dashed turquoise flight path between Muhanga and Ruli in Rwanda."></a></p>
+<figcaption>Road and flight comparison from the live story map.</figcaption>
+</figure>
+</div>
 <p><a href="https://freddie999.github.io/story-map-project/">Explore the story map</a> · <a href="https://github.com/Freddie999/story-map-project">Repository and methods</a></p>
 </section>
 <section id="land-cover" class="level2">
@@ -212,7 +218,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Results.</strong> The selected augmented plain CNN correctly classified 3,958 of 4,050 held-out test images: <strong>97.73% accuracy</strong> and <strong>0.9767 macro F1</strong>. Skip connections and dropout did not improve the validation selection metric in this run. Per-class errors, learning curves, and an image-split manifest accompany the notebook.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/projects/land-cover.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Confusion matrix for the selected EuroSAT classifier."><img src="assets/projects/land-cover.png" class="project-image img-fluid figure-img" alt="Confusion matrix showing held-out predictions for ten EuroSAT land-cover classes."></a></p>
+<p><a href="assets/projects/land-cover.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Confusion matrix for the selected EuroSAT classifier."><img src="assets/projects/land-cover.png" class="project-image img-fluid figure-img" alt="Confusion matrix showing held-out predictions for ten EuroSAT land-cover classes."></a></p>
 <figcaption>Confusion matrix for the selected EuroSAT classifier.</figcaption>
 </figure>
 </div>
@@ -228,7 +234,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Results.</strong> The four-predictor model explains approximately <strong>66% of variation in logged house values</strong>. Its held-out RMSE was <strong>0.366440 log units</strong>, compared with <strong>0.442722</strong> for vacancy and income: a <strong>17.2% reduction</strong> in this comparison. These are the existing report’s results.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/projects/housing-values.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Historical Philadelphia housing values by block group."><img src="assets/projects/housing-values.png" class="project-image img-fluid figure-img" alt="Map of logged median house values across Philadelphia block groups using 2000 Census data."></a></p>
+<p><a href="assets/projects/housing-values.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Historical Philadelphia housing values by block group."><img src="assets/projects/housing-values.png" class="project-image img-fluid figure-img" alt="Map of logged median house values across Philadelphia block groups using 2000 Census data."></a></p>
 <figcaption>Historical Philadelphia housing values by block group.</figcaption>
 </figure>
 </div>
@@ -245,7 +251,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Limits.</strong> This is a local demonstration without authentication, tenant isolation, or a public API deployment. It does not reproject input or repair geometry. Plausible coordinate bounds alone cannot establish the true CRS. Antimeridian-spanning and 3D geometries are outside its contract.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/projects/spatial-api.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Verified local API interface returning a synthetic survey point from a PostGIS spatial query."><img src="assets/projects/spatial-api.jpg" class="project-image img-fluid figure-img" alt="Spatial validation API demo showing a GeoJSON input and HTTP 200 FeatureCollection response for a synthetic survey point."></a></p>
+<p><a href="assets/projects/spatial-api.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Verified local API interface returning a synthetic survey point from a PostGIS spatial query."><img src="assets/projects/spatial-api.jpg" class="project-image img-fluid figure-img" alt="Spatial validation API demo showing a GeoJSON input and HTTP 200 FeatureCollection response for a synthetic survey point."></a></p>
 <figcaption>Verified local API interface returning a synthetic survey point from a PostGIS spatial query.</figcaption>
 </figure>
 </div>
@@ -261,7 +267,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Limits.</strong> The routes are not verified roads or trails. Terrain pixels are roughly 59 m wide here; denser sampling cannot add source detail. The demo does not optimize routes or model obstacles, access rights, weather, airspace, or flight clearance. It is not a navigation tool.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/projects/terrain-explorer.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Verified terrain explorer with an illustrative route, sampled elevation profile, and analysis controls."><img src="assets/projects/terrain-explorer.jpg" class="project-image img-fluid figure-img" alt="Terrain explorer near Boulder with an illustrative route over public terrain, distance and ascent metrics, and an elevation profile."></a></p>
+<p><a href="assets/projects/terrain-explorer.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Verified terrain explorer with an illustrative route, sampled elevation profile, and analysis controls."><img src="assets/projects/terrain-explorer.jpg" class="project-image img-fluid figure-img" alt="Terrain explorer near Boulder with an illustrative route over public terrain, distance and ascent metrics, and an elevation profile."></a></p>
 <figcaption>Verified terrain explorer with an illustrative route, sampled elevation profile, and analysis controls.</figcaption>
 </figure>
 </div>
@@ -288,7 +294,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Limits.</strong> Individual tract tests are not adjusted for multiple comparisons. Tracts are not neighborhoods, and the report cannot reproduce the article’s neighborhood or race-specific claims. A nonsignificant estimate does not establish no change. The comparison assumes independent sampling errors between the nonoverlapping periods.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="assets/projects/poverty-change.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="The assignment’s existing chart distinguishes significant increases, decreases, no significant change, and tracts that cannot be assessed."><img src="assets/projects/poverty-change.png" class="project-image img-fluid figure-img" alt="Assignment 3 chart summarizing poverty-change classifications across all 384 Philadelphia census tracts."></a></p>
+<p><a href="assets/projects/poverty-change.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="The assignment’s existing chart distinguishes significant increases, decreases, no significant change, and tracts that cannot be assessed."><img src="assets/projects/poverty-change.png" class="project-image img-fluid figure-img" alt="Assignment 3 chart summarizing poverty-change classifications across all 384 Philadelphia census tracts."></a></p>
 <figcaption>The assignment’s existing chart distinguishes significant increases, decreases, no significant change, and tracts that cannot be assessed.</figcaption>
 </figure>
 </div>
