@@ -66,4 +66,4 @@ quarto render coursework.qmd --no-execute
 quarto render assignments/index.qmd --no-execute
 ```
 
-Keep the existing executed assignment and weekly-note HTML and figures. Unfinished assignment instructions are excluded from the published listing. The housing report is an existing self-contained team report with publication and accessibility adjustments; its input course dataset is not redistributed.
+Keep the existing executed assignment and weekly-note HTML and figures. Completed Assignments 2–4 are included in both the project render list and the assignments listing; preserve their published URLs when curating coursework. Unfinished assignment instructions are excluded from the published listing. The housing report is an existing self-contained team report with publication and accessibility adjustments; its input course dataset is not redistributed.

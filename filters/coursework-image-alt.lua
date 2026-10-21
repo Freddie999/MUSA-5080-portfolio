@@ -2,6 +2,14 @@
 -- analysis code, numerical results, or visible captions. Descriptions follow
 -- the plotted variables and titles in the original .qmd sources.
 local descriptions = {
+  ["assignment4_files/figure-html/reliability-1.png"] = "Distribution of Philadelphia tract poverty-rate estimates in the 2019–2023 ACS.",
+  ["assignment4_files/figure-html/look-1.png"] = "Tract poverty rates plotted against unemployment, renter share, college attainment, households without vehicles, and population, with fitted linear trends.",
+  ["assignment4_files/figure-html/log-look-1.png"] = "Distribution of residential burglary records per square mile across Philadelphia tracts.",
+  ["assignment4_files/figure-html/log-look-2.png"] = "Distribution of residential burglary density after applying log of one plus density.",
+  ["assignment4_files/figure-html/squared-plot-1.png"] = "Tract poverty rates versus distance to the nearest residential burglary record, with a fitted quadratic curve.",
+  ["assignment4_files/figure-html/resid-map-1-1.png"] = "Baseline-model poverty-rate residuals across Philadelphia tracts; red indicates observed poverty above prediction and blue indicates observed poverty below prediction.",
+  ["assignment4_files/figure-html/resid-map-2-1.png"] = "Final-model poverty-rate residuals across Philadelphia tracts; red indicates observed poverty above prediction and blue indicates observed poverty below prediction.",
+  ["assignment4_files/figure-html/fog-1.png"] = "Outcome-estimate coefficients of variation versus absolute in-sample poverty-rate residuals, with a smoothed trend.",
   ["week7-adjusted-age-curve-1.png"] = "Adjusted relationship between age and the modeled outcome, holding other predictors fixed.",
   ["week7-age-pattern-1.png"] = "Observed age pattern compared with fitted model relationships.",
   ["week7-district-coefficients-1.png"] = "Estimated district coefficients and their uncertainty intervals.",

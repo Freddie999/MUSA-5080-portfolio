@@ -10,6 +10,7 @@ project:
     - "assignments/index.qmd"
     - "assignments/assignment2.qmd"
     - "assignments/assignment3.qmd"
+    - "assignments/assignment4.qmd"
     - "weekly-notes/index.qmd"
     - "weekly-notes/week-01.qmd"
     - "weekly-notes/week-02.qmd"
