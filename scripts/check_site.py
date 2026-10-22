@@ -13,6 +13,7 @@ class Page(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.ids = set()
         self.links = []
+        self.unrendered_page_links = []
         self.images_without_alt = []
         self.feed(path.read_text())
 
@@ -22,6 +23,10 @@ class Page(HTMLParser):
             self.ids.add(attrs["id"])
         if tag == "a" and "name" in attrs:
             self.ids.add(attrs["name"])
+        if tag == "a" and "href" in attrs and "download" not in attrs:
+            parsed = urlsplit(attrs["href"])
+            if not (parsed.scheme or parsed.netloc) and Path(unquote(parsed.path)).suffix.lower() in {".qmd", ".rmd"}:
+                self.unrendered_page_links.append(attrs["href"])
         for key in ("href", "src"):
             if key in attrs:
                 self.links.append(attrs[key])
@@ -30,9 +35,12 @@ class Page(HTMLParser):
 
 
 def check(root):
+    root = Path(root).resolve()
     pages = {p.resolve(): Page(p) for p in root.rglob("*.html")}
     errors = []
     for source, page in pages.items():
+        for link in page.unrendered_page_links:
+            errors.append(f"{source.relative_to(root)}: unrendered page link {link}; link to its rendered HTML page instead")
         for link in page.links:
             parsed = urlsplit(link)
             if parsed.scheme or parsed.netloc or not (parsed.path or parsed.fragment):

@@ -11,13 +11,7 @@ project:
     - "assignments/assignment2.qmd"
     - "assignments/assignment3.qmd"
     - "assignments/assignment4.qmd"
-    - "weekly-notes/index.qmd"
-    - "weekly-notes/week-01.qmd"
-    - "weekly-notes/week-02.qmd"
-    - "weekly-notes/week-03.qmd"
-    - "weekly-notes/week-04.qmd"
-    - "weekly-notes/week-05.qmd"
-    - "weekly-notes/week-07.qmd"
+    - "weekly-notes/*.qmd"
   resources:
     - "reports/*.html"
 
