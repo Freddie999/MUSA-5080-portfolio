@@ -1,13 +1,12 @@
 ---
-title: "Week 7: Feature Engineering for Regression"
-description: "Logs, squared terms, categories, interactions, and place fixed effects—building features and checking whether they improve predictions."
-date: 2026-10-09
+title: "Week 7: Where Is the Model Wrong?"
+description: "Spatial features, residual maps, Moran’s I, and evaluating house-price predictions."
+date: 2026-10-16
 format:
   html:
     toc: true
     toc-depth: 3
     code-fold: false
-    code-tools: true
 execute:
   echo: true
   eval: true
@@ -15,1041 +14,950 @@ execute:
   warning: true
 ---
 
-## What this week is about
+## What we covered
 
-This week builds on regression and cross-validation by changing how we represent the inputs to a model.
+This week moves from predicting median rent for census tracts to predicting prices for individual houses. The main question is whether the model makes similar mistakes in nearby places.
 
-The main question is:
+A model can have a reasonable overall error and still consistently undervalue houses in one area and overvalue houses in another. Residual maps show where those mistakes occur. Moran’s I measures whether nearby errors tend to resemble one another.
 
-> Can I help a regression model predict rent more accurately by changing the features I give it?
+We also build two kinds of spatial features: counts within a buffer and distances to nearby events. The Philadelphia example leads into the Chicago house-price prediction assignment.
 
-We work with Philadelphia census tracts and predict **median monthly gross rent** using median household income, renter share, building age, and location. We then try logs, squared terms, categories, interactions, and planning-district fixed effects.
+## 1. Review: interpreting a logged predictor
 
-## 1. What is a feature?
+Suppose the fitted relationship is:
 
-A **feature** is an input variable used by a model. `income`, `bldg_age`, and `dist_ch_mi` are features. `rent` is the outcome we want to predict.
+$$
+\widehat{rent} = \hat\beta_0 + 210\log(income).
+$$
 
-**Feature engineering** means constructing or changing those inputs so they represent useful patterns. For example:
+Rent remains in dollars, but income is logged. A **1% increase in income** corresponds to approximately:
 
-| Original information | Engineered feature | Pattern it can represent |
+$$
+210 / 100 = \$2.10
+$$
+
+more predicted monthly rent, holding any other predictors fixed. The exact change is `210 * log(1.01)`, about $2.09. A 10% increase corresponds to `210 * log(1.10)`, about $20.02, rather than exactly ten times the 1% approximation.
+
+The log allows a curved relationship with income in its original dollar units. An additional $10,000 represents a much larger percentage increase from $20,000 than from $200,000. Whether this improves predictions is a question for cross-validation, not something the transformation guarantees.
+
+## 2. Review: the factor level that broke a fold
+
+```text
+Error: factor district has new levels Upper Far Northeast
+```
+
+This means the validation data contain a category that the fitted model did not see in training. If all observations from a small district are held out together, the model has no estimated coefficient for that district.
+
+Possible responses include a defensible merge of small groups, a coarser geography, or a model that can handle new groups. Simply listing a category as a factor level does not create information to estimate its coefficient.
+
+There are many more neighborhoods than planning districts, so sparse categories become a bigger issue in house-level analysis. Count group sizes and check training coverage in every fold. If grouping rules are chosen using outcomes, they must be learned within training folds; preset geographic groupings should also make sense for the intended prediction task.
+
+## 3. From census tracts to individual houses
+
+| Question | Tract analysis | House analysis |
 |---|---|---|
-| Household income | `log(income)` | Equal percentage changes rather than equal dollar changes |
-| Building age | `bldg_age` and `bldg_age^2` | A curved relationship |
-| Distance to City Hall | Core, Inner, or Outer ring | Differences between groups |
-| Income and ring | `log(income) * ring` | Different income slopes in different rings |
-| Planning district | A district factor | Different average levels across places |
+| What is one observation? | A tract | A property record with a sale price |
+| What geometry represents it? | Polygon | Point |
+| How might we count nearby incidents? | Within the tract boundary | Within a buffer around the house |
+| How might we measure accessibility? | Distance to a station | Distance to the nearest station or average distance to several stations |
+| What is the outcome? | Median rent | Sale price |
 
-A linear regression is **linear in its coefficients**. It can still represent a curve in an original variable:
+A **buffer** is a polygon constructed around a feature at a specified distance. Around a point, a planar buffer approximates a circle. A 660-foot buffer has a radius of 660 feet, or one eighth of a mile. Its diameter is 1,320 feet.
 
-$$
-\widehat{rent} = \hat\beta_0 + \hat\beta_1 age + \hat\beta_2 age^2.
-$$
+A buffer is based on straight-line distance. It does not represent a walking route or account for barriers such as rivers and highways.
 
-The coefficients are multiplied by features and added together. One of those features happens to be squared age.
-
-We should have a reason for a feature, then check whether it helps prediction. More features and more complicated formulas do not automatically produce a better model.
-
-## 2. Set up the data
-
-### Load the packages
+## 4. Packages and the data-query helper
 
 ```{r}
-#| label: week7-setup
+#| label: spatial-errors-setup
 
 library(tidyverse)
-library(tidycensus)
 library(sf)
-library(patchwork)
+library(spdep)
+library(nngeo)
 
-options(tigris_use_cache = TRUE)
+options(scipen = 999)
 theme_set(theme_minimal())
+
+carto_get <- function(sql) {
+  url <- paste0(
+    "https://phl.carto.com/api/v2/sql?format=GeoJSON&q=",
+    URLencode(sql, reserved = TRUE)
+  )
+  st_read(url, quiet = TRUE)
+}
 ```
 
-`tidycensus` downloads Census estimates. `sf` handles geometry and spatial operations. `tidyverse` supplies data manipulation and plotting tools. `patchwork` lets us place plots side by side using `+`.
+| Package | Role |
+|---|---|
+| `tidyverse` | Clean tables, create features, and draw charts |
+| `sf` | Read spatial data, transform coordinates, make buffers, and map geometry |
+| `nngeo` | Find nearest features and their distances |
+| `spdep` | Build spatial weights, calculate spatial lags, and assess spatial autocorrelation |
 
-The `tigris_use_cache` option allows reuse of downloaded boundary files. It does not mean every ACS API request has been cached.
+`options(scipen = 999)` discourages scientific notation in printed numbers; it does not change their values.
 
-### Download the ACS estimates and tract boundaries
+`carto_get()` is a custom function. Its input is a SQL query stored as text. `paste0()` constructs the request URL, `URLencode()` makes the query suitable for a URL, and `st_read()` reads the returned GeoJSON into an `sf` object.
+
+The function definition stores the instructions. The data request happens when we call `carto_get(...)`.
+
+## 5. Download Philadelphia property records
 
 ```{r}
-#| label: week7-download-tracts
-#| echo: true
-#| message: false
+#| label: spatial-errors-download-sales
 #| results: hide
 
-census_key <- Sys.getenv("CENSUS_API_KEY")
-
-tracts_raw <- get_acs(
-  geography = "tract",
-  state = "PA",
-  county = "Philadelphia",
-  variables = c(
-    rent      = "B25064_001",
-    income    = "B19013_001",
-    pop       = "B01003_001",
-    yr_built  = "B25035_001",
-    hh_total  = "B25003_001",
-    hh_renter = "B25003_003"
-  ),
-  year = 2023,
-  survey = "acs5",
-  output = "wide",
-  geometry = TRUE,
-  key = if (nzchar(census_key)) census_key else NULL
+sales_raw <- carto_get(
+  "SELECT the_geom, parcel_number, sale_price, sale_date,
+          total_livable_area, number_of_bedrooms,
+          number_of_bathrooms, year_built, interior_condition
+   FROM opa_properties_public
+   WHERE category_code = '1'
+     AND sale_date >= '2023-01-01'
+     AND sale_date < '2025-01-01'"
 ) %>%
   st_transform(2272)
 ```
 
-| Alias in the code | What it measures |
-|---|---|
-| `rent` | Median gross rent: monthly rent including relevant utility costs |
-| `income` | Median household income, an annual amount |
-| `pop` | Total population; downloaded for context, not used in the baseline formula |
-| `yr_built` | Median year structure built |
-| `hh_total` | Occupied housing units, the denominator for renter share |
-| `hh_renter` | Renter-occupied housing units |
+The SQL has three main parts:
 
-The 2023 ACS five-year release covers **2019–2023**. It is a period estimate, not a survey of only 2023.
+- `SELECT` names the columns to return. `the_geom` contains geometry.
+- `FROM` identifies the source table.
+- `WHERE` limits the records to the chosen property category and sale-date range.
 
-`output = "wide"` puts variables side by side. For example, `rentE` is the rent estimate and `rentM` its margin of error. `geometry = TRUE` adds tract boundaries. `st_transform(2272)` changes the coordinates to Pennsylvania South State Plane in US survey feet.
+The start date is included and the end date is excluded. This covers 2023 and 2024, not 2025.
 
-These are tract-level summaries. A relationship between tract median income and tract median rent is not automatically a relationship between an individual household's income and its rent.
-
-### Construct the predictors
+This query uses the sale fields in the OPA property table. We should not assume it is a complete transaction history of every sale a parcel has ever had. It is also a live source, so later updates can change the returned records.
 
 ```{r}
-#| label: week7-build-predictors
+#| label: spatial-errors-inspect-sales
 
-city_hall <- st_sfc(
-  st_point(c(-75.1636, 39.9526)),
-  crs = 4326
-) %>%
-  st_transform(2272)
+nrow(sales_raw)
+summary(sales_raw$sale_price)
+st_crs(sales_raw)$units_gdal
 
-tract_features <- tracts_raw %>%
-  mutate(
-    rent = rentE,
-    rent_moe = rentM,
-    income = incomeE,
-    bldg_age = 2023 - yr_builtE,
-    pct_renter = 100 * hh_renterE / na_if(hh_totalE, 0),
-    dist_ch_mi = as.numeric(st_distance(geometry, city_hall)) / 5280
-  ) %>%
-  select(GEOID, rent, rent_moe, income, bldg_age, pct_renter, dist_ch_mi)
+sales_raw %>%
+  st_drop_geometry() %>%
+  select(parcel_number, sale_price, sale_date, total_livable_area) %>%
+  head()
+```
 
-tracts_clean <- tract_features %>%
+The lecture output contained **37,866 records**, with a minimum price of $0, median of $190,000, and maximum of $15,428,633. These describe the lecture's downloaded data before cleaning; they are not model performance statistics.
+
+`st_transform(2272)` puts the Philadelphia data in Pennsylvania South State Plane coordinates, measured in **US survey feet**. This matters because the buffer radius of 660 is interpreted in the projected coordinate units.
+
+## 6. Not every recorded transfer is a market sale
+
+Very low prices can reflect family transfers or other transactions that do not represent an ordinary market purchase. Other unusual sales may also require attention. A price cutoff is a practical screening rule, not proof that every retained record is an arm's-length sale.
+
+```{r}
+#| label: spatial-errors-price-bands
+
+sales_raw %>%
+  st_drop_geometry() %>%
+  count(
+    price_band = cut(
+      sale_price,
+      breaks = c(-Inf, 1000, 10000, 50000, Inf),
+      labels = c("Up to $1,000", "Over $1,000–$10,000",
+                 "Over $10,000–$50,000", "Over $50,000")
+    )
+  )
+```
+
+With the default `cut()` settings, an interval includes its upper boundary. A sale at exactly $1,000 belongs to the first band. This exploratory grouping is separate from the cleaning cutoff below, which retains prices at exactly $10,000.
+
+### Apply cleaning rules and show their effect
+
+```{r}
+#| label: spatial-errors-clean-sales
+
+sales_market <- sales_raw %>%
+  filter(is.finite(sale_price), sale_price >= 10000)
+
+sales_space <- sales_market %>%
   filter(
-    if_all(
-      c(rent, income, bldg_age, pct_renter, dist_ch_mi),
-      ~ is.finite(.x)
-    ),
-    rent > 0,
-    income > 0,
-    bldg_age >= 0,
-    between(pct_renter, 0, 100)
+    is.finite(total_livable_area),
+    total_livable_area > 0,
+    !st_is_empty(geometry),
+    st_geometry_type(geometry) == "POINT"
   )
 
-tibble(
-  stage = c("Downloaded", "Usable numeric predictors"),
-  n_tracts = c(nrow(tracts_raw), nrow(tracts_clean))
-)
-```
-
-The new columns translate the source data into useful predictors:
-
-- `2023 - yr_builtE` is an approximate building-age measure based on a tract median. It is not the age of every building.
-- `pct_renter` runs from 0 to 100. A change from 40 to 41 is **one percentage point**.
-- `na_if(hh_totalE, 0)` avoids dividing by zero.
-- `is.finite()` excludes missing values, infinity, and undefined calculations.
-- Positive rent and income are required because we will take their logs.
-
-**Distance measurement:** we measure from the **tract polygon** to the City Hall point. A tract containing City Hall has distance zero. For other tracts, this is the minimum straight-line distance from the polygon to that point. It is not distance from the tract centroid, a resident's home, or a route along streets. Dividing US survey feet by 5,280 gives the classroom approximation in miles.
-
-For a representative-point alternative, we could use `st_point_on_surface()` before computing distance. That would define a different feature and could change the model results.
-
-### Add planning districts before defining the shared model sample
-
-Joining planning districts before fitting models lets us use the same eligible tracts for every comparison.
-
-```{r}
-#| label: week7-join-districts
-
-district_url <- paste0(
-  "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/",
-  "Planning_Districts/FeatureServer/0/query?",
-  "outFields=*&where=1%3D1&f=geojson"
-)
-
-districts <- st_read(district_url, quiet = TRUE) %>%
-  st_transform(2272) %>%
-  st_make_valid()
-
-tracts_joined <- tracts_clean %>%
-  st_make_valid() %>%
-  st_join(
-    districts %>% select(district = dist_name),
-    largest = TRUE
-  )
-
-tracts <- tracts_joined %>%
-  filter(!is.na(district)) %>%
-  arrange(GEOID) %>%
-  mutate(district = factor(district))
-
-stopifnot(!anyDuplicated(tracts$GEOID))
-
-tibble(
-  usable_numeric_rows = nrow(tracts_clean),
-  unmatched_district_rows = sum(is.na(tracts_joined$district)),
-  shared_model_rows = nrow(tracts)
-)
-```
-
-With tract and district polygons, `largest = TRUE` assigns each tract the district with the largest area of overlap. It does not allocate people by district or split each tract's ACS estimates into smaller areas.
-
-The lecture analysis used **377 tracts**. Our eligibility checks require positive rent and income, finite predictors, and matched districts. The table above reports how many tracts meet these criteria. The district URL is a live source, not a versioned 2023 boundary snapshot.
-
-## 3. Make location categories and inspect group sizes
-
-We create these columns now for later models. Creating a column does not automatically include it in a model: the model formula decides which columns are used.
-
-```{r}
-#| label: week7-create-categories
-
-tracts <- tracts %>%
+sales <- sales_space %>%
   mutate(
-    ring = case_when(
-      dist_ch_mi < 2 ~ "Core",
-      dist_ch_mi < 5 ~ "Inner",
-      TRUE ~ "Outer"
-    ),
-    ring = factor(ring, levels = c("Core", "Inner", "Outer")),
-    renter_band = cut(
-      pct_renter,
-      breaks = c(0, 33, 66, 100),
-      labels = c("Mostly owners", "Mixed", "Mostly renters"),
-      include.lowest = TRUE
+    year_built = na_if(as.numeric(year_built), 0),
+    age = 2024 - year_built
+  ) %>%
+  filter(
+    is.finite(age), age >= 0,
+    is.finite(number_of_bathrooms), number_of_bathrooms >= 0
+  ) %>%
+  arrange(parcel_number, sale_date, sale_price) %>%
+  mutate(record_id = row_number())
+
+cleaning_log <- tibble(
+  stage = c("Downloaded", "Price at least $10,000",
+            "Positive area and point geometry", "Usable age and bathrooms"),
+  remaining = c(nrow(sales_raw), nrow(sales_market),
+                nrow(sales_space), nrow(sales))
+) %>%
+  mutate(removed_at_step = lag(remaining, default = first(remaining)) - remaining)
+
+cleaning_log
+```
+
+`na_if(year_built, 0)` treats a recorded construction year of zero as unknown. `age = 2024 - year_built` is a common reference-year age, following the class example. It is not exactly age at sale for every observation.
+
+The lecture retained **27,551 records**. The checks here also require finite values, nonnegative ages and bathroom counts, and point geometry. The cleaning log reports the actual retained sample.
+
+We do not remove every expensive house simply because it is hard to predict. Any upper-price cutoff needs a reason tied to the population we intend to model. Record the number of rows removed and consider whose homes are being excluded.
+
+### Check repeated properties and locations
+
+```{r}
+#| label: spatial-errors-duplicate-checks
+
+sales %>%
+  st_drop_geometry() %>%
+  count(parcel_number) %>%
+  filter(n > 1) %>%
+  head(10)
+
+coords <- st_coordinates(sales)
+
+tibble(
+  records = nrow(sales),
+  repeated_coordinate_rows = sum(duplicated(coords))
+)
+```
+
+Multiple rows at the same point might represent repeated property records, shared geocoding, or distinct units. They need inspection, not automatic deletion. Repeated records from the same property should not be split between training and validation if that would let the model recognize the same property on both sides.
+
+## 7. Create spatial predictors from incident locations
+
+```{r}
+#| label: spatial-errors-download-incidents
+#| results: hide
+
+violent <- carto_get(
+  "SELECT the_geom FROM incidents_part1_part2
+   WHERE dispatch_date >= '2023-01-01'
+     AND dispatch_date < '2025-01-01'
+     AND text_general_code IN (
+       'Aggravated Assault Firearm',
+       'Aggravated Assault No Firearm',
+       'Robbery Firearm',
+       'Robbery No Firearm'
+     )"
+) %>%
+  filter(!st_is_empty(geometry), st_geometry_type(geometry) == "POINT") %>%
+  st_transform(2272)
+
+stopifnot(nrow(violent) >= 5)
+```
+
+`IN (...)` selects records whose category matches one of the listed values. The object name `violent` is shorthand for these **selected assault and robbery categories**, not a count of every possible violent offense.
+
+Both layers must use the same CRS. We are relating house points to incident points using distance, not joining them by a shared ID.
+
+### Feature A: incidents inside a fixed buffer
+
+```{r}
+#| label: spatial-errors-buffer-count
+
+sales <- sales %>%
+  mutate(
+    violent_660ft = lengths(
+      st_intersects(st_buffer(geometry, dist = 660), violent)
     )
   )
 
-tracts %>% st_drop_geometry() %>% count(ring)
-tracts %>% st_drop_geometry() %>% count(renter_band)
-tracts %>% st_drop_geometry() %>% count(district, sort = TRUE)
+summary(sales$violent_660ft)
 ```
 
-`case_when()` checks conditions from top to bottom and takes the first match. Core means below 2 miles, Inner means 2 to below 5, and Outer means 5 or more. A tract at exactly 2 miles is Inner.
+There are three nested operations:
 
-`cut()` uses interval boundaries. With its defaults here, the renter bands are `[0, 33]`, `(33, 66]`, and `(66, 100]`. `include.lowest = TRUE` includes zero. These labels are convenient bins, not an official Census classification.
+1. `st_buffer()` draws a 660-foot buffer around each house.
+2. `st_intersects()` returns a list of incident-row indices that intersect each buffer.
+3. `lengths()` counts the matches in each list element.
 
-A **factor** tells R to treat values as categories. The first level, Core, will be the reference in the usual regression coding. These are unordered groups; listing levels does not create an ordinal model.
+`lengths()` is plural because it measures each element of the list. `length()` would give one number: the length of the list itself.
 
-`st_drop_geometry()` returns an ordinary table. We retain geometry in `tracts` for maps and spatial operations, but do not need it for counting or fitting `lm()`.
+If a house has no selected incidents within its buffer, its count is zero. An incident can be counted for several nearby houses because their buffers overlap. That is expected for a proximity feature; summing the house counts would not give a citywide count of unique incidents.
 
-### Prepare a separate district grouping for cross-validation
-
-The lecture found only one usable tract in Lower South. If that tract is held out, the training data contain no example of its district. A standard district-factor model cannot estimate a coefficient for that unseen level.
-
-The lecture handles small groups by assigning their tracts to a nearby larger group. We retain the original district and create `district_cv` for this demonstration.
+### Feature B: average distance to the five nearest incidents
 
 ```{r}
-#| label: week7-prepare-district-cv
+#| label: spatial-errors-knn-distance
 
-small_districts <- tracts %>%
+incident_neighbors <- st_nn(
+  sales,
+  violent,
+  k = 5,
+  returnDist = TRUE,
+  progress = FALSE
+)
+
+stopifnot(all(lengths(incident_neighbors$dist) == 5))
+
+sales$violent_knn5 <- vapply(incident_neighbors$dist, mean, numeric(1))
+
+sales %>%
   st_drop_geometry() %>%
-  count(district) %>%
-  filter(n < 10) %>%
-  pull(district) %>%
-  as.character()
+  select(record_id, violent_660ft, violent_knn5) %>%
+  head()
+```
 
-is_small <- as.character(tracts$district) %in% small_districts
-tracts$district_cv <- as.character(tracts$district)
+`k = 5` requests five neighbors per house. `$dist` selects the returned distance lists. `vapply(..., mean, numeric(1))` calculates one numeric mean per house; it serves the same purpose as the lecture's `sapply(..., mean)` with an explicit expected output type.
 
-if (any(is_small)) {
-  if (all(is_small)) {
-    stop("All district groups are too small. Use a coarser grouping.")
-  }
+For projected point inputs, this nearest-neighbor calculation uses the coordinate scale. Here the distances are in US survey feet. Always check the CRS rather than assuming all spatial distances are meters.
 
-  nearest <- st_nearest_feature(
-    tracts[is_small, ],
-    tracts[!is_small, ]
+| Feature | What is fixed? | What varies? | Interpretation |
+|---|---|---|---|
+| `violent_660ft` | Radius: 660 feet | Number of incidents | More means more selected incidents nearby |
+| `violent_knn5` | Number of incidents: five | Average distance | Smaller means selected incidents are closer |
+
+The kNN feature can distinguish houses whose buffer counts are both zero. It still finds the nearest incidents even if they are far away. Unlike a fixed buffer, its geographic reach expands in sparse areas.
+
+A nearest-neighbor distance can be zero when features share coordinates; the average of five distances can also be zero if all five coincide with the house. “kNN is never zero” is a useful classroom contrast with zero counts, but not a mathematical guarantee.
+
+```{r}
+#| label: spatial-errors-feature-distributions
+#| fig-alt: "Distributions of selected incident counts within 660 feet of each house and mean distance to the five nearest selected incidents, in feet."
+#| fig-width: 8
+#| fig-height: 6
+
+sales %>%
+  st_drop_geometry() %>%
+  select(violent_660ft, violent_knn5) %>%
+  pivot_longer(everything(), names_to = "feature", values_to = "value") %>%
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 40, fill = "steelblue", color = "white") +
+  facet_wrap(~ feature, scales = "free", ncol = 1) +
+  labs(x = "Feature value: incident count or distance in feet", y = "Houses")
+```
+
+These are contextual predictors, not proof that crime causes the observed price differences. Reporting patterns, geocoding quality, omitted neighborhood characteristics, and the selected crime categories all affect their meaning.
+
+**Timing matters:** the class example uses 2023–2024 incidents for 2023–2024 sales. For a genuinely forward-looking prediction at a sale date, some of those incidents would not yet be known. Historical predictors should use information available before the prediction date. A feature can leak future information even when it is not a price variable.
+
+## 8. Fit the house-price model
+
+```{r}
+#| label: spatial-errors-fit-model
+
+model_data <- sales %>% st_drop_geometry()
+
+f_knn <- sale_price ~ total_livable_area + number_of_bathrooms + age + violent_knn5
+
+m1 <- lm(f_knn, data = model_data, na.action = na.fail)
+
+sales$pred <- as.numeric(predict(m1, newdata = model_data))
+sales$resid <- sales$sale_price - sales$pred
+
+summary(m1)
+```
+
+The formula models sale price using floor area, bathrooms, age, and mean distance to nearby incidents. The outcome remains in dollars. An intercept is included by default.
+
+`na.action = na.fail` stops if a required value is missing. This prevents the fitted model from silently using a different row set from the spatial weights or residual map.
+
+These predictions come from a model fitted to the same observations. They are **in-sample fitted values**. They help diagnose the model, but do not replace held-out evaluation.
+
+## 9. Understand the sign of a residual
+
+$$
+residual = actual - predicted.
+$$
+
+| Actual price | Predicted price | Residual | Meaning |
+|---:|---:|---:|---|
+| $300,000 | $250,000 | +$50,000 | Model predicted too low |
+| $300,000 | $350,000 | −$50,000 | Model predicted too high |
+| $300,000 | $300,000 | $0 | Exact fitted value |
+
+**Positive residual = underprediction. Negative residual = overprediction.**
+
+This sign convention matters for assessment fairness. A home the model overvalues has a negative actual-minus-predicted residual. Whether that translates into a higher tax bill depends on how the assessment and tax system uses the valuation.
+
+## 10. Map where the model is wrong
+
+```{r}
+#| label: spatial-errors-residual-map
+#| fig-alt: "Philadelphia houses colored by in-sample sale-price residuals: red indicates underprediction and blue indicates overprediction, with colors saturated beyond plus or minus 300,000 dollars."
+#| fig-width: 8
+#| fig-height: 7
+
+ggplot(sales) +
+  geom_sf(aes(color = resid), size = 0.4, alpha = 0.6) +
+  scale_color_gradient2(
+    low = "#2166ac",
+    mid = "grey90",
+    high = "#b2182b",
+    midpoint = 0,
+    limits = c(-300000, 300000),
+    oob = scales::squish,
+    labels = scales::label_dollar()
+  ) +
+  theme_void() +
+  labs(
+    color = "Residual",
+    title = "Where the model is wrong",
+    subtitle = "Red: predicted too low. Blue: predicted too high.",
+    caption = "In-sample residuals. Colors saturate outside ±$300,000."
   )
+```
 
-  tracts$district_cv[is_small] <-
-    as.character(tracts$district[!is_small][nearest])
+`alpha` controls transparency so overlapping points are easier to see. `midpoint = 0` centers the diverging palette on a correct prediction.
+
+`scales::squish` assigns values outside the color limits to the end colors. It **does not** change the residuals, remove expensive houses, or cap errors in RMSE. A −$900,000 residual and a −$300,000 residual receive the same end color, so inspect the numeric extremes too.
+
+```{r}
+#| label: spatial-errors-largest-errors
+
+sales %>%
+  st_drop_geometry() %>%
+  arrange(desc(abs(resid))) %>%
+  select(parcel_number, sale_price, pred, resid) %>%
+  slice_head(n = 10)
+```
+
+Clusters of red suggest places the model tends to underpredict; clusters of blue suggest places it tends to overpredict. They may point to missing features or an unsuitable model form, but a map alone does not identify the cause.
+
+## 11. Spatial autocorrelation
+
+Spatial autocorrelation describes how a variable relates to itself across locations. Here the variable is the **model residual**.
+
+- Positive spatial autocorrelation: nearby errors tend to have similar values.
+- Negative spatial autocorrelation: nearby errors tend to differ.
+- Little global spatial autocorrelation: no strong overall association under the chosen neighborhood definition.
+
+For example, if five nearby houses are all underpredicted by roughly $80,000, the model may be missing a local amenity, property characteristic, or relationship that differs in that area.
+
+Global absence of a pattern is not proof that all errors are independent. Local clusters can cancel one another in an overall statistic, and patterns depend on the scale at which neighbors are defined.
+
+## 12. Two different uses of kNN
+
+**kNN** means *k nearest neighbors*. It is a way of selecting nearby observations, not automatically a particular prediction model.
+
+| Use | Starting point | Neighbors | Purpose |
+|---|---|---|---|
+| Spatial predictor | House | Five incident locations | Measure proximity to selected incidents |
+| Residual diagnostic | House | Five other houses | Compare the house's error with nearby errors |
+
+The first becomes a model input. The second helps evaluate model errors. Neighboring residuals require observed outcomes, so they are not an available predictor for a new house whose price is unknown.
+
+## 13. Build a spatial weights object
+
+```{r}
+#| label: spatial-errors-weights
+
+coords <- st_coordinates(sales)
+stopifnot(nrow(coords) == nrow(sales), nrow(coords) > 5, all(is.finite(coords)))
+
+has_duplicate_locations <- anyDuplicated(coords) > 0
+
+house_knn <- knearneigh(
+  coords,
+  k = 5,
+  longlat = FALSE,
+  use_kd_tree = !has_duplicate_locations
+)
+
+house_nb <- knn2nb(house_knn)
+w_knn <- nb2listw(house_nb, style = "W")
+
+table(card(house_nb))
+head(vapply(w_knn$weights, sum, numeric(1)))
+```
+
+The steps are:
+
+1. `st_coordinates()` extracts each house's projected X and Y coordinates.
+2. `knearneigh(..., k = 5)` identifies five other nearby houses, excluding the observation itself.
+3. `knn2nb()` converts those indices to a neighbor-list object.
+4. `nb2listw(..., style = "W")` assigns row-standardized weights.
+
+With five equally weighted neighbors, each receives weight **1/5 = 0.2**, and each row's weights sum to one. `card()` reports each observation's number of neighbors.
+
+Duplicate coordinates can produce warnings and distance ties. The code turns off the kd-tree path when duplicates are present, but this does not resolve the substantive question of why multiple records share a location. Ties can make neighbor selection sensitive to record order.
+
+A kNN relation is not necessarily mutual: B can be among A's five closest houses without A being among B's five closest. Symmetrizing the graph changes the neighbor definition and may give some houses more than five neighbors.
+
+Do not sort or remove rows after building `w_knn` and then apply it to a differently ordered residual vector. The neighbor indices refer to the existing row positions. Rebuild weights if the analysis sample changes.
+
+## 14. The spatial lag: a weighted average of nearby values
+
+```{r}
+#| label: spatial-errors-lag
+
+sales$resid_lag <- lag.listw(w_knn, sales$resid)
+
+sales %>%
+  st_drop_geometry() %>%
+  select(record_id, resid, resid_lag) %>%
+  head()
+```
+
+Here `resid_lag` is the average residual of each house's five neighbors. “Lag” means a value calculated using spatial neighbors; it does not mean the previous row or the previous year.
+
+If a house's five neighbors have residuals of $10,000, $20,000, $30,000, $40,000, and $50,000, its spatial lag is $30,000. Its own residual is not included.
+
+## 15. Compare my error with my neighbors' errors
+
+```{r}
+#| label: spatial-errors-moran-scatter
+#| fig-alt: "Each house's sale-price residual plotted against the average residual of its five nearest neighboring houses, with zero reference lines and a fitted trend."
+#| fig-width: 8
+#| fig-height: 6
+
+ggplot(sales, aes(x = resid, y = resid_lag)) +
+  geom_hline(yintercept = 0, color = "grey70", linetype = "dashed") +
+  geom_vline(xintercept = 0, color = "grey70", linetype = "dashed") +
+  geom_point(alpha = 0.15, size = 0.6) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "#b2182b") +
+  coord_cartesian(xlim = c(-300000, 300000), ylim = c(-200000, 200000)) +
+  scale_x_continuous(labels = scales::label_dollar()) +
+  scale_y_continuous(labels = scales::label_dollar()) +
+  labs(
+    title = "Do nearby houses have similar prediction errors?",
+    x = "House residual: actual minus predicted",
+    y = "Average residual of five neighboring houses"
+  )
+```
+
+| Part of the plot | Interpretation |
+|---|---|
+| Upper right | House and neighbors are underpredicted |
+| Lower left | House and neighbors are overpredicted |
+| Upper left | House is overpredicted while neighbors are underpredicted |
+| Lower right | House is underpredicted while neighbors are overpredicted |
+
+The reference lines are at zero. For general variables, Moran scatterplots use deviations from the overall mean. An ordinary least-squares model with an intercept has in-sample residuals whose mean is approximately zero.
+
+`coord_cartesian()` zooms the visible region while retaining the full dataset for the fitted line. It does not restrict the observations used for Moran’s I.
+
+With row-standardized weights and a neighbor for every observation, the slope of the spatial-lag-versus-value regression corresponds to Moran’s I. The weighting convention matters.
+
+## 16. Moran’s I, one part at a time
+
+$$
+I = \frac{n}{S_0}
+\frac{\sum_i\sum_j w_{ij}(x_i-\bar{x})(x_j-\bar{x})}
+{\sum_i(x_i-\bar{x})^2},
+\qquad S_0 = \sum_i\sum_j w_{ij}.
+$$
+
+| Symbol | Meaning in this analysis |
+|---|---|
+| `n` | Number of houses |
+| `x_i` | Residual for house i |
+| `x̄` | Mean residual |
+| `w_ij` | Weight connecting house i to house j |
+| `S₀` | Sum of all weights |
+
+The numerator multiplies deviations at neighboring locations. Two positive deviations make a positive product; two negative deviations also make a positive product. Opposite signs make a negative product. The denominator scales by the overall variation in the values.
+
+The question is: **when a house's error is above average, are its neighbors' errors also above average?**
+
+For row-standardized weights with no isolated observations, every row sums to one, so `S₀ = n` and the leading fraction equals one.
+
+### Five houses on a block
+
+Use the lecture's residuals, expressed in thousands of dollars:
+
+```{r}
+#| label: spatial-errors-five-houses
+
+block_example <- tibble(
+  house = LETTERS[1:5],
+  residual_thousands = c(100, 80, 20, -50, -70)
+) %>%
+  mutate(deviation = residual_thousands - mean(residual_thousands))
+
+block_example
+```
+
+The mean is +16, so the deviations are +84, +64, +4, −66, and −86. Define neighbors as the houses immediately next door: A–B, B–C, C–D, and D–E.
+
+| Pair | Product of deviations |
+|---|---:|
+| A–B | 84 × 64 = 5,376 |
+| B–C | 64 × 4 = 256 |
+| C–D | 4 × −66 = −264 |
+| D–E | −66 × −86 = 5,676 |
+
+The products sum to 11,044. With a **binary, symmetric** neighbor matrix, each pair is counted in both directions. The numerator is therefore 22,088 and the sum of weights is eight.
+
+The sum of squared deviations is 22,920:
+
+$$
+I = \frac{5}{8}\frac{22088}{22920} \approx 0.6023.
+$$
+
+```{r}
+#| label: spatial-errors-manual-moran
+
+z_block <- block_example$deviation
+W_binary <- matrix(0, nrow = 5, ncol = 5)
+
+for (i in 1:4) {
+  W_binary[i, i + 1] <- 1
+  W_binary[i + 1, i] <- 1
 }
 
-tracts$district_cv <- factor(tracts$district_cv)
+I_binary <- (length(z_block) / sum(W_binary)) *
+  as.numeric(t(z_block) %*% W_binary %*% z_block) / sum(z_block^2)
 
-tracts %>%
-  st_drop_geometry() %>%
-  count(district, district_cv, name = "n_tracts")
+W_row <- W_binary / rowSums(W_binary)
+I_row <- (length(z_block) / sum(W_row)) *
+  as.numeric(t(z_block) %*% W_row %*% z_block) / sum(z_block^2)
+
+tibble(
+  weights = c("Binary next-door weights", "Row-standardized next-door weights"),
+  morans_I = c(I_binary, I_row)
+)
 ```
 
-This is a modeling grouping, **not a correction to official district boundaries**. Polygon neighbors can tie at distance zero; nearest-feature matching is a reproducible convenience rather than a guarantee of the most meaningful district choice. Inspect the table and map before treating the reassignment as substantively reasonable.
+The row-standardized version is about **0.7229**. The result differs because the end houses have one neighbor while interior houses have two. The hand calculation uses binary weights; the house-price analysis uses row-standardized kNN weights. We should not switch between these conventions without saying so.
 
-Other options are a justified manual merge, a coarser geography, or `forcats::fct_lump_min()`. An “Other” group can contain unrelated places, so it also needs explanation.
+### Interpreting the statistic
 
-Having ten observations per group is a practical precaution, not a mathematical guarantee of safe ten-fold CV. What matters is whether every validation category also exists in that fold's training data. We check that directly below.
+Positive I indicates similar neighboring deviations overall. Negative I indicates a tendency toward contrasting neighboring deviations. Near-zero I suggests little overall spatial association at the chosen scale.
 
-## 4. Compare models fairly with cross-validation
+Moran’s I is not a percentage of variance explained. It does not mean “26% of houses are clustered” when I is 0.26. Its attainable range depends on the weights; it is not universally bounded exactly by −1 and +1 like an ordinary correlation coefficient.
 
-### Same rows, same folds, same units
+Under a random-permutation null, its expected value is `-1 / (n - 1)`, which is close to zero for a large dataset. A global value close to that expectation does not rule out local patterns.
 
-A fair comparison keeps three things fixed:
-
-1. **Rows:** all candidate models are evaluated on the same tracts.
-2. **Folds:** each tract is held out in the same round for each candidate.
-3. **Units:** all RMSE values are calculated in monthly rent dollars.
-
-If a model drops additional tracts, gets a luckier split, or is scored in different units, a lower number may not mean its features are better.
+## 17. Shuffle the residuals to assess the observed pattern
 
 ```{r}
-#| label: week7-create-folds
-
-model_data <- tracts %>% st_drop_geometry()
+#| label: spatial-errors-moran-permutation
 
 set.seed(5080)
-folds <- sample(rep(1:10, length.out = nrow(model_data)))
 
-table(folds)
+mc <- moran.mc(
+  sales$resid,
+  w_knn,
+  nsim = 499,
+  alternative = "greater"
+)
 
-coverage_check <- map_dfr(1:10, function(k) {
-  map_dfr(c("ring", "district_cv"), function(v) {
-    training_levels <- unique(as.character(model_data[[v]][folds != k]))
-    validation_levels <- unique(as.character(model_data[[v]][folds == k]))
-
-    tibble(
-      fold = k,
-      variable = v,
-      unseen_levels = paste(
-        setdiff(validation_levels, training_levels),
-        collapse = ", "
-      )
-    )
-  })
-})
-
-coverage_check %>% filter(unseen_levels != "")
-
-if (any(coverage_check$unseen_levels != "")) {
-  stop("A validation group is absent from training. Revisit grouping or fold design.")
-}
+tibble(
+  morans_I = unname(mc$statistic),
+  permutation_p = mc$p.value,
+  permutations = 499
+)
 ```
 
-An empty coverage table is good: it means there are no unseen `ring` or `district_cv` levels in the validation folds.
+The locations and neighbor connections stay fixed. The function shuffles the residual values among those locations 499 times and compares the observed I with the simulated values.
 
-`rep(1:10, length.out = ...)` repeats fold numbers until every tract has one. `sample()` shuffles their assignment. `set.seed()` makes the assignment repeatable for the same ordered data. Do not reorder or remove rows after this step without rebuilding the folds for every model.
+`alternative = "greater"` asks whether the observed association is unusually positive. It is not a two-sided test for every possible spatial pattern.
 
-### A reusable CV function
+The lecture reported **I = 0.2605251** and **p = 0.002**. That is evidence of positive residual clustering relative to this permutation reference. With 499 permutations, 1/500 = 0.002 is the smallest attainable conventional permutation p-value. It is not the probability that the model is correct or that the pattern happened “by luck.”
 
 ```{r}
-#| label: week7-cv-helper
+#| label: spatial-errors-permutation-plot
+#| fig-alt: "Moran's I values from shuffled residuals compared with the observed Moran's I, shown by a red vertical line."
+#| fig-width: 8
+#| fig-height: 5
 
-cv_rmse <- function(f, data, fold_id, log_outcome = FALSE) {
-  stopifnot(length(fold_id) == nrow(data), !anyNA(fold_id))
-  preds <- rep(NA_real_, nrow(data))
+permutation_values <- tibble(I = head(mc$res, -1))
+
+ggplot(permutation_values, aes(x = I)) +
+  geom_histogram(bins = 30, fill = "grey70", color = "white") +
+  geom_vline(xintercept = unname(mc$statistic), color = "firebrick", linewidth = 1) +
+  labs(
+    title = "Observed clustering compared with shuffled residuals",
+    subtitle = "Red line: observed Moran’s I",
+    x = "Moran’s I",
+    y = "Permutations"
+  )
+```
+
+With many observations, even small patterns can produce small p-values. Track the magnitude of I alongside prediction error. Residual permutation is useful here as a diagnostic; formal regression inference also needs assumptions about residual exchangeability and the fitted model.
+
+## 18. Cross-validation and the model log
+
+The lecture fits the example model to map its errors. For comparing predictive features, we also need out-of-fold predictions. This extension evaluates a house-only baseline, buffer count, kNN distance, and both spatial predictors using the same observations and folds.
+
+Repeated records with a known parcel number are kept together in a fold. This avoids putting the same known property in training and validation. Spatially separated folds would answer a different question about transfer to new areas.
+
+```{r}
+#| label: spatial-errors-cv-folds
+
+model_data <- sales %>% st_drop_geometry()
+
+property_group <- if_else(
+  is.na(model_data$parcel_number) | as.character(model_data$parcel_number) == "",
+  paste0("unknown-record-", model_data$record_id),
+  paste0("parcel-", as.character(model_data$parcel_number))
+)
+
+unique_properties <- unique(property_group)
+stopifnot(length(unique_properties) >= 10)
+
+set.seed(5080)
+property_folds <- sample(rep(1:10, length.out = length(unique_properties)))
+fold_id <- property_folds[match(property_group, unique_properties)]
+
+table(fold_id)
+```
+
+```{r}
+#| label: spatial-errors-cv-function
+
+cv_predictions <- function(formula, data, fold_id) {
+  stopifnot(nrow(data) == length(fold_id), !anyNA(fold_id))
+  predictions <- rep(NA_real_, nrow(data))
 
   for (k in sort(unique(fold_id))) {
-    train_rows <- fold_id != k
-    validation_rows <- fold_id == k
-
-    fitted_model <- lm(
-      f,
-      data = data[train_rows, ],
-      na.action = na.fail
-    )
-
-    p <- predict(fitted_model, newdata = data[validation_rows, ])
-
-    if (log_outcome) {
-      p <- exp(p)
-    }
-
-    preds[validation_rows] <- p
+    validation <- fold_id == k
+    fit <- lm(formula, data = data[!validation, ], na.action = na.fail)
+    predictions[validation] <- predict(fit, newdata = data[validation, ])
   }
 
-  if (any(!is.finite(preds))) {
-    stop("Cross-validation produced missing or non-finite predictions.")
-  }
+  stopifnot(all(is.finite(predictions)))
+  predictions
+}
 
-  sqrt(mean((data$rent - preds)^2))
+morans_i <- function(values, weights) {
+  moran(
+    values,
+    weights,
+    n = length(values),
+    S0 = Szero(weights)
+  )$I
 }
 ```
 
-Read this as a set of instructions:
-
-- `f` is a formula such as `rent ~ income`.
-- `data` is the table of observations.
-- `fold_id` says which fold each row belongs to. Passing it explicitly makes the function less dependent on objects elsewhere in the session.
-- Each loop fits on nine folds and predicts the held-out fold.
-- `preds[validation_rows] <- p` puts predictions back in their original row positions.
-- `log_outcome = TRUE` converts predicted log rent back to dollars.
-- Finally, the function returns one pooled out-of-fold RMSE.
-
-$$
-RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(rent_i-\widehat{rent}_{i,\;held\ out})^2}.
-$$
-
-Squaring penalizes large errors; taking the square root returns the result to dollars. Lower is better on this metric. RMSE is not an average percentage error, and it is not the same as mean absolute error.
-
-`na.action = na.fail` prevents a candidate model from quietly dropping rows. The function uses pooled squared errors, which need not equal the simple average of ten separately computed fold RMSE values.
-
-### Fit a baseline
+Each house is predicted by a model that did not train on its fold. The predictions are returned in the original row order. This order must also match the spatial weights.
 
 ```{r}
-#| label: week7-baseline
+#| label: spatial-errors-model-log
 
-f0 <- rent ~ income + pct_renter + bldg_age + dist_ch_mi
-m0 <- lm(f0, data = model_data)
-
-model_log <- tibble(
-  model = "m0",
-  specification = "Baseline: income, renter share, age, distance",
-  cv_rmse = cv_rmse(f0, model_data, folds)
+formulas <- list(
+  House_only = sale_price ~ total_livable_area + number_of_bathrooms + age,
+  Buffer_count = sale_price ~ total_livable_area + number_of_bathrooms + age + violent_660ft,
+  KNN_distance = f_knn,
+  Both_features = sale_price ~ total_livable_area + number_of_bathrooms + age +
+    violent_660ft + violent_knn5
 )
 
-summary(m0)
-model_log
-```
+evaluations <- lapply(formulas, function(f) {
+  fit <- lm(f, data = model_data, na.action = na.fail)
+  oof_pred <- cv_predictions(f, model_data, fold_id)
+  oof_resid <- model_data$sale_price - oof_pred
 
-`~` means “modeled using.” The `+` signs include predictors. `m0` is fitted using the whole analysis sample for inspection; the CV helper refits separate models inside the training folds for honest held-out predictions.
-
-**Model log** here means a record of model experiments. It is unrelated to the mathematical `log()` transformation.
-
-## 5. Log transformations
-
-### Why take a log?
-
-R's `log()` is the natural logarithm. It compresses large positive numbers and makes equal **multiplicative** changes equally spaced.
-
-Moving from $20,000 to $40,000 doubles income. Moving from $100,000 to $200,000 also doubles it. Both moves have a log difference of `log(2)`, although their dollar differences are very different.
-
-```{r}
-#| label: week7-income-histograms
-#| fig-width: 10
-#| fig-height: 4
-
-p_income <- ggplot(model_data, aes(x = income)) +
-  geom_histogram(bins = 40, fill = "steelblue", color = "white") +
-  scale_x_continuous(labels = scales::label_dollar()) +
-  labs(title = "Original income", x = "Annual median household income", y = "Tracts")
-
-p_log_income <- ggplot(model_data, aes(x = log(income))) +
-  geom_histogram(bins = 40, fill = "darkorange", color = "white") +
-  labs(title = "Logged income", x = "Natural log of income", y = "Tracts")
-
-p_income + p_log_income
-```
-
-The log may reduce a long right tail. But a predictor does **not** have to be normally distributed for linear regression. We use the plot to consider a plausible relationship and then test prediction performance; skew alone does not prove that logging is the right choice.
-
-### Log the predictor: rent in dollars, income in logs
-
-```{r}
-#| label: week7-log-predictor
-
-f_logx <- rent ~ log(income) + pct_renter + bldg_age + dist_ch_mi
-m_logx <- lm(f_logx, data = model_data)
-
-b <- unname(coef(m_logx)["log(income)"])
-
-tibble(
-  income_change = c("1% increase", "10% increase"),
-  predicted_rent_change_dollars = b * log(c(1.01, 1.10))
-)
-
-model_log <- model_log %>%
-  add_row(
-    model = "m1",
-    specification = "Log income; rent remains in dollars",
-    cv_rmse = cv_rmse(f_logx, model_data, folds)
+  list(
+    oof_pred = oof_pred,
+    oof_resid = oof_resid,
+    cv_rmse = sqrt(mean(oof_resid^2)),
+    moran_in_sample = morans_i(residuals(fit), w_knn),
+    moran_out_of_fold = morans_i(oof_resid, w_knn)
   )
-```
+})
 
-For a model containing `b * log(income)`, a 1% income increase corresponds to approximately `b / 100` dollars more predicted rent, holding other predictors fixed. The exact change is `b * log(1.01)`.
-
-The lecture reported a coefficient near 502.18: approximately $5.02 for a 1% increase, or $47.86 for a 10% increase using the exact formula. The table above calculates the corresponding values for this analysis.
-
-This is a modeled association between tracts, not evidence that giving a household more income causes its rent to rise.
-
-### Zeros and `log1p()`
-
-```{r}
-#| label: week7-log-zero-demo
-
-log(0)
-log1p(c(0, 1, 10, 100))
-```
-
-`log(0)` produces negative infinity. `log1p(x)` means `log(1 + x)`, so zero becomes zero. It is useful for nonnegative counts such as trees or service calls.
-
-It is not a universal repair for every variable with zeros. Consider whether zero is meaningful, whether values can be negative, and whether a count, a dollar amount, or a proportion is being transformed. With `log1p(x)`, the simple percentage interpretation concerns changes in **1 + x**; it can differ substantially from changes in `x` near zero.
-
-### Log the outcome as well
-
-```{r}
-#| label: week7-log-outcome
-
-f_logy <- log(rent) ~ log(income) + pct_renter + bldg_age + dist_ch_mi
-m_logy <- lm(f_logy, data = model_data)
-
-coef(m_logy)
-
-model_log <- model_log %>%
-  add_row(
-    model = "m2",
-    specification = "Log rent and log income; score back in dollars",
-    cv_rmse = cv_rmse(f_logy, model_data, folds, log_outcome = TRUE)
+model_log <- imap_dfr(evaluations, function(result, model_name) {
+  tibble(
+    model = model_name,
+    cv_rmse = result$cv_rmse,
+    moran_in_sample = result$moran_in_sample,
+    moran_out_of_fold = result$moran_out_of_fold
   )
-```
-
-| Form | Formula | Interpretation, holding other predictors fixed |
-|---|---|---|
-| Level–level | `y ~ x` | One more unit of X corresponds to β more units of Y. |
-| Level–log | `y ~ log(x)` | A 1% increase in X corresponds to approximately β/100 more units of Y. |
-| Log–level | `log(y) ~ x` | One more unit of X corresponds to approximately 100β% change in Y. |
-| Log–log | `log(y) ~ log(x)` | A 1% increase in X corresponds to approximately β% change in Y. |
-
-In a log–level model, the exact modeled percentage change for one unit of X is `100 * (exp(b) - 1)`. In a log–log model, a 10% increase in X corresponds to `100 * (1.10^b - 1)` percent change. These describe the back-transformed fitted relationship; interpreting conditional means also requires attention to retransformation.
-
-For `pct_renter`, one unit is **one percentage point of renter share**. That is different from a 1% relative increase in renter share.
-
-### Do not compare log-scale errors with dollar errors
-
-```{r}
-#| label: week7-rmse-units
-
-tibble(
-  calculation = c("Baseline training RMSE", "Logged-outcome training RMSE"),
-  value = c(
-    sqrt(mean(residuals(m0)^2)),
-    sqrt(mean(residuals(m_logy)^2))
-  ),
-  units = c("Monthly rent dollars", "Log rent units")
-)
-```
-
-A number such as 0.19 in log units is not directly better than $260. They measure different things, and these particular calculations are training errors rather than CV errors.
-
-The CV helper uses `exp(p)` to undo the log before comparing predicted rent with observed rent. That makes the reported RMSE values comparable in dollars.
-
-There is a further distinction: exponentiating a predicted log value is not generally the conditional **mean** on the original scale. With suitable log-error assumptions it corresponds to a conditional median. Here we use the simple back-transform. More advanced work can estimate a retransformation correction using each training fold only, then assess whether it improves held-out dollar predictions.
-
-## 6. Squared terms: allowing a curve
-
-### Inspect the relationship first
-
-```{r}
-#| label: week7-age-pattern
-#| fig-width: 8
-#| fig-height: 5
-
-ggplot(model_data, aes(x = bldg_age, y = rent)) +
-  geom_point(alpha = 0.35) +
-  geom_smooth(method = "loess", formula = y ~ x, se = FALSE, color = "grey40") +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "firebrick") +
-  scale_y_continuous(labels = scales::label_dollar()) +
-  labs(
-    title = "Does the rent–age relationship bend?",
-    subtitle = "Grey: flexible descriptive curve; red: straight line",
-    x = "Approximate median building age (years)",
-    y = "Median monthly gross rent"
-  )
-```
-
-This is a two-variable exploratory plot. It does not hold income and other predictors constant. A curved pattern suggests something worth testing, but does not establish a causal effect of building age.
-
-A pile-up at the oldest ages can also reflect how the underlying Census variable is coded. Inspect year-built values and their metadata before interpreting an apparent boundary as a housing-market pattern.
-
-```{r}
-#| label: week7-age-boundary-check
-
-tracts_raw %>%
-  st_drop_geometry() %>%
-  count(yr_builtE, sort = TRUE) %>%
-  slice_head(n = 8)
-```
-
-### Fit the squared term
-
-```{r}
-#| label: week7-squared-model
-
-f_sq <- rent ~ log(income) + pct_renter + bldg_age + I(bldg_age^2) + dist_ch_mi
-m_sq <- lm(f_sq, data = model_data)
-
-coef(m_sq)[c("bldg_age", "I(bldg_age^2)")]
-
-b1 <- unname(coef(m_sq)["bldg_age"])
-b2 <- unname(coef(m_sq)["I(bldg_age^2)"])
-turning_point <- if (is.finite(b2) && b2 != 0) -b1 / (2 * b2) else NA_real_
-
-tibble(
-  turning_age = turning_point,
-  minimum_observed_age = min(model_data$bldg_age),
-  maximum_observed_age = max(model_data$bldg_age)
-)
-
-model_log <- model_log %>%
-  add_row(
-    model = "m3",
-    specification = "Log income plus age squared; rent in dollars",
-    cv_rmse = cv_rmse(f_sq, model_data, folds)
-  )
-```
-
-`I()` tells the formula to use the arithmetic result of `bldg_age^2`. Formula operators have special meanings in R; leaving out `I()` does not request the same squared numeric predictor.
-
-For the age part of the prediction,
-
-$$
-\widehat{rent} = \cdots + b_1 age + b_2 age^2,
-$$
-
-the local slope is
-
-$$
-b_1 + 2b_2 age.
-$$
-
-So `b1` alone is not a constant “effect of an extra year” at all ages. The exact predicted change from age `a` to `a + 1` is `b1 + b2 * (2*a + 1)`.
-
-- A positive squared coefficient makes a U-shaped curve.
-- A negative squared coefficient makes an upside-down U.
-- The turning point is `-b1 / (2*b2)` when the squared coefficient is nonzero.
-
-Check whether the turning point is inside the observed range. The lecture reported about 76.8 years within a range of 5–85. That is a description of the fitted curve, not proof that renovating or aging a building causes that rent pattern.
-
-### Plot a fitted curve while holding other predictors fixed
-
-```{r}
-#| label: week7-adjusted-age-curve
-#| fig-width: 8
-#| fig-height: 5
-
-age_grid <- tibble(
-  bldg_age = seq(min(model_data$bldg_age), max(model_data$bldg_age), length.out = 150),
-  income = median(model_data$income),
-  pct_renter = median(model_data$pct_renter),
-  dist_ch_mi = median(model_data$dist_ch_mi)
-)
-
-age_grid$predicted_rent <- predict(m_sq, newdata = age_grid)
-
-ggplot(age_grid, aes(x = bldg_age, y = predicted_rent)) +
-  geom_line(color = "steelblue", linewidth = 1) +
-  scale_y_continuous(labels = scales::label_dollar()) +
-  labs(
-    title = "The squared-age model's fitted relationship",
-    subtitle = "Income, renter share, and distance held at their sample medians",
-    x = "Approximate median building age (years)",
-    y = "Predicted monthly gross rent"
-  )
-```
-
-Unlike the earlier scatterplot smooth, this curve comes from the multiple regression. Its fixed predictor combination is illustrative and may not describe an actual tract. We keep the age grid within the observed range because a parabola can behave badly when extrapolated.
-
-Also notice that `m3` returns to **rent in dollars**. It is not simply `m2` with one extra term. Read the complete formulas when comparing models.
-
-## 7. Categories and reference groups
-
-### How R represents a factor
-
-```{r}
-#| label: week7-factor-matrix
-
-model.matrix(~ ring, data = model_data) %>% head(8)
-```
-
-With an intercept and ordinary treatment coding, three ring categories become two indicator columns:
-
-| Ring | Intercept | `ringInner` | `ringOuter` |
-|---|---:|---:|---:|
-| Core | 1 | 0 | 0 |
-| Inner | 1 | 1 | 0 |
-| Outer | 1 | 0 | 1 |
-
-Core is the reference. Including all three indicators **and** an intercept would introduce exact redundancy. R handles this coding when the predictor is a factor. A deliberately specified no-intercept model is a different coding choice; the “k minus one” rule assumes the usual intercept model.
-
-### Replace continuous distance with rings
-
-```{r}
-#| label: week7-category-model
-
-f_cat <- rent ~ log(income) + pct_renter + bldg_age + I(bldg_age^2) + ring
-m_cat <- lm(f_cat, data = model_data)
-
-coef(m_cat)[c("ringInner", "ringOuter")]
-
-model_log <- model_log %>%
-  add_row(
-    model = "m4",
-    specification = "Rings replace continuous distance",
-    cv_rmse = cv_rmse(f_cat, model_data, folds)
-  )
-```
-
-If `ringOuter = -164`, the interpretation is:
-
-> Outer-ring tracts have predicted monthly rent about $164 lower than Core tracts with the same income, renter share, and building age, under this model.
-
-It does not mean Outer rent is negative $164, or that moving a tract changes its rent by that amount.
-
-The category-only specification shifts the fitted relationship up or down but keeps the income slope the same across rings. Two tracts at 2.1 and 4.9 miles receive the same ring value, although their other predictors may differ. Binning discards distance detail and creates artificial breaks at the cutoffs. CV tells us whether that trade helps prediction here.
-
-### Change the reference without changing predictions
-
-```{r}
-#| label: week7-change-reference
-
-model_data_outer <- model_data %>%
-  mutate(ring = relevel(ring, ref = "Outer"))
-
-m_cat_outer <- lm(f_cat, data = model_data_outer)
-
-coef(m_cat_outer)[c("ringCore", "ringInner")]
-
-max(abs(
-  predict(m_cat, newdata = model_data) -
-    predict(m_cat_outer, newdata = model_data_outer)
-))
-```
-
-The maximum prediction difference should be zero up to numerical rounding. Changing the reference changes the comparisons in the coefficient table, not the fitted relationships.
-
-## 8. Interactions: different slopes for different groups
-
-An interaction lets the association between one predictor and rent depend on another predictor.
-
-```{r}
-#| label: week7-ring-exploration
-#| fig-width: 8
-#| fig-height: 5
-
-ggplot(model_data, aes(x = log(income), y = rent, color = ring)) +
-  geom_point(alpha = 0.3) +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
-  scale_y_continuous(labels = scales::label_dollar()) +
-  labs(
-    title = "Income and rent by distance ring",
-    subtitle = "Separate descriptive lines; other predictors are not held fixed",
-    x = "Natural log of median household income",
-    y = "Median monthly gross rent",
-    color = "Ring"
-  )
-```
-
-Nonparallel lines suggest checking an interaction. They do not by themselves establish that the adjusted slopes differ reliably.
-
-```{r}
-#| label: week7-interaction-model
-
-f_int <- rent ~ log(income) * ring + pct_renter + bldg_age + I(bldg_age^2)
-m_int <- lm(f_int, data = model_data)
-
-coef(m_int)[grep("income", names(coef(m_int)))]
-
-int_coefs <- coef(m_int)
-
-tibble(
-  ring = c("Core", "Inner", "Outer"),
-  slope_on_log_income = c(
-    int_coefs["log(income)"],
-    int_coefs["log(income)"] + int_coefs["log(income):ringInner"],
-    int_coefs["log(income)"] + int_coefs["log(income):ringOuter"]
-  )
-)
-
-model_log <- model_log %>%
-  add_row(
-    model = "m5",
-    specification = "Log income interacts with ring",
-    cv_rmse = cv_rmse(f_int, model_data, folds)
-  )
-```
-
-In formula syntax:
-
-```r
-log(income) * ring
-```
-
-expands to:
-
-```r
-log(income) + ring + log(income):ring
-```
-
-The single income coefficient is the Core slope. An interaction coefficient is an **addition to that slope**, not the full slope for its group.
-
-Using the lecture's reported coefficients, the Core slope was about 653.70 and the Outer adjustment about −244.42. The Outer slope was therefore about 409.28 per one-unit change in log income. For a 1% income increase, the approximate dollar changes were $6.54 in Core and $4.09 in Outer.
-
-In this uncentered interaction model, the ring main coefficients compare groups at `log(income) = 0`, meaning income of $1. That is outside a sensible range here. Centering log income around a meaningful reference would make those group comparisons easier to read, without changing the fitted model's predictions when done consistently.
-
-Interactions add parameters. Do not cross every predictor with every other predictor simply because R allows it. A reason for the interaction and held-out performance are both useful checks.
-
-## 9. Fixed effects: allowing places to have different intercepts
-
-A district fixed effect uses a factor to allow each district its own intercept. With an intercept and 18 represented districts, ordinary coding uses 17 district indicator coefficients.
-
-The model can capture **additive group-level differences** that are shared within a district. It does not explain every unmeasured characteristic, eliminate all confounding, or model every difference among tracts within that district.
-
-### District codes are labels, not measurements
-
-If district names were replaced by numbers 1 through 18 and entered as one numeric predictor, the model would assume a constant rent change for each one-number increase. District numbering has no such quantitative meaning.
-
-Use `factor(district)`. Likewise, do not treat ZIP codes or GEOIDs as continuous amounts. `as.numeric()` applied to a factor returns its internal level codes, not a meaningful measurement.
-
-### Fit the original-district model for interpretation
-
-```{r}
-#| label: week7-fixed-effects
-
-f_fe <- rent ~ log(income) + pct_renter + bldg_age + I(bldg_age^2) + district
-m_fe <- lm(f_fe, data = model_data)
-
-tibble(
-  model = c("Squared-age model with distance", "Original district fixed effects"),
-  log_income_coefficient = c(
-    coef(m_sq)["log(income)"],
-    coef(m_fe)["log(income)"]
-  )
-)
-```
-
-With district intercepts included, the common income slope is estimated from within-district variation after accounting for the other covariates. This can differ from the coefficient in a model without district indicators.
-
-In the lecture, the income coefficient changed from about 519.74 to 427.39. However, these two formulas also **replace continuous distance with district indicators**. We should not describe the change as the effect of adding districts while everything else in the specification stayed identical.
-
-The original-district model is useful for inspecting associations, but a district represented by one tract has a very weak basis for generalization. For CV, we use the separately prepared `district_cv` factor.
-
-### Display district differences
-
-```{r}
-#| label: week7-district-coefficients
-#| fig-width: 8
-#| fig-height: 6
-
-fe_coefs <- tibble(
-  term = names(coef(m_fe)),
-  estimate = unname(coef(m_fe))
-) %>%
-  filter(str_starts(term, "district")) %>%
-  mutate(district_name = str_remove(term, "^district"))
-
-ggplot(fe_coefs, aes(x = estimate, y = reorder(district_name, estimate))) +
-  geom_col(fill = "steelblue") +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  scale_x_continuous(labels = scales::label_dollar()) +
-  labs(
-    title = "District differences in predicted rent",
-    subtitle = paste("Reference district:", levels(model_data$district)[1]),
-    x = "Predicted rent difference, holding other predictors fixed",
-    y = NULL
-  )
-```
-
-Each bar is a coefficient relative to the reference district, not the district's total rent. This is a descriptive coefficient plot without uncertainty intervals; the bar lengths alone do not tell us which differences are statistically distinguishable from zero.
-
-`str_starts()` selects the district terms. `str_remove(..., "^district")` removes the prefix so the labels are readable. `reorder()` sorts the displayed district names by their coefficients.
-
-### Map residuals before and after
-
-```{r}
-#| label: week7-residual-maps
-#| fig-width: 11
-#| fig-height: 6
-
-tracts$resid_before <- residuals(m_sq)
-tracts$resid_fe <- residuals(m_fe)
-
-residual_limit <- max(abs(c(tracts$resid_before, tracts$resid_fe)))
-if (residual_limit == 0) residual_limit <- 1
-
-map_resid <- function(var, plot_title) {
-  ggplot(tracts) +
-    geom_sf(aes(fill = .data[[var]]), color = NA) +
-    scale_fill_gradient2(
-      low = "#2166ac",
-      mid = "grey95",
-      high = "#b2182b",
-      midpoint = 0,
-      limits = c(-residual_limit, residual_limit),
-      labels = scales::label_dollar()
-    ) +
-    labs(title = plot_title, fill = "Residual ($)") +
-    theme_void()
-}
-
-map_resid("resid_before", "Squared-age model") +
-  map_resid("resid_fe", "Original district fixed effects")
-```
-
-Residual means **observed rent minus predicted rent**:
-
-- Red: positive residual, so the model underpredicted rent.
-- Blue: negative residual, so the model overpredicted rent.
-- Near white: the prediction is close to the observed value.
-
-Both maps use identical color limits so equal colors mean equal dollar residuals. These are **in-sample residuals**. Less visible clustering is a diagnostic clue, not proof of improved prediction, spatial independence, or a causal explanation.
-
-`.data[[var]]` selects a column using the text stored in `var`. When the function receives `"resid_fe"`, it maps the `resid_fe` column to fill color.
-
-### Evaluate the CV-compatible district model
-
-```{r}
-#| label: week7-fixed-effects-cv
-
-f_fe_cv <- rent ~ log(income) + pct_renter + bldg_age + I(bldg_age^2) + district_cv
-
-model_log <- model_log %>%
-  add_row(
-    model = "m6",
-    specification = "District fixed effects with small groups reassigned",
-    cv_rmse = cv_rmse(f_fe_cv, model_data, folds)
-  )
-```
-
-The original-district model in the maps and the `district_cv` model in the log are related but **not identical**. Keep that distinction when describing the results.
-
-Fixed effects are useful when predicting another observation in a known group. They cannot directly supply a learned intercept for a completely new district. Measured spatial features, such as distance to transit, can be computed in new places, but their relationships may still fail to transfer. Neither approach automatically establishes why rent differs.
-
-## 10. Read the model comparison
-
-```{r}
-#| label: week7-model-comparison
+})
 
 model_log %>%
   arrange(cv_rmse) %>%
-  knitr::kable(digits = 2, col.names = c("Model", "Specification", "CV RMSE ($)"))
+  knitr::kable(digits = c(0, 2, 3, 3))
 ```
 
+The log records which residuals were used for Moran’s I. In-sample and out-of-fold residual diagnostics are different quantities. Do not compare them as if they were interchangeable.
+
+| Metric | Question |
+|---|---|
+| CV RMSE | How large are held-out prediction errors, in dollars? |
+| In-sample Moran’s I | Do errors from the fitted model cluster? |
+| Out-of-fold Moran’s I | Do held-out prediction errors cluster? |
+
+Lower RMSE is better on that scoring rule. Moran’s I nearer its null expectation means less global residual association under the chosen weights, not necessarily better overall prediction. A model can improve one metric while worsening the other.
+
 ```{r}
-#| label: week7-model-comparison-plot
-#| fig-width: 10
+#| label: spatial-errors-model-comparison-plot
+#| fig-alt: "Four house-price models compared by cross-validated dollar RMSE and Moran's I of out-of-fold residuals."
+#| fig-width: 8
 #| fig-height: 5
 
-model_log %>%
-  mutate(model_label = paste(model, specification, sep = ": ")) %>%
-  ggplot(aes(x = cv_rmse, y = reorder(model_label, cv_rmse))) +
+ggplot(model_log, aes(x = cv_rmse, y = moran_out_of_fold, label = model)) +
   geom_point(size = 3, color = "steelblue") +
+  geom_text(nudge_y = 0.008, size = 3, check_overlap = TRUE) +
   scale_x_continuous(labels = scales::label_dollar()) +
   labs(
-    title = "Which features improved held-out rent prediction?",
-    subtitle = "Same rows and folds; lower RMSE is better",
-    x = "Out-of-fold RMSE in monthly rent dollars",
-    y = NULL
+    title = "Prediction error and residual clustering",
+    x = "Cross-validated RMSE",
+    y = "Moran’s I of out-of-fold residuals"
   )
 ```
 
-The lecture reported these rounded results:
+These comparisons hold the sample, fold assignment, and neighbor weights constant. They remain subject to the timing limitation of the incident features and do not establish performance on a future city's housing market.
 
-| Model | Main specification | Lecture CV RMSE ($) |
-|---|---|---:|
-| m0 | Baseline | 265 |
-| m1 | Log income | 265 |
-| m2 | Log rent and log income, back-transformed | 263 |
-| m3 | Log income and squared age | 261 |
-| m4 | Rings instead of distance | 265 |
-| m5 | Income-by-ring interaction | 264 |
-| m6 | District effects with small groups reassigned | 256 |
+## 19. What to do when errors cluster
 
-These lecture results provide a comparison with the calculated table above. Boundary updates, cleaning, row ordering, and fold assignments can change RMSE. Sorting by GEOID before forming folds makes the fold assignment repeatable for the same data.
+Use the map to form a specific hypothesis:
 
-In the lecture comparison, district effects gave the lowest error and binning distance did not improve on the squared-age model. Logging did not deliver a large gain on its own. That is a useful result: a plausible transformation can help, hurt, or make little difference.
-
-A $1 or $2 difference on one fold assignment is not automatically a meaningful improvement. Repeated CV can show how stable rankings are. Repeatedly selecting the best model on the same CV results also introduces selection optimism; a final untouched test set or nested CV is useful for a stronger final performance estimate.
-
-## 11. Limits and habits to keep
-
-### Predictions are not causal effects
-
-“Tracts in this district have higher predicted rent” does not explain whether the difference comes from amenities, housing quality, demand, selection, or another factor. A spatial feature can describe an association more concretely than a district label without establishing causality.
-
-### ACS uncertainty has not disappeared
-
-The outcome and predictors are survey estimates. We retained `rent_moe`, but ordinary `lm()` here does not automatically propagate ACS margins of error or correct measurement error in income. The charts and CV measure prediction of the available tract estimates under this workflow, not perfect knowledge of true rents.
-
-### Random tract folds answer a limited question
-
-Nearby tracts may share conditions. Random folds can place neighboring tracts in both training and validation sets. Performance for new areas or a different city may be worse. Spatially separated validation answers a different question, and entirely held-out districts create a particular problem for district fixed effects.
-
-### Keep learned preprocessing inside training folds
-
-The ring cutoffs in this lesson are preset. Taking `log(x)` or squaring `x` does not estimate parameters from the full sample. In contrast, imputation values, scaling parameters, data-chosen cutoffs, and feature selection should be learned within each training fold when used to assess prediction.
-
-The district regrouping here follows the lecture's full-sample, outcome-free geographic preparation. It is a classroom comparison for known places. For deployment, define the grouping rule in advance and make sure it also works for future observations.
-
-### Fit the final model after comparison
-
-Each CV round produces a temporary model used to evaluate held-out predictions. We do not select whichever fold happened to perform best as the final fitted line. After choosing a specification, fit it to the intended training data and evaluate any reserved test set only when the specification is settled.
-
-## 12. Syntax reference
-
-| Code | Meaning |
+| Possible explanation | Feature to investigate |
 |---|---|
-| `mutate(new = ...)` | Add or replace a column |
-| `na_if(x, 0)` | Replace zeros with missing values |
-| `is.finite(x)` | Identify values that are neither missing nor infinite |
-| `log(x)` | Natural logarithm; requires positive values for finite real results |
-| `log1p(x)` | Natural logarithm of `1 + x` |
-| `exp(x)` | Inverse of the natural log |
-| `I(x^2)` | Use squared X as an arithmetic term in a formula |
-| `factor(x)` | Represent X as categories |
-| `relevel(x, ref = "Outer")` | Change a factor's reference category |
-| `x * group` | Include X, group, and their interaction |
-| `x:group` | Specify an interaction term |
-| `model.matrix()` | Inspect the numeric columns used to represent a formula |
-| `coef(model)` | Extract fitted coefficients |
-| `predict(model, newdata = ...)` | Compute predictions using supplied rows |
-| `residuals(model)` | Extract observed-minus-fitted differences |
-| `st_join(..., largest = TRUE)` | Attach attributes from the feature with largest overlap |
-| `st_nearest_feature(x, y)` | Return the index of each X feature's nearest Y feature |
-| `st_drop_geometry()` | Remove geometry and keep the attribute table |
-| `count(group)` | Count rows in each group |
-| `add_row(...)` | Append a row to a table |
+| Access to transit differs | Distance to stations or nearby service availability |
+| Parks or other amenities differ | Nearby park area or distance to amenities |
+| Recorded incidents differ | Buffer counts or distances to incidents |
+| Neighborhood-wide price levels differ | Carefully defined neighborhood fixed effects |
+| A relationship changes by place | An interaction, such as floor area × neighborhood |
+| Housing quality is missing | Building condition or other available property attributes |
 
-## 13. How this supports the assignment
+Refit and record both CV RMSE and Moran’s I. The residual map suggests questions; it does not supply a causal explanation by itself. Do not repeatedly tune features against a final test set.
 
-The feature-engineering portion of the assignment brings these ideas together:
+The choice of five neighbors is also a modeling choice. It captures one local scale. A larger k examines a broader area; a smaller k is more local and may be noisier. Compare I across candidate models using the same definition, and label any sensitivity analysis that changes k.
 
-1. Inspect the variables before choosing transformations: histograms for distributions and scatterplots for relationships.
-2. Try at least one log transformation, one squared term, and one categorical feature.
-3. Compare candidates using the same rows and folds.
-4. Return logged-outcome predictions to dollars before computing dollar RMSE.
-5. Count category sizes before using factors in CV.
-6. Explain a categorical coefficient and name the reference group.
+## 20. Spatial lag diagnostics are not spatial lag predictors
 
-## 14. Questions to check my understanding
+The diagnostic `lag.listw(w_knn, residuals)` summarizes neighboring errors after outcomes are known. A spatial lag model of the outcome has a different form:
 
-1. What changes when I use `log(income)` instead of `income`?
-2. Why is logging a skewed predictor an option rather than a requirement?
-3. Why does an RMSE of 0.19 from a logged outcome not beat an RMSE of $260 by itself?
-4. What does `I(bldg_age^2)` do, and why is `I()` needed?
-5. Why should I read the linear and squared coefficients together?
-6. What does a turning point outside the observed range tell me?
-7. Which ring contains a tract exactly two miles from City Hall?
-8. What is the reference category in `factor(ring, levels = c("Core", "Inner", "Outer"))`?
-9. What does `ringOuter = -120` mean in a model without interactions?
-10. Does changing the reference category change predicted rent?
-11. How do I calculate the Outer income slope in an interaction model?
-12. Why is a district number not a continuous predictor?
-13. Why might a district with one tract cause a CV failure?
-14. Why do original-district maps and the merged-district CV model need different descriptions?
-15. What do positive residuals mean on the map?
-16. Why do the residual maps need the same color limits?
-17. Why are the same rows, folds, and RMSE units necessary?
-18. Why is the smallest CV RMSE not proof of causality or reliable transfer to a new city?
+$$
+y = \rho Wy + X\beta + \varepsilon.
+$$
 
-## Sources and further reading
+Here `Wy` contains neighboring outcome values. For this assignment, the rule is to build spatial predictors from **X**, not from neighboring sale prices **Y**.
 
-Dr. Elizabeth Delmelle. MUSA 5080 lecture, October 9, 2026: transformations, categories, interactions, and fixed effects.
+The risk is leakage: computing a price-based neighborhood feature from the complete dataset can carry validation outcomes into training features. Test prices are also unavailable, so a feature requiring them cannot be constructed at prediction time.
 
-Official references for checking syntax:
+Spatial lag models are not universally incapable of prediction. They require appropriate estimation, prediction procedures, and information assumptions. Likewise, genuinely prior sale prices can be useful in other applications when carefully restricted to information available at the time. Those are separate methods, not a reason to ignore the assignment's rule.
 
-- [tidycensus: `get_acs()`](https://walker-data.com/tidycensus/reference/get_acs.html)
-- [R: `lm()` and model formulas](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/lm.html)
-- [R: `model.matrix()`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/model.matrix.html)
-- [R: `cut()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/cut.html)
-- [sf: spatial joins](https://r-spatial.github.io/sf/reference/st_join.html)
-- [sf: geometric measurements](https://r-spatial.github.io/sf/reference/geos_measures.html)
+An allowed non-price feature can still leak future information if its date is after the prediction date. Always ask: **Would I know this value when making the prediction?**
+
+## 21. Where does the model fail worst?
+
+Overall RMSE can hide uneven performance. Inspect errors by price range, location, property size, and other relevant groups. A model that is acceptable for expensive houses may be poor for cheaper homes, or the reverse.
+
+The following uses out-of-fold predictions from the kNN-distance model so each prediction was made without training on that property's fold.
+
+```{r}
+#| label: spatial-errors-price-group-audit
+
+error_audit <- model_data %>%
+  mutate(
+    prediction = evaluations$KNN_distance$oof_pred,
+    residual = sale_price - prediction,
+    overvaluation_pct = 100 * (prediction - sale_price) / sale_price,
+    price_group = cut(
+      sale_price,
+      breaks = c(-Inf, 100000, 250000, 500000, Inf),
+      labels = c("Up to $100k", "$100k–$250k", "$250k–$500k", "Over $500k")
+    )
+  ) %>%
+  group_by(price_group) %>%
+  summarize(
+    n = n(),
+    rmse = sqrt(mean(residual^2)),
+    mean_residual = mean(residual),
+    median_overvaluation_pct = median(overvaluation_pct),
+    .groups = "drop"
+  )
+
+error_audit %>% knitr::kable(digits = 2)
+```
+
+Here positive `overvaluation_pct` means predicted price is above actual price. That uses the opposite subtraction from the residual definition, so the column name makes the direction explicit.
+
+Grouping by actual price is a **post-prediction diagnostic**, not a predictor. Price is available for the labeled training observations but unavailable for the competition test houses.
+
+Percentage errors provide context that dollar RMSE lacks. A $30,000 overprediction is 30% of a $100,000 house's price but 3% of a $1 million house's price. Inspect sample sizes, outliers, and geographic distributions before making claims about systematic harm. Group error patterns alone do not establish the cause of inequity.
+
+## 22. Assignment 5: house-price prediction in Chicago
+
+The October 16 lecture introduces a team competition using approximately 23,000 single-family sales from 2023–2025. The assignment applies the same workflow in Chicago rather than Philadelphia.
+
+| Item | Requirement described in the lecture |
+|---|---|
+| Team | Four members, one team submission |
+| Due date | Friday, October 30, 2026 |
+| Outcome | Sale price, kept in dollars |
+| Training file | `chicago_train.csv`, with prices |
+| Test file | `chicago_test.csv`, without prices |
+| Spatial CRS | EPSG 3435, Illinois East State Plane in US survey feet |
+| Prediction file | `team_XX_predictions.csv` |
+| Report | Every teammate renders the analysis on their own portfolio and submits that link on Canvas, following the assignment template |
+| Model log | Each model's CV RMSE and Moran’s I |
+| Error analysis | Where predictions fail worst and whose homes are overvalued |
+
+The lecture connects the task to concerns about regressive property assessments discussed in the Chicago Tribune's *The Tax Divide*. The policy question is not only whether average prediction error is small, but whether errors burden cheaper homes disproportionately.
+
+### What CV and the test set tell us
+
+CV estimates performance using repeated held-out parts of the labeled training data. The instructor's test score evaluates predictions on a separate set whose prices were withheld.
+
+A large difference between CV and test RMSE is a reason to investigate leakage, overfitting, different data distributions, spatial dependence, preprocessing inconsistencies, and sampling variability. It is **not automatic proof of leakage**. The test RMSE is an observed score on that test sample, not a universal truth about every future prediction.
+
+### Training rules and test predictions
+
+Outcome-based cleaning can be applied to training sales when justified, but test prices are unknown. Do not drop test rows simply because a predictor is missing; use a documented strategy learned from the training data. The required prediction file should retain the expected test identifiers and one prediction per required row.
+
+The Chicago files were not part of this lecture example, so the Philadelphia column names should not be assumed to match their schema. Inspect the actual assignment data and template before writing the Chicago data-processing code.
+
+### Individual understanding
+
+The lecture says Q7 on October 30 asks about the team's own model: which features were used and why, how CV and test RMSE differ, and where the model fails worst. Every member needs to understand the shared model rather than only their own code contribution.
+
+## 23. Terms and syntax to remember
+
+| Term or code | Meaning |
+|---|---|
+| Feature | An input used to predict the outcome |
+| Residual | Actual minus predicted |
+| `st_buffer(x, 660)` | Create a buffer using 660 coordinate units |
+| `st_intersects(x, y)` | Identify spatial intersections |
+| `lengths(list)` | Count elements within each list entry |
+| `st_nn(x, y, k = 5)` | Find up to five nearby Y features for each X feature |
+| `knearneigh(coords, k = 5)` | Identify neighbors among the observations |
+| `knn2nb()` | Convert kNN output into a spatial neighbor list |
+| `nb2listw(..., style = "W")` | Create row-standardized spatial weights |
+| `lag.listw()` | Calculate weighted neighboring values |
+| Moran’s I | Measure global spatial association under specified weights |
+| `moran.mc()` | Compare observed I with randomly permuted values |
+| `nsim = 499` | Use 499 random permutations |
+| `scales::squish` | Clamp plotted colors at scale limits without changing data |
+| `coord_cartesian()` | Zoom a chart without dropping observations before statistical layers |
+| CV RMSE | Root mean squared error from out-of-fold predictions |
+| Leakage | Information enters training or features that would be unavailable for a valid held-out prediction |
+
+## 24. Questions to check my understanding
+
+1. How is a point buffer different from a census tract boundary?
+2. What is fixed in a buffer count, and what is fixed in a kNN distance feature?
+3. Why can two houses with zero buffer counts still have different kNN distances?
+4. Why do we project Philadelphia data to EPSG 2272 before buffering?
+5. What does a +$40,000 residual mean? What does −$40,000 mean?
+6. Does `scales::squish` change the errors used in RMSE?
+7. Which neighbors are used for the incident feature, and which for Moran’s I?
+8. What does row standardization do when a house has five neighbors?
+9. Is a spatial lag the value in the previous table row?
+10. Why do two negative deviations contribute positively to Moran’s I?
+11. Why does the five-house example change when the weights change?
+12. Does I = 0.26 mean 26% of errors are clustered?
+13. What stays fixed and what gets shuffled in `moran.mc()`?
+14. Why is a small permutation p-value not enough to judge a model?
+15. Can RMSE improve while residual clustering gets worse?
+16. Why must the residual vector stay aligned with the neighbor list?
+17. Why can nearby validation houses make random-fold CV optimistic for new areas?
+18. Can a crime feature leak information even though it does not use prices?
+19. Why are negative residuals relevant when looking for overvalued homes?
+20. What would I investigate if CV RMSE and the instructor's test RMSE differ substantially?
+
+## References
+
+- Elizabeth Delmelle, MUSA 5080. *Where Is the Model Wrong?* Lecture slides, October 16, 2026. Code and reported lecture results from `week7_slides.qmd` and `week7_slides.html`.
+- [spdep: nearest neighbors](https://r-spatial.github.io/spdep/reference/knearneigh.html)
+- [spdep: spatial weights](https://r-spatial.github.io/spdep/reference/nb2listw.html)
+- [spdep: Moran’s I](https://r-spatial.github.io/spdep/reference/moran.html)
+- [spdep: permutation tests](https://r-spatial.github.io/spdep/reference/moran.mc.html)
+- [spdep: Moran scatterplots](https://r-spatial.github.io/spdep/reference/moran.plot.html)
+- [nngeo: nearest-feature searches](https://michaeldorman.github.io/nngeo/reference/st_nn.html)

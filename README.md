@@ -45,6 +45,8 @@ After rendering, inspect `git diff` and commit the intended source, asset, froze
 
 Existing behavior is preserved: **GitHub Pages serves `/docs` on `main`**. Pushing changes to main publishes the committed rendered website. No new deployment workflow is introduced.
 
+Edit weekly-note sources in `weekly-notes/`. The project builds every `.qmd` in that folder, so new weeks appear in the listing as rendered HTML pages. Give each note YAML front matter with a title, description, and date. Run `quarto render` from the project root, or render a source such as `quarto render weekly-notes/week-06.qmd`; the resulting pages and assets belong in `docs/`. Generated output should not contain copied `.qmd` pages. The link checker rejects navigation to unrendered Quarto sources, even if an accidental copy makes the file exist.
+
 Assignment and weekly-note source paths and published URLs are unchanged. The Coursework dropdown groups their existing index pages without moving them.
 
 ## Evidence and attribution
