@@ -1,0 +1,13 @@
+model,added,cv_rmse,moran_i,notes
+House_only,House characteristics only,282173.32080944505,0.37616813591552156,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Curved_and_time,"Squared size/age, log lot area, year and quarter",267223.4007738598,0.41244999322023634,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Log_size,Log size instead of quadratic size,303759.2346669377,0.4093144206185932,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Downtown_distance,Add distance to the Loop,259594.57882571514,0.42472200230847595,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Squared_distance,Add squared distance,257895.4549740356,0.4273475737281892,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Distance_rings,Use distance rings,261488.01341552215,0.4245724373943956,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Size_by_ring,Let the size slope vary by ring,251094.58092902333,0.41571124683125893,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Tract_effects,Add Census-tract fixed effects,203501.60680728845,0.21112080950151296,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Tract_linear_size,Remove squared size; check whether its curvature drives poor small-house predictions,206570.56142688732,0.20359589393767444,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Tract_log_size,Use log size with tract intercepts and size-by-ring interaction,224566.07864164686,0.19868866189876308,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Tract_size_slopes,Allow the building-area slope to differ by tract,198467.57089585267,0.186165281848005,Same grouped folds; median filling inside fitting folds; raw dollar predictions
+Age_by_ring,Let the age slope differ across rings; investigate older-house errors,198334.5281796296,0.18059848196985587,Same grouped folds; median filling inside fitting folds; raw dollar predictions

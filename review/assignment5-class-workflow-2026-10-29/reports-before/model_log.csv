@@ -1,0 +1,9 @@
+model,added,cv_rmse,moran_i,notes
+House_only,House characteristics only,284173.8134921183,0.3722208337301039,Same grouped folds; median filling inside fitting folds; negative outputs set to zero
+Curved_and_time,"Squared size/age, log lot area, year and quarter",264842.5918688972,0.4084807758231451,Same grouped folds; median filling inside fitting folds; negative outputs set to zero
+Log_size,Log size instead of quadratic size,306724.5392661987,0.4057928578129092,Same grouped folds; median filling inside fitting folds; negative outputs set to zero
+Downtown_distance,Add distance to the Loop,256908.87019999506,0.4196562474255865,Same grouped folds; median filling inside fitting folds; negative outputs set to zero
+Squared_distance,Add squared distance,255074.9940660321,0.42217266691151534,Same grouped folds; median filling inside fitting folds; negative outputs set to zero
+Distance_rings,Use distance rings,258913.33671047844,0.42028326980810704,Same grouped folds; median filling inside fitting folds; negative outputs set to zero
+Size_by_ring,Let the size slope vary by ring,248805.5457622484,0.41475532336182763,Same grouped folds; median filling inside fitting folds; negative outputs set to zero
+Grid_effects,Add 2-mile geographic fixed effects,193715.78228344079,0.20183427751171384,Same grouped folds; median filling inside fitting folds; negative outputs set to zero

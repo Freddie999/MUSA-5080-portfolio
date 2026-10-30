@@ -1,0 +1,4 @@
+seed,model,development_cv_rmse,residual_moran_i
+5080,Grid_specific_size_slopes,182718.19241892346,0.1183330396849077
+5081,Grid_specific_size_slopes,182759.43196356422,0.11914156293180984
+5082,Grid_specific_size_slopes,182781.84075311865,0.11656054159723075

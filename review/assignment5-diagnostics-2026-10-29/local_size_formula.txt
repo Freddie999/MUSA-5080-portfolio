@@ -1,0 +1,8 @@
+sale_price ~ building_000sf + building_age + num_bedrooms + num_full_baths + 
+    num_half_baths + num_fireplaces + garage_size + central_air + 
+    one_story + full_basement + finished_basement + brick_stone_ext + 
+    warmairfurnace + log1p(lotsize_acre) + I(building_000sf^2) + 
+    I(building_age^2) + year_f + quarter_f + lotsize_acre_missing + 
+    num_half_baths_missing + num_fireplaces_missing + garage_size_missing + 
+    full_basement_missing + warmairfurnace_missing + grid_fe + 
+    ring + building_000sf:ring + building_000sf:grid_fe

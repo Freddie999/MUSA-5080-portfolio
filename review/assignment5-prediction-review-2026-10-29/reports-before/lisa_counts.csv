@@ -1,0 +1,11 @@
+model,cluster,n
+Structure-only baseline,High-High,420
+Structure-only baseline,High-Low,52
+Structure-only baseline,Low-High,38
+Structure-only baseline,Low-Low,413
+Structure-only baseline,Not significant,21045
+Selected model,High-High,227
+Selected model,High-Low,52
+Selected model,Low-High,45
+Selected model,Low-Low,258
+Selected model,Not significant,21386

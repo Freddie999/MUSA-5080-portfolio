@@ -11,6 +11,7 @@ project:
     - "assignments/assignment2.qmd"
     - "assignments/assignment3.qmd"
     - "assignments/assignment4.qmd"
+    - "assignments/assignment5.qmd"
     - "weekly-notes/*.qmd"
   resources:
     - "reports/*.html"

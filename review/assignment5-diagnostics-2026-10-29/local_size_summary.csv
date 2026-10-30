@@ -1,0 +1,2 @@
+model,audit_rmse,audit_mae,lowest_quartile_ratio,raw_nonpositive_test,min_raw_test,audit_nonestimable,test_nonestimable
+Grid_specific_size_slopes,186489.21179632214,111045.8870499473,1.6058601577783143,2,-8335.949691419226,1,0

@@ -1,0 +1,78 @@
+---
+title: "week4-7_practice"
+format: html
+---
+```{r}
+library(sf)
+library(tidycensus)
+library(tidyverse)
+```
+
+
+
+
+```{r}
+test_data <- tibble(
+  coloumn_A = c(100, 200, 300, 400), 
+  coloumn_B = c(200, 300, 400, 500),
+  geoid = c(1,2,3,4)
+)
+
+test_data
+
+
+another_test_data <- tibble(
+  coloumn_X = c(5, 10, 15, 100, 150, 200, 300, 400), 
+  coloumn_Y = c(20, 40, 60, 80, 100, 150, 200, 300),
+  geoid = c(1, 2, 3,4,5, 6, 7, 8)
+)
+
+another_test_data
+```
+```{r}
+left_join(test_data, another_test_data, by="geoid")
+right_join(test_data, another_test_data, by="geoid")
+inner_join(test_data, another_test_data, by="geoid")
+anti_join(test_data, another_test_data, by="geoid")
+full_join(test_data, another_test_data, by="geoid")
+semi_join(test_data, another_test_data, by="geoid")
+```
+
+```{r}
+philly_data <- get_acs(
+  geography = "tract",
+  year = 2023,
+  county = "Philadelphia",
+  variables = c(
+    med_inc = "B19013_001",
+    total_pop = "B01003_001"
+  ),
+  geometry = TRUE,
+  survey = "acs5",
+  output = "wide",
+  state = "PA"
+)
+
+names(philly_data)
+glimpse(philly_data)
+```
+
+```{r}
+philly_data$med_inc_se <- if_else(!is.na(philly_data$med_incM) & philly_data$med_incM > 0,philly_data$med_incM/1.645, NA_real_)
+philly_data$med_inc_cv <- if_else(!is.na(philly_data$med_incE) & philly_data$med_incE > 0, philly_data$med_inc_se/philly_data$med_incE * 100, NA_real_)
+philly_data$reliability <- case_when(is.na(med_inc_cv) ~ "Unavailable", med_inc_cv < 12 ~ "High", med_inc_cv <= 40 ~ "Moderate", TRUE ~ "Low"  )
+```
+
+```{r}
+philly_data %>% st_drop_geometry() %>% count(philly_data$reliability)
+```
+```{r}
+philly_data %>% st_drop_geometry() %>% summarise(
+  tract_count = n(),
+  mean_income = mean(philly_data$med_incE, na.rm = TRUE),
+  mean_cv = mean(philly_data$med_inc_cv, na.rm = TRUE)
+)
+```
+
+
+
