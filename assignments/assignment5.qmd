@@ -2,7 +2,7 @@
 title: "Assignment 5: House Price Prediction, Chicago"
 subtitle: "MUSA 5080 · Team assignment"
 author: "Team: Frederick Abalo, Emmanuel Sampson, Yogi Patnaik, Leo Leung"
-date: 10-29-2026
+date: "2026-10-29"
 format:
   html:
     toc: true

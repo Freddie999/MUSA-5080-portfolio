@@ -2,7 +2,7 @@
 title: "Assignment 3: Verify the Claim: Poverty Change in Philadelphia"
 subtitle: "Measuring uncertainty in American Community Survey data"
 author: "Frederick Abalo"
-date: today
+date: "2026-09-25"
 format:
   html:
     toc: true
