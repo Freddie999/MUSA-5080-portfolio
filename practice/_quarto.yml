@@ -1,0 +1,8 @@
+# Practice documents render independently of the portfolio website's render list.
+project:
+  type: default
+
+format:
+  html:
+    theme: [cosmo, ../styles.scss]
+    code-tools: true
