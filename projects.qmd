@@ -37,7 +37,7 @@ These case studies separate **professional work**, **personal engineering demons
 
 **Limits.** These results use one seed and a random image split. Similar or nearby scenes can occur across partitions; the scores do not establish generalization to a new region. The starter-to-deeper comparison changes several architecture components together.
 
-[Executed notebook](https://github.com/Freddie999/ai-urban-sustainability/blob/main/Homework4.ipynb) · [Saved metrics and figures](https://github.com/Freddie999/ai-urban-sustainability/tree/main/homework4-output)
+[Executed notebook](https://github.com/Freddie999/ai-urban-sustainability/blob/ecc64f61430f64dc35745a7b80527734ce6bf45c/Homework4.ipynb) · [Saved metrics and figures](https://github.com/Freddie999/ai-urban-sustainability/tree/ecc64f61430f64dc35745a7b80527734ce6bf45c/homework4-output)
 
 ## Explaining Philadelphia housing values {#housing-values}
 
