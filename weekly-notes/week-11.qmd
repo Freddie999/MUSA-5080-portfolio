@@ -1,0 +1,470 @@
+---
+title: "Week 11: Classification Thresholds, ROC Curves and AUC"
+description: "Confusion matrices, sensitivity, specificity, threshold tradeoffs, and who bears the errors."
+author: "Frederick Abalo"
+date: "2026-11-24"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-overflow: wrap
+    df-print: kable
+execute:
+  echo: true
+  message: false
+  warning: false
+---
+
+## What we covered
+
+A model gives us a probability. We still have to decide what to do with it.
+
+This week used the quarantine exercise to show how changing a cutoff changes who gets flagged, who gets missed, and who pays for the mistakes. We put those choices on an ROC curve and used AUC to describe how well the model ranks people.
+
+The same ideas carry into the COMPAS lab and the Georgia parole assignment. A model's prediction score helps us compare models, but the consequences of a decision still matter.
+
+## A probability is not yet a decision
+
+Suppose a model gives someone a 0.60 probability of being sick.
+
+- With a threshold of 0.30, we flag them.
+- With a threshold of 0.50, we flag them.
+- With a threshold of 0.70, we do not flag them.
+
+Their probability did not change. Our decision rule changed.
+
+The rule we use in class is:
+
+$$
+\text{flag} =
+\begin{cases}
+1 & \text{if predicted probability} \geq \text{threshold} \\
+0 & \text{otherwise}
+\end{cases}
+$$
+
+Someone exactly at the threshold gets flagged because the code uses `>=`.
+
+```r
+people <- people %>%
+  mutate(flag = as.integer(pred >= 0.5))
+```
+
+Here `pred` is the predicted probability. `as.integer()` changes TRUE and FALSE into 1 and 0.
+
+## The confusion matrix
+
+In the quarantine exercise, positive means "flag as sick and send to quarantine." Negative means "do not flag and send home."
+
+| Decision | Actually sick | Actually healthy |
+|---|---|---|
+| Send to quarantine | True positive (TP) | False positive (FP) |
+| Send home | False negative (FN) | True negative (TN) |
+
+"True" means the classification was correct. "False" means it was wrong.
+
+The two mistakes have different consequences. A false positive sends a healthy person to quarantine. A false negative sends a sick person home. Counting both as one error does not tell us whether they are equally serious.
+
+When reading R's `table()`, check the labels. In this example the rows are predictions and the columns are actual outcomes:
+
+```r
+table(predicted = people$flag, actual = people$sick)
+```
+
+Do not memorize a corner of the table without checking which row and column it represents.
+
+## The rates and their denominators
+
+### Sensitivity is the true positive rate
+
+$$
+\text{Sensitivity} = \text{TPR} = \frac{TP}{TP + FN}
+$$
+
+Of everyone actually sick, what share did we catch?
+
+The denominator is all sick people. It is not everyone we flagged.
+
+### Specificity is the true negative rate
+
+$$
+\text{Specificity} = \text{TNR} = \frac{TN}{TN + FP}
+$$
+
+Of everyone actually healthy, what share did we correctly send home?
+
+### False positive rate
+
+$$
+\text{FPR} = \frac{FP}{FP + TN} = 1 - \text{specificity}
+$$
+
+Of everyone actually healthy, what share did we incorrectly quarantine?
+
+Specificity and FPR use the same group as their denominator: the healthy people. One counts the correct decisions and the other counts the errors, so they add up to 1.
+
+### False negative rate
+
+$$
+\text{FNR} = \frac{FN}{FN + TP} = 1 - \text{sensitivity}
+$$
+
+Of everyone actually sick, what share did we miss?
+
+### Accuracy
+
+$$
+\text{Accuracy} = \frac{TP + TN}{TP + FN + FP + TN}
+$$
+
+What share of all decisions were correct?
+
+Accuracy combines the two kinds of correct decision. It does not tell us how the errors are split or who experiences them.
+
+| Measure | Which people are in the denominator? |
+|---|---|
+| Sensitivity / TPR | Everyone actually sick |
+| FNR | Everyone actually sick |
+| Specificity / TNR | Everyone actually healthy |
+| FPR | Everyone actually healthy |
+| Accuracy | Everyone |
+
+Another easy mix-up: `TP / (TP + FP)` is precision, the share of flagged people who are actually sick. That is a different question from sensitivity.
+
+## Work through the quarantine exercise
+
+There are 40 people: 16 sick and 24 healthy. Those totals stay the same when we move the threshold.
+
+### Threshold 0.30
+
+The exercise gives TP = 14, FN = 2, FP = 13 and TN = 11.
+
+$$
+TPR = \frac{14}{16} = 0.875
+\qquad
+FPR = \frac{13}{24} \approx 0.542
+$$
+
+We catch 87.5% of sick people, but also quarantine about 54.2% of healthy people. Only two sick people are missed, while 13 healthy people are incorrectly quarantined.
+
+Specificity is `11 / 24`, about 45.8%. It is not the same as the 54.2% false-positive rate.
+
+### Threshold 0.70
+
+The exercise gives TP = 7 and FP = 2. With 16 sick and 24 healthy people, that leaves FN = 9 and TN = 22.
+
+$$
+TPR = \frac{7}{16} = 0.4375
+\qquad
+FPR = \frac{2}{24} \approx 0.0833
+$$
+
+Now we quarantine only two healthy people, but miss nine sick people. The higher threshold is stricter about whom it flags.
+
+### Compare the cutoffs in R
+
+The 0.50 row below uses TP = 10 and FP = 6 as a worked reconstruction of the middle example. These give TPR = 0.625 and FPR = 0.25; the recording is less clear on that row, so those counts should not be treated as independently verified worksheet values.
+
+```{r}
+#| label: quarantine-rates
+library(tidyverse)
+
+threshold_counts <- tibble(
+  threshold = c(0.30, 0.50, 0.70),
+  tp = c(14, 10, 7),
+  fn = c(2, 6, 9),
+  fp = c(13, 6, 2),
+  tn = c(11, 18, 22)
+) %>%
+  mutate(
+    sensitivity = tp / (tp + fn),
+    specificity = tn / (tn + fp),
+    fpr = fp / (fp + tn),
+    fnr = fn / (fn + tp),
+    errors = fp + fn,
+    accuracy = (tp + tn) / (tp + fn + fp + tn)
+  )
+
+threshold_counts %>%
+  select(threshold, tp, fn, fp, tn, errors, accuracy) %>%
+  knitr::kable(digits = 3)
+
+threshold_counts %>%
+  select(threshold, sensitivity, specificity, fpr, fnr) %>%
+  knitr::kable(digits = 3)
+```
+
+The 0.70 cutoff has 11 errors and 72.5% accuracy. The 0.30 cutoff has 15 errors and 62.5% accuracy. If we only want fewer mistakes overall, 0.70 looks better among these examples. But if missing a sick person is especially costly, its nine false negatives may make it a poor choice.
+
+## What happens when the threshold moves?
+
+For the same people and predicted probabilities:
+
+| Change | Lower threshold | Higher threshold |
+|---|---|---|
+| People flagged | More, or the same | Fewer, or the same |
+| Sensitivity / TPR | Higher, or the same | Lower, or the same |
+| False positive rate | Higher, or the same | Lower, or the same |
+| Specificity | Lower, or the same | Higher, or the same |
+| False negative rate | Lower, or the same | Higher, or the same |
+
+The rates can stay the same over part of the range when nobody's probability lies between two thresholds. Accuracy can go either way because it depends on which mistakes change.
+
+The threshold changes classifications. It does not refit the model or improve its ranking of people.
+
+## The ROC curve
+
+ROC stands for **receiver operating characteristic**.
+
+An ROC curve puts the threshold tradeoff on one chart:
+
+- The x-axis is the false positive rate, `1 - specificity`.
+- The y-axis is the true positive rate, or sensitivity.
+
+Each point represents a threshold applied to the same model's predicted probabilities. The threshold itself is not an axis.
+
+### Important points on the plot
+
+| Point | Meaning |
+|---|---|
+| `(0, 0)` | Flag nobody: no false positives, but no true positives either |
+| `(1, 1)` | Flag everybody: catch every positive and flag every negative too |
+| `(0, 1)` | Perfect separation: catch every positive without any false positives |
+| Diagonal from `(0, 0)` to `(1, 1)` | Chance-level ranking in expectation |
+
+A threshold above every predicted probability flags nobody. A threshold at or below every predicted probability flags everybody.
+
+On the plot, lower thresholds generally move us up and right. Higher thresholds move us down and left. We would like to get closer to the upper-left corner, where sensitivity is high and false positives are low.
+
+```{r}
+#| label: quarantine-roc
+#| fig-alt: "ROC illustration using the quarantine counts: the 0.30 cutoff catches more sick people but has more false positives than the 0.70 cutoff. The reconstructed 0.50 example lies between them."
+#| fig-cap: "Three example cutoffs, joined with the flag-nobody and flag-everybody endpoints. The 0.50 counts are reconstructed; this is not the full ROC curve from individual scores."
+roc_points <- bind_rows(
+  tibble(fpr = 0, sensitivity = 0),
+  threshold_counts %>% select(fpr, sensitivity),
+  tibble(fpr = 1, sensitivity = 1)
+) %>%
+  arrange(fpr)
+
+ggplot(roc_points, aes(fpr, sensitivity)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "grey60") +
+  geom_line(color = "steelblue") +
+  geom_point(color = "steelblue") +
+  geom_text(data = threshold_counts,
+            aes(label = paste("Cutoff", threshold)),
+            vjust = -0.7, size = 3) +
+  scale_x_continuous(limits = c(0, 1)) +
+  scale_y_continuous(limits = c(0, 1)) +
+  coord_fixed() +
+  labs(x = "False positive rate", y = "True positive rate (sensitivity)") +
+  theme_minimal()
+```
+
+Connecting a few cutoff points helps us see the idea. A full ROC curve uses all the distinct predicted scores, so it can have many more steps between these points.
+
+## AUC: area under the ROC curve
+
+AUC summarizes the ranking across thresholds.
+
+One way to read it is: if we pick one actual positive and one actual negative at random, how often does the model give the positive a higher score? Tied scores count as half a success in the usual AUC calculation.
+
+| AUC | Interpretation |
+|---|---|
+| 0.50 | Chance-level ranking overall |
+| 0.78 | The positive has the higher score about 78% of the time, counting ties as half |
+| 1.00 | Every positive ranks above every negative in the evaluated sample |
+
+An AUC of 0.78 does **not** mean 78% accuracy, a 78% probability for every person, or 78% of variation explained. Accuracy needs a particular threshold; AUC summarizes ranking over thresholds.
+
+The lecture mentioned an AUC around 0.78. We do not have the full set of individual scores for that exercise, so the three cutoff points above are not enough to verify that exact value.
+
+An AUC below 0.50 can indicate reversed score direction or a model that ranks positives below negatives. It is useful to check which outcome is coded 1 and whether larger scores mean higher risk.
+
+### Does a very high AUC prove overfitting?
+
+No. A high AUC can happen when predictors genuinely separate the classes well. But an unexpectedly high score should make us check:
+
+- Did a predictor include the outcome or information from afterward?
+- Did we fit and evaluate on the same people?
+- Did related observations appear in both training and testing?
+- Does the result hold up on new data?
+
+There is no rule that AUC above 0.90 automatically means overfitting. The important question is how the model was evaluated and what information it used.
+
+### What AUC leaves out
+
+AUC does not tell us whether the probabilities are calibrated. For example, do about 60% of people assigned a probability near 0.60 actually have the outcome?
+
+It also does not tell us whether error rates are similar across groups or whether acting on the model helps people. Two models can have similar AUCs but different errors at the cutoff we intend to use.
+
+## The Week 11 lab code pattern
+
+The COMPAS lab uses logistic regression because the outcome is 0 or 1. These snippets use the lab's `compas` data and are meant to be run there.
+
+### Fit the model
+
+```r
+library(tidyverse)
+library(pROC)
+
+recid_fit <- glm(two_year_recid ~ age + priors_count + male + felony + juv_total,
+                 family = binomial,
+                 data = compas)
+```
+
+`family = binomial` fits the binary-outcome model. Its coefficients are on the log-odds scale.
+
+```r
+exp(coef(recid_fit))
+```
+
+Exponentiating gives odds ratios. An odds ratio of 1.17 means 17% higher odds for a one-unit increase, holding the other included predictors fixed. It does not mean a 17-percentage-point increase in probability.
+
+### Predict probabilities and make a decision
+
+```r
+compas <- compas %>%
+  mutate(
+    pred = predict(recid_fit, newdata = compas, type = "response"),
+    flag = as.integer(pred >= 0.5)
+  )
+
+table(predicted = compas$flag, actual = compas$two_year_recid)
+```
+
+`type = "response"` gives probabilities rather than log-odds. This lab example fits and predicts on the same sample, so it demonstrates the steps without giving an independent test of performance.
+
+### Calculate rates
+
+```r
+rates_at <- function(data, threshold) {
+  data %>%
+    mutate(flag = as.integer(pred >= threshold)) %>%
+    summarise(
+      threshold = threshold,
+      sensitivity = sum(flag == 1 & two_year_recid == 1) /
+                    sum(two_year_recid == 1),
+      specificity = sum(flag == 0 & two_year_recid == 0) /
+                    sum(two_year_recid == 0),
+      accuracy = mean(flag == two_year_recid)
+    )
+}
+
+bind_rows(
+  rates_at(compas, 0.3),
+  rates_at(compas, 0.5),
+  rates_at(compas, 0.7)
+)
+```
+
+The function repeats the same calculation for a different threshold. The model stays fitted; we only change how its probabilities become flags.
+
+### Plot ROC and get AUC
+
+```r
+roc_obj <- roc(compas$two_year_recid, compas$pred,
+               levels = c(0, 1), direction = "<")
+
+auc(roc_obj)
+
+ggroc(roc_obj, legacy.axes = TRUE) +
+  geom_abline(linetype = "dashed", color = "grey50") +
+  labs(x = "False positive rate", y = "Sensitivity") +
+  theme_minimal()
+```
+
+`levels = c(0, 1)` identifies the negative and positive outcomes. `direction = "<"` says negatives should generally have lower scores than positives. `legacy.axes = TRUE` displays the horizontal axis as increasing false positive rate.
+
+## Choosing a threshold is a decision about costs
+
+The ROC curve shows the tradeoff. It does not decide how much a false positive or false negative should matter.
+
+For a dangerous disease, missing a sick person may be especially costly. A lower threshold catches more sick people, while also quarantining more healthy people.
+
+For restrictive parole supervision, a false positive can impose unnecessary monitoring or reporting requirements. For voluntary reentry support, a false positive may mean offering services to someone who would not have been rearrested. Those consequences differ, even if the model and the predicted probability are identical.
+
+A statistical rule such as maximizing `sensitivity + specificity - 1` picks a point far above the diagonal. It can be a useful comparison, but it does not account for every policy cost, available service slot or burden on a person. The highest point on the ROC curve alone is not a useful rule: flagging everyone also gives sensitivity of 1.
+
+## Who gets the errors?
+
+A model can leave race out and still produce different errors by race. Included predictors can differ across groups, and recorded outcomes can reflect differences in surveillance and enforcement.
+
+The lab's pattern is to calculate errors within each group:
+
+```r
+compas %>%
+  filter(race %in% c("African-American", "Caucasian")) %>%
+  group_by(race) %>%
+  summarise(
+    n = n(),
+    rearrest_share = mean(two_year_recid),
+    fpr = sum(flag == 1 & two_year_recid == 0) /
+          sum(two_year_recid == 0),
+    fnr = sum(flag == 0 & two_year_recid == 1) /
+          sum(two_year_recid == 1)
+  )
+```
+
+Each race gets its own denominator. For example, the false-positive rate for Black people uses Black people who were not rearrested, not everyone in the dataset.
+
+Similar overall accuracy does not guarantee similar false-positive or false-negative rates. We need to see the separate numbers and consider what a flag leads to.
+
+## How this connects to Assignment 6
+
+The Georgia assignment follows the same workflow, with two important changes from the COMPAS lab:
+
+1. The outcome is `recid`, rearrest within three years.
+2. We fit on `train` and evaluate Parts 4 and 5 on `test`.
+
+```r
+test <- test %>%
+  mutate(
+    p_hat = predict(my_fit, newdata = test, type = "response"),
+    pred_50 = as.integer(p_hat >= 0.5)
+  )
+```
+
+`newdata = test` tells R which people to predict. Their outcomes are used to evaluate the predictions, not to fit the model.
+
+We also need to keep post-release information out of a model intended for release-time decisions, check missing values before adding predictors, compare thresholds by race, and hold out whole PUMA groups to check place differences.
+
+The final recommendation has to explain the cost of both kinds of mistake for each proposed use. AUC alone cannot supply that answer.
+
+## Quick checks
+
+<details>
+<summary>1. If we raise the threshold, does sensitivity usually rise or fall?</summary>
+
+It falls or stays the same. Fewer people qualify for a positive flag, so we catch fewer or the same number of actual positives.
+
+</details>
+
+<details>
+<summary>2. Is false positive rate the same as one minus sensitivity?</summary>
+
+No. False positive rate is `1 - specificity`. `1 - sensitivity` is the false negative rate.
+
+</details>
+
+<details>
+<summary>3. Does an AUC of 0.78 mean 78% of decisions are correct?</summary>
+
+No. It describes ranking across positive–negative pairs. Accuracy describes correct classifications at a chosen threshold.
+
+</details>
+
+<details>
+<summary>4. Can a model have higher accuracy but miss more sick people?</summary>
+
+Yes. In the exercise, raising the cutoff from 0.30 to 0.70 reduces total errors but increases false negatives from 2 to 9.
+
+</details>
+
+<details>
+<summary>5. Does excluding race guarantee equal error rates?</summary>
+
+No. We still need to calculate group-specific false-positive and false-negative rates and look at the predictors and recorded outcomes.
+
+</details>
